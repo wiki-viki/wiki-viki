@@ -12,9 +12,12 @@
   "dependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "axios": "^1.7.2",
+    "framer-motion": "^11.2.11",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.52.0"
   },
   "devDependencies": {
     "@types/node": "^20",
