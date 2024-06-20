@@ -11,14 +11,30 @@
     "plugin:tailwindcss/recommended",
     "prettier"
   ],
-  "plugins": [
-    "import",
-    "@typescript-eslint",
-    "react-hooks",
-    "tailwindcss",
-    "prefer-arrow"
-  ],
+  "plugins": ["import", "@typescript-eslint", "react-hooks", "tailwindcss", "prefer-arrow"],
   "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "external", // 외부 라이브러리
+          "builtin", // Node.js 내장 모듈
+          "internal", // 경로 별칭 (@)
+          "parent", // 부모 경로 (..)
+          "sibling", // 같은 경로 (./)
+          "index", // 현재 디렉토리 (./)
+          "object"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react*",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react*"]
+      }
+    ],
     "arrow-body-style": ["error", "always"],
     "curly": ["error"],
     "max-depth": ["error", 4],
