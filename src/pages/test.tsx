@@ -11,6 +11,7 @@ const Test = () => {
         <div>
           하이
           <p>안녕~~~~~~~</p>
+          <p>안에 내용이 길어지거나 짧아지면 height도 자동 조정</p>
         </div>
       </Modal>
     </div>
