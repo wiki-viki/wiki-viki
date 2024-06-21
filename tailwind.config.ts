@@ -42,12 +42,14 @@ const config: Config = {
       },
     },
     fontSize: {
+      // 5xl
+      '5xl': ['48px', { lineHeight: '46px', fontWeight: '600' }],
+
       // 4xl
       '4xl': ['40px', { lineHeight: '42px', fontWeight: 'bold' }],
 
       // 3xl
       '3xl-bold': ['32px', { lineHeight: '46px', fontWeight: 'bold' }],
-      '3xl-semibold': ['32px', { lineHeight: '42px', fontWeight: '600' }],
 
       // 2xl
       '2xl-bold': ['24px', { lineHeight: '32px', fontWeight: 'bold' }],
