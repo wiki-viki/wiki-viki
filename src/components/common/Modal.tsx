@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useRef } from 'react';
+import { MouseEvent, ReactNode, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '../../../public/close.svg';
@@ -15,6 +15,20 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
   const handleClickOutside = (e: MouseEvent<HTMLElement>) => {
     e.target === modalRef.current && onClose();
   };
+
+  useEffect(() => {
+    const handleKeyDownEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDownEscape);
+
+    return () => {
+      return window.removeEventListener('keydown', handleKeyDownEscape);
+    };
+  }, [onClose]);
 
   if (typeof window === 'undefined') {
     return <></>;
