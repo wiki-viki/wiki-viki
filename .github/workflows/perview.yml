@@ -8,6 +8,14 @@ jobs:
   vercel-preview:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pages: write
+      deployments: write
+      id-token: write
+      issues: write
+      pull-requests: write
+
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
