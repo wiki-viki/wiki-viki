@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '@/components/common/Modal';
 
-const test = () => {
+const Test = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div>
-      <Modal>
+      <button
+        onClick={() => {
+          return setIsOpen(!isOpen);
+        }}
+      >
+        버튼
+      </button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          return setIsOpen(!isOpen);
+        }}
+      >
         <div>
           하이
           <p>안녕~~~~~~~</p>
@@ -14,4 +28,4 @@ const test = () => {
   );
 };
 
-export default test;
+export default Test;
