@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import CommonButton from '@/components/common/CommonButton';
+import Pagination from '@/components/common/Pagination';
 
 const Test2 = () => {
   const [isActived, setIsActived] = useState(false);
+  const [page, setPage] = useState(1);
   const router = useRouter();
 
   const handleClick = () => {
@@ -18,9 +20,20 @@ const Test2 = () => {
     setIsActived(!isActived);
   };
 
+  console.log(page);
+
+  const handlePage = (value: number) => {
+    setPage(value);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
-      <CommonButton variant="primary" isActive={isActived} onClick={handleClick}>
+    <div className="flex h-lvh flex-col items-center justify-center gap-3">
+      <CommonButton
+        variant="primary"
+        isActive={isActived}
+        disabled={!isActived}
+        onClick={handleClick}
+      >
         내 위키 만들기
       </CommonButton>
       <CommonButton variant="primary" isActive={true} className="w-full" onClick={handleClick2}>
@@ -29,6 +42,7 @@ const Test2 = () => {
       <CommonButton variant="secondary" onClick={handleActive}>
         버튼 상태 변경하기
       </CommonButton>
+      <Pagination totalCount={80} pageSize={3} page={page} handlePage={handlePage} />
     </div>
   );
 };
