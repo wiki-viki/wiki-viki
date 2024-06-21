@@ -1,7 +1,7 @@
 import { MouseEvent, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import CloseIcon from '@/public/close.svg';
+import CloseIcon from '../../../public/close.svg';
 
 interface ModalProps {
   children: ReactNode;
