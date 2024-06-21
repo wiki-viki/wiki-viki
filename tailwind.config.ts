@@ -94,6 +94,9 @@ const config: Config = {
       custom: '0px 4px 20px 0px #0000000D',
     },
   },
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   plugins: [],
 };
 export default config;
