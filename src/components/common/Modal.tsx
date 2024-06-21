@@ -1,6 +1,7 @@
 import { MouseEvent, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import CloseIcon from '@/public/close.svg';
 
 interface ModalProps {
   children: ReactNode;
@@ -26,11 +27,11 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
           <div
             ref={modalRef}
             onClick={handleClickOutside}
-            className="fixed inset-0 flex items-center justify-center bg-[#474D664D]/30"
+            className="fixed inset-0 flex items-center justify-center bg-grayscale-500/30"
           >
-            <div className="flex h-auto w-[335px] flex-col rounded-[10px] bg-white p-[20px] shadow-lg">
-              <div className="flex cursor-pointer justify-end" onClick={onClose}>
-                X
+            <div className="mx-2 flex h-auto w-[335px] flex-col rounded-[10px] bg-white p-[20px] shadow-lg md:w-[395px]">
+              <div className="flex justify-end">
+                <CloseIcon className="cursor-pointer" onClick={onClose} />
               </div>
               {children}
             </div>
