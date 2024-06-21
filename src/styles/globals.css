@@ -4,7 +4,7 @@
 
 @layer components {
   .authContainer {
-    @apply flex flex-col gap-2.5
+    @apply flex flex-col gap-2.5 mb-6
   }
 
   .authLabel {
