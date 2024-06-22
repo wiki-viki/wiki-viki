@@ -42,7 +42,7 @@ export const LeftSection = ({ children }: LeftSectionProps) => {
  */
 interface RightSectionProps {
   isLogin: boolean;
-  handleOpen: () => void;
+  handleOpen?: () => void;
   children: ReactNode;
 }
 

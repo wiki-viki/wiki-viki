@@ -1,6 +1,6 @@
 import React, { MouseEvent, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CommonButton from '../CommonButton';
+import HamburgerMenuButtons from './HamburgerMenuButtons';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface HamburgerMenuProps {
 }
 
 const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = (e: MouseEvent<HTMLElement>) => {
     if (menuRef.current) {
@@ -32,48 +32,7 @@ const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="w-[180px] flex-col">
-            {isLogin ? (
-              <>
-                <CommonButton
-                  variant="secondary"
-                  className="w-full bg-white shadow-lg hover:bg-grayscale-100"
-                >
-                  계정설정
-                </CommonButton>
-                <CommonButton variant="primary" className="mt-5 w-full shadow-lg">
-                  내 위키
-                </CommonButton>
-                <CommonButton
-                  variant="secondary"
-                  className="mt-5 w-full  bg-white shadow-lg hover:bg-grayscale-100"
-                >
-                  로그아웃
-                </CommonButton>
-                <CommonButton variant="primary" className="mt-5 w-full shadow-lg">
-                  위키목록
-                </CommonButton>
-                <CommonButton variant="primary" className="mt-5 w-full shadow-lg">
-                  자유게시판
-                </CommonButton>
-              </>
-            ) : (
-              <>
-                <CommonButton
-                  variant="secondary"
-                  className="w-full bg-white shadow-lg hover:bg-grayscale-100"
-                >
-                  로그인
-                </CommonButton>
-                <CommonButton variant="primary" className="mt-5 w-full shadow-lg">
-                  위키목록
-                </CommonButton>
-                <CommonButton variant="primary" className="mt-5 w-full shadow-lg">
-                  자유게시판
-                </CommonButton>
-              </>
-            )}
-          </div>
+          <HamburgerMenuButtons isLogin={isLogin} />
         </motion.aside>
       )}
     </AnimatePresence>

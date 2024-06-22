@@ -1,14 +1,11 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useIsLogin from '@/hooks/useIsLogin';
-import useBoolean from '@/hooks/useBoolean';
-import HamburgerMenu from './HamburgerMenu';
 import { HeaderContainer, LeftSection, RightSection } from '.';
 
 const NavigationBar = () => {
   const { pathname } = useRouter();
   const isLogin = useIsLogin();
-  const { value, handleOn, handleOff } = useBoolean();
 
   const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
   const activeLinkClassNames = 'font-bold text-primary-green-300';
@@ -31,12 +28,11 @@ const NavigationBar = () => {
           </ul>
         </nav>
       </LeftSection>
-      <RightSection isLogin={isLogin} handleOpen={handleOn}>
+      <RightSection isLogin={isLogin}>
         <Link href="/login" className={`${linkClassNames} py-1 text-md-regular text-grayscale-400`}>
           로그인
         </Link>
       </RightSection>
-      <HamburgerMenu isOpen={value} onClose={handleOff} isLogin={isLogin} />
     </HeaderContainer>
   );
 };
