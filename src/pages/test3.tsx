@@ -18,6 +18,10 @@ const Test3 = () => {
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
         <p>검색한 내용 {keyword}</p>
       </div>
+      <div className="w-screen">
+        <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
+        <p>검색한 내용 {keyword}</p>
+      </div>
     </div>
   );
 };
