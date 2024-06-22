@@ -14,3 +14,15 @@
   font-family: 'Pretendard-Regular';
   box-sizing: border-box;
 }
+
+@layer components {
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .page-btn-active {
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.25);
+  }
+}
