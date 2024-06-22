@@ -84,7 +84,9 @@ const SignUpPage = () => {
               value: 8,
               message: PASSWORD_MIN_LENGTH_MESSAGE,
             },
-            validate: (value) => value === getValues('password') || PASSWORD_MISMATCH_MESSAGE,
+            validate: (value) => {
+              return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
+            }
           }}
           errors={errors}
         />
