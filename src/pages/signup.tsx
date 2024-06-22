@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
+import CommonButton from '@/components/common/CommonButton';
 import { EMAIL_REGEX } from '../../constants/regex';
 import {
   REQUIRED_MESSAGE,
@@ -90,7 +91,9 @@ const SignUpPage = () => {
           }}
           errors={errors}
         />
-        <button type="submit">버튼</button>
+        <CommonButton type="submit" variant="primary" className="mb-10 md:w-[335px] lg:w-full">
+          가입하기
+        </CommonButton>
       </form>
       <AuthSwitchPrompt href="/signup" auth="로그인" />
     </AuthContainer>
