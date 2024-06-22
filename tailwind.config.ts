@@ -14,6 +14,9 @@ const config: Config = {
       xl: '1280px',
     },
     extend: {
+      borderRadius: {
+        10: '10px',
+      },
       colors: {
         grayscale: {
           50: '#FFFFFF',
