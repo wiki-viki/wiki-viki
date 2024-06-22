@@ -1,5 +1,5 @@
 import {Label, Input} from '@/components/common/Form';
-import { InputWithLabelProps } from '@/types/authType';
+import { InputWithLabelProps } from '@/types/authFormType';
 import { FieldValues } from 'react-hook-form';
 
 const AuthInputWithLabel = <T extends FieldValues>({ id, name, label, register, rules, errors, ...props }: InputWithLabelProps<T>) => {

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
-import { DefaultFormData } from '@/types/authType';
+import { DefaultFormData } from '@/types/authFormType';
 import { EMAIL_REGEX } from '../../constants/regex';
 import {
   REQUIRED_MESSAGE,

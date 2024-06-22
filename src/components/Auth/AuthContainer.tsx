@@ -1,4 +1,4 @@
-import { AuthContainerProps } from '@/types/authType';
+import { AuthContainerProps } from '@/types/authFormType';
 
 const AuthContainer = ({ title, children }: AuthContainerProps) => (
   <main className="container md:w-[335px] lg:w-[400px]">

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AuthSwitchPromptProps } from '@/types/authType';
+import { AuthSwitchPromptProps } from '@/types/authFormType';
 
 const AuthSwitchPrompt = ({ href, auth }: AuthSwitchPromptProps) => {
   return (
