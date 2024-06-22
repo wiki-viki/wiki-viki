@@ -24,7 +24,7 @@ const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.aside
+        <motion.div
           className="fixed inset-0 z-10 flex items-center justify-center bg-grayscale-500/30"
           onClick={handleClickOutside}
           ref={menuRef}
@@ -33,7 +33,7 @@ const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
           exit={{ opacity: 0 }}
         >
           <HamburgerMenuButtons isLogin={isLogin} />
-        </motion.aside>
+        </motion.div>
       )}
     </AnimatePresence>
   );
