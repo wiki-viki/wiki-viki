@@ -17,6 +17,9 @@ const config: Config = {
       center: true,
     },
     extend: {
+      borderRadius: {
+        10: '10px',
+      },
       colors: {
         grayscale: {
           50: '#FFFFFF',
