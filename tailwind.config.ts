@@ -13,9 +13,6 @@ const config: Config = {
       lg: '769px',
       xl: '1280px',
     },
-    container: {
-      center: true,
-    },
     extend: {
       borderRadius: {
         10: '10px',
