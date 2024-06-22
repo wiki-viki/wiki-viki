@@ -2,13 +2,13 @@ import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
 import CommonButton from '@/components/common/CommonButton';
-import { EMAIL_REGEX } from '../../constants/regex';
+import { EMAIL_REGEX } from '../constants/regex';
 import {
   REQUIRED_MESSAGE,
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
-} from '../../constants/messages';
+} from '../constants/messages';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -87,7 +87,7 @@ const SignUpPage = () => {
             },
             validate: (value) => {
               return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
-            }
+            },
           }}
           errors={errors}
         />
