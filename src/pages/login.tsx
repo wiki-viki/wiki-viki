@@ -18,13 +18,15 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
     console.log(data);
   });
+
+  const buttonDisabled = !isValid;
 
   return (
     <AuthContainer title="로그인">
@@ -58,7 +60,7 @@ const LoginPage = () => {
           }}
           errors={errors}
         />
-        <CommonButton type="submit" variant="primary" className="mb-10 md:w-[335px] lg:w-full">
+        <CommonButton type="submit" disabled={buttonDisabled} isActive={!buttonDisabled} variant="primary" className={`mb-10 md:w-[335px] lg:w-full`}>
           로그인
         </CommonButton>
       </form>

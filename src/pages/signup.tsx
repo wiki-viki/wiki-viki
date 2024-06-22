@@ -20,13 +20,15 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
     console.log(data);
   });
+
+  const buttonDisabled = !isValid;
 
   return (
     <AuthContainer title="회원가입">
@@ -91,7 +93,7 @@ const SignUpPage = () => {
           }}
           errors={errors}
         />
-        <CommonButton type="submit" variant="primary" className="mb-10 md:w-[335px] lg:w-full">
+        <CommonButton type="submit" disabled={buttonDisabled} isActive={!buttonDisabled} variant="primary" className="mb-10 md:w-[335px] lg:w-full">
           가입하기
         </CommonButton>
       </form>
