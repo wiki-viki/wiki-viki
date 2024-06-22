@@ -5,9 +5,10 @@ import Link from 'next/link';
 interface UserMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  className: string;
 }
 
-const UserMenu = ({ isOpen, onClose }: UserMenuProps) => {
+const UserMenu = ({ isOpen, onClose, className }: UserMenuProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = (e: MouseEvent<HTMLElement>) => {
@@ -26,7 +27,7 @@ const UserMenu = ({ isOpen, onClose }: UserMenuProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-10"
+          className={`fixed inset-0 z-10 ${className}`}
           onClick={handleClickOutside}
           ref={menuRef}
           initial={{ opacity: 0 }}

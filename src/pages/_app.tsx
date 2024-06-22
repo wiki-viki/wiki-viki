@@ -1,16 +1,12 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import useIsMobile from '@/hooks/useIsMobile';
-import NavigationBar from '@/components/common/Header/NavigationBar';
-import MobileNavigationBar from '@/components/common/Header/MobileNavigationBar';
 import Wrapper from '@/components/common/Container';
+import TopNavigationBar from '@/components/common/TopNavigationBar';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const isMobile = useIsMobile();
-
   return (
     <>
-      {isMobile ? <MobileNavigationBar /> : <NavigationBar />}
+      <TopNavigationBar />
       <Wrapper>
         <Component {...pageProps} />
       </Wrapper>

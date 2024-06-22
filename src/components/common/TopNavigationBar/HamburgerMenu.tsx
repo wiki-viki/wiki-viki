@@ -6,9 +6,10 @@ interface HamburgerMenuProps {
   isOpen: boolean;
   isLogin: boolean;
   onClose: () => void;
+  className: string;
 }
 
-const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
+const HamburgerMenu = ({ isOpen, isLogin, onClose, className }: HamburgerMenuProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = (e: MouseEvent<HTMLElement>) => {
@@ -25,7 +26,7 @@ const HamburgerMenu = ({ isOpen, isLogin, onClose }: HamburgerMenuProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-10 flex items-center justify-center bg-grayscale-500/30"
+          className={`center fixed inset-0 z-10 bg-grayscale-500/30 ${className}`}
           onClick={handleClickOutside}
           ref={menuRef}
           initial={{ opacity: 0 }}
