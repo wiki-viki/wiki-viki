@@ -21,7 +21,7 @@ const AuthInputWithLabel = <T extends FieldValues>({
         id={id}
         {...props}
         {...register(name, rules)}
-        className={`h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular placeholder:text-grayscale-600 outline-none ${hasError ? 'bg-secondary-red-100' : ''}`}
+        className={`h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 outline-none placeholder:text-md-regular placeholder:text-grayscale-600 ${hasError ? 'bg-secondary-red-100' : ''}`}
       />
       {hasError && <span className="text-xs-regular text-secondary-red-200">{errorMessages}</span>}
     </div>
