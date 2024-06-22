@@ -93,9 +93,6 @@ const config: Config = {
       'xs-medium': ['12px', { lineHeight: '18px', fontWeight: '500' }],
       'xs-regular': ['12px', { lineHeight: '18px', fontWeight: '400' }],
     },
-    // boxShadow: {
-    //   custom: '0px 4px 20px 0px #0000000D',
-    // },
   },
   future: {
     hoverOnlyWhenSupported: true,
