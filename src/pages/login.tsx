@@ -14,12 +14,12 @@ const emailPattern = {
   message: INVALID_EMAIL_MESSAGE,
 };
 
-const SignInPage = () => {
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<DefaultFormData>();
+  } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
@@ -62,9 +62,9 @@ const SignInPage = () => {
           로그인
         </CommonButton>
       </form>
-      <AuthSwitchPrompt href="/signin" auth="로그인" />
+      <AuthSwitchPrompt href="/signup" auth="회원가입" />
     </AuthContainer>
   );
 };
 
-export default SignInPage;
+export default LoginPage;

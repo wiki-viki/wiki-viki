@@ -21,7 +21,7 @@ const SignUpPage = () => {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<DefaultFormData>();
+  } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
@@ -95,7 +95,7 @@ const SignUpPage = () => {
           가입하기
         </CommonButton>
       </form>
-      <AuthSwitchPrompt href="/signup" auth="로그인" />
+      <AuthSwitchPrompt href="/login" auth="로그인" />
     </AuthContainer>
   );
 };
