@@ -16,7 +16,7 @@ const Header = () => {
   const { value, handleOn, handleOff } = useBoolean();
 
   return (
-    <header className="fixed z-50 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-custom lg:h-[80px] lg:px-[80px]">
+    <header className="fixed z-50 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
       <div className="flex items-center  gap-5">
         <Link href="/">
           <Logo width={107} height={30} />
@@ -46,11 +46,16 @@ const Header = () => {
         {isLogin ? (
           <>
             <NotifyIcon width={24} height={24} className="cursor-pointer lg:size-[32px]" />
-            <ProfileIcon width={24} height={24} className="cursor-pointer lg:size-[32px]" />
+            <ProfileIcon
+              onClick={handleOn}
+              width={24}
+              height={24}
+              className="cursor-pointer lg:size-[32px]"
+            />
           </>
         ) : isMobile ? (
           <div className="cursor-pointer" onClick={handleOn}>
-            <HamburgerIcon />{' '}
+            <HamburgerIcon />
           </div>
         ) : (
           <Link
@@ -61,7 +66,7 @@ const Header = () => {
           </Link>
         )}
       </div>
-      <HamburgerMenu isOpen={value} handleClose={handleOff} />
+      <HamburgerMenu isOpen={value} onClose={handleOff} isLogin={isLogin} />
     </header>
   );
 };
