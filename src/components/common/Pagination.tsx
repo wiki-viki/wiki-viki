@@ -60,28 +60,27 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
   return (
     <div className="mx-auto my-0 flex items-center gap-2.5">
       <button
-        className={`flex size-11 items-center justify-center rounded-10 bg-white drop-shadow-md hover:drop-shadow-xl sm:size-10 ${pageBtnDisabled.prevPagesBtn && 'text-gray-200 hover:drop-shadow-md'}`}
+        className={`center size-11 rounded-10 bg-white  drop-shadow-md sm:size-10 ${pageBtnDisabled.prevPagesBtn ? ' text-gray-200 hover:drop-shadow-md' : `active:page-btn-active hover:drop-shadow-xl`}`}
         disabled={pageBtnDisabled.prevPagesBtn}
         onClick={setPrevPageGroup}
       >
         &lt;
       </button>
-      {twoDimensionalPageArr[pageGroup].map((page) => {
+      {twoDimensionalPageArr[pageGroup].map((pageNum) => {
         return (
           <button
-            className="flex size-11 items-center justify-center rounded-10 bg-white drop-shadow-md hover:drop-shadow-xl sm:size-10
-            "
-            key={page}
+            className={`center active:page-btn-active size-11 rounded-10 drop-shadow-md hover:drop-shadow-xl sm:size-10 ${page === pageNum ? `page-btn-active bg-primary-green-200 text-white` : `bg-white`}`}
+            key={pageNum}
             onClick={() => {
-              return handleClick(page);
+              return handleClick(pageNum);
             }}
           >
-            {page}
+            {pageNum}
           </button>
         );
       })}
       <button
-        className={`flex size-11 items-center justify-center rounded-10 bg-white drop-shadow-md hover:drop-shadow-xl sm:size-10 ${pageBtnDisabled.nextPagesBtn && 'text-gray-200 hover:drop-shadow-md'}`}
+        className={`center  size-11 rounded-10 bg-white drop-shadow-md  sm:size-10 ${pageBtnDisabled.nextPagesBtn ? 'text-gray-200 hover:drop-shadow-md' : 'active:page-btn-active hover:drop-shadow-xl'}`}
         disabled={pageBtnDisabled.nextPagesBtn}
         onClick={setNextPageGroup}
       >
