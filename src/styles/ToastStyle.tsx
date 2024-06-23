@@ -13,6 +13,7 @@ export const StyledToastContainer = styled(ToastContainer)<ToastStyleProps>`
     font-size: 14px;
     line-height: 24px;
     width: 100%;
+    margin: 10px;
   }
   .Toastify__toast--info {
     background-color: #f7f7fa;
