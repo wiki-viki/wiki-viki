@@ -1,0 +1,53 @@
+{
+  "totalCount": 0,
+  "list": [
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 1
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 2
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 3
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 4
+    }
+  ]
+}
