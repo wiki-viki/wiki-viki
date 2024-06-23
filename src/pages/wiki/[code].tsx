@@ -8,7 +8,14 @@ const noContentClassName = `text-lg-regular text-grayscale-400`;
 const UserWikiPage = () => {
   return (
     <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col md:px-14 xl:relative">
-      <h1 className="mb-10 mr-auto text-3_5xl-bold text-grayscale-500">{mockData.name}</h1>
+      <div className="mb-10 flex w-full items-center justify-between">
+        <h1 className="text-3_5xl-bold text-grayscale-500">{mockData.name}</h1>
+        {mockData.content && (
+          <CommonButton variant="primary" className="xl:mr-[385px]">
+            위키 참여하기
+          </CommonButton>
+        )}
+      </div>
 
       <UserProfile {...mockData} />
 
