@@ -15,7 +15,7 @@ const CommonButton = ({
   ...props
 }: CommonButtonProps) => {
   // 버튼 기본 스타일링
-  const baseClassName = `h-11 rounded-lg text-md-semibold px-5 py-2.5 max-w-96`;
+  const baseClassName = `h-11 rounded-lg text-md-semibold px-5 py-2.5 max-w-[400px]`;
   let variantClassName = '';
 
   switch (variant) {

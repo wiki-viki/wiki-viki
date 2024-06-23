@@ -1,30 +1,32 @@
 import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
-import { EMAIL_REGEX } from '../../constants/regex';
+import CommonButton from '@/components/common/CommonButton';
+import { EMAIL_REGEX } from '../constants/regex';
 import {
   REQUIRED_MESSAGE,
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
-} from '../../constants/messages';
-
+} from '../constants/messages';
 
 const emailPattern = {
   value: EMAIL_REGEX,
   message: INVALID_EMAIL_MESSAGE,
 };
 
-const SignInPage = () => {
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<DefaultFormData>();
+    formState: { errors, isValid },
+  } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
     console.log(data);
   });
+
+  const buttonDisabled = !isValid;
 
   return (
     <AuthContainer title="로그인">
@@ -58,11 +60,13 @@ const SignInPage = () => {
           }}
           errors={errors}
         />
-        <button type="submit">버튼</button>
+        <CommonButton type="submit" disabled={buttonDisabled} isActive={!buttonDisabled} variant="primary" className={`mb-10 md:w-[335px] lg:w-full`}>
+          로그인
+        </CommonButton>
       </form>
-      <AuthSwitchPrompt href="/signin" auth="로그인" />
+      <AuthSwitchPrompt href="/signup" auth="회원가입" />
     </AuthContainer>
   );
 };
 
-export default SignInPage;
+export default LoginPage;
