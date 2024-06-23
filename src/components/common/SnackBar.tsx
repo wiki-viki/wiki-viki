@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import NotificationIcon from '@/public/svg/notification.svg';
-import CheckIcon from '@/public/svg/check.svg';
-import ErrorIcon from '@/public/svg/error.svg';
+import NotificationIcon from '@/../public/svg/notification.svg';
+import CheckIcon from '@/../public/svg/check.svg';
+import ErrorIcon from '@/../public/svg/error.svg';
 
 interface SnackBarProps {
   type: 'notification' | 'check' | 'error';

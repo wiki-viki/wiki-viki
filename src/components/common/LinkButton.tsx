@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import LinkIcon from '@/public/svg/link.svg';
+import LinkIcon from '@/../public/svg/link.svg';
 import { isValidUrl } from '@/utils/urlValidation';
 
 interface LinkButtonProps {
