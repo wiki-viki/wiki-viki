@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LinkButton from '@/components/common/LinkButton';
-import SnackBar from '@/components/common/SnackBar';
+import ToastSelect from '@/components/common/ToastSelect';
+import 'react-toastify/dist/ReactToastify.css';
+import { StyledToastContainer } from '@/styles/ToastStyle';
 
 const url = 'https://www.youtube.com/';
 
 const Test3 = () => {
+  const [type, setType] = useState('check');
+
+  const handleTypeChange = (e: string) => {
+    setType(e);
+  };
+
+  const handleShowToast = () => {
+    ToastSelect({ type });
+  };
+
   return (
     <>
       <div className=" m-5">
@@ -17,14 +29,33 @@ const Test3 = () => {
         <LinkButton url="adsfasdfasfd" />
       </div>
 
+      <div> 현재 type : {type}</div>
+
       <div className=" m-5">
-        <SnackBar type="notification" />
-      </div>
-      <div className=" m-5">
-        <SnackBar type="check" />
-      </div>
-      <div className=" m-5">
-        <SnackBar type="error" />
+        <button
+          onClick={() => {
+            handleTypeChange('notification');
+          }}
+        >
+          Notification
+        </button>
+        <button
+          onClick={() => {
+            handleTypeChange('check');
+          }}
+        >
+          check
+        </button>
+        <button
+          onClick={() => {
+            handleTypeChange('error');
+          }}
+        >
+          Error
+        </button>
+
+        <button onClick={handleShowToast}>Click me</button>
+        <StyledToastContainer limit={1} />
       </div>
     </>
   );
