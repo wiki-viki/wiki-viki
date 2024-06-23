@@ -16,7 +16,7 @@ const SnackBar = ({ type }: SnackBarProps) => {
       icon = <NotificationIcon />;
       text = '앞 사람의 편집이 끝나면 위키 참여가 가능합니다.';
       bgColor = 'bg-grayscale-100';
-      textColor = 'text-primary-blue-200';
+      textColor = 'text-grayscale-500';
       break;
     case 'check':
       icon = <CheckIcon />;
