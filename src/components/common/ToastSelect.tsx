@@ -1,9 +1,10 @@
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
 import { toastOptions } from '@/types/toastOptions';
 import NotificationIcon from '@/../public/svg/notification.svg';
-import CheckIcon from '@/../public/svg/check.svg';
 import ErrorIcon from '@/../public/svg/error.svg';
+import CheckLottie from '@/../public/lottie/check.json';
 
 interface ToastProps {
   type: string;
@@ -14,7 +15,7 @@ const ToastSelect = ({ type }: ToastProps) => {
     case 'check':
       toast.success('내 위키 링크가 복사되었습니다.', {
         ...toastOptions,
-        icon: <CheckIcon />,
+        icon: <Lottie animationData={CheckLottie} />,
       });
       break;
     case 'error':
