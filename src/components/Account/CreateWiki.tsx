@@ -4,6 +4,7 @@ import {
   WIKI_QUESTION_MIN_lENGTH_MESSAGE,
   WIKI_ANSWER_MIN_lENGTH_MESSAGE,
 } from '@/constants/messages';
+import { questions } from '@/constants/questions';
 import { Label, Input } from '../common/Form';
 import CommonButton from '../common/CommonButton';
 
@@ -11,6 +12,7 @@ const CreateWiki = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm({ mode: 'onBlur' });
 
@@ -21,6 +23,12 @@ const CreateWiki = () => {
 
   const buttonDisabled = !isValid;
 
+  const handleRandomQuestion = () => {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomQuestion = questions[randomIndex];
+    setValue('question', randomQuestion);
+  };
+
   return (
     <section>
       <form onSubmit={onSubmit}>
@@ -28,8 +36,9 @@ const CreateWiki = () => {
         <div className="mb-4 flex flex-col gap-2">
           <Input
             id="question"
+            type="text"
             placeholder="질문을 생성해주세요"
-            className="input"
+            className={`input ${errors.question ? 'bg-secondary-red-100' : ''}`}
             {...register('question', {
               required: REQUIRED_MESSAGE,
               minLength: {
@@ -38,11 +47,14 @@ const CreateWiki = () => {
               },
             })}
           />
-          {errors.question && <span className="errorMessage">{errors?.question.message as string}</span>}
+          {errors.question && (
+            <span className="errorMessage">{errors?.question.message as string}</span>
+          )}
           <Input
             id="answer"
+            type="text"
             placeholder="답을 입력해주세요"
-            className="input"
+            className={`input ${errors.answer ? 'bg-secondary-red-100' : ''}`}
             {...register('answer', {
               required: REQUIRED_MESSAGE,
               minLength: {
@@ -51,9 +63,19 @@ const CreateWiki = () => {
               },
             })}
           />
-          {errors.answer && <span className="errorMessage">{errors?.answer.message as string}</span>}
+          {errors.answer && (
+            <span className="errorMessage">{errors?.answer.message as string}</span>
+          )}
         </div>
         <div className="flex justify-end">
+          <CommonButton
+            type="button"
+            variant="primary"
+            className="mr-3 bg-secondary-yellow-100"
+            onClick={handleRandomQuestion}
+          >
+            질문 랜덤 생성
+          </CommonButton>
           <CommonButton
             type="submit"
             disabled={buttonDisabled}

@@ -1,4 +1,4 @@
-import { Container, ChangePassWord, CreateWiki } from "@/components/Account";
+import { Container, ChangePassWord, CreateWiki } from '@/components/Account';
 
 const MyPage = () => {
   return (
