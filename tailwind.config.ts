@@ -51,6 +51,9 @@ const config: Config = {
       // 4xl
       '4xl': ['40px', { lineHeight: '42px', fontWeight: 'bold' }],
 
+      // 3_5xl
+      '3_5xl-bold': ['36px', { lineHeight: '46px', fontWeight: 'bold' }],
+
       // 3xl
       '3xl-bold': ['32px', { lineHeight: '46px', fontWeight: 'bold' }],
 
