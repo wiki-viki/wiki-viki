@@ -58,7 +58,7 @@ const TopNavigationBar = () => {
           </>
         )}
       </div>
-      <UserMenu className="hidden md:block" isOpen={value} onClose={handleOff} />
+      {isLogin && <UserMenu className="hidden md:block" isOpen={value} onClose={handleOff} />}
       <HamburgerMenu className="md:hidden" isOpen={value} onClose={handleOff} isLogin={isLogin} />
     </header>
   );

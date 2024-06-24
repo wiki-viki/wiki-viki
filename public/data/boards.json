@@ -4,7 +4,7 @@
     {
       "updatedAt": "2024-06-23T13:46:22.629Z",
       "createdAt": "2024-06-23T13:46:22.629Z",
-      "likeCount": 0,
+      "likeCount": 100,
       "writer": {
         "name": "가나다라마바사아자차카",
         "id": 1
@@ -16,7 +16,7 @@
     {
       "updatedAt": "2024-06-23T13:46:22.629Z",
       "createdAt": "2024-06-23T13:46:22.629Z",
-      "likeCount": 0,
+      "likeCount": 50,
       "writer": {
         "name": "꽁꽁 얼어붙은 한강위로 고양이가 걸어다닙니다.",
         "id": 1
@@ -28,7 +28,7 @@
     {
       "updatedAt": "2024-06-23T13:46:22.629Z",
       "createdAt": "2024-06-23T13:46:22.629Z",
-      "likeCount": 0,
+      "likeCount": 10,
       "writer": {
         "name": "홍길동",
         "id": 1
@@ -40,7 +40,7 @@
     {
       "updatedAt": "2024-06-23T13:46:22.629Z",
       "createdAt": "2024-06-23T13:46:22.629Z",
-      "likeCount": 0,
+      "likeCount": 5,
       "writer": {
         "name": "이름",
         "id": 1
@@ -132,6 +132,42 @@
       "image": null,
       "title": "게시글 제목입니다.",
       "id": 11
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 12
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 14
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 15
     }
   ]
 }

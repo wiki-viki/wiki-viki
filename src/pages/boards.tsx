@@ -34,7 +34,7 @@ const Boards = () => {
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
-      <div className="mb-[63px] flex items-center justify-between">
+      <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
         <h2 className="text-2xl-bold">베스트 게시글</h2>
         <Link href="/addboard">
           <CommonButton variant="primary">게시물 등록하기</CommonButton>
