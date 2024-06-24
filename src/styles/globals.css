@@ -28,4 +28,16 @@
   .centerOfScreen {
     @apply flex min-h-screen items-center justify-center
   }
+
+  .label {
+    @apply text-md-regular text-grayscale-500
+  }
+
+  .input {
+    @apply h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular
+  }
+
+  .errorMessage {
+    @apply text-xs-regular text-secondary-red-200
+  }
 }
