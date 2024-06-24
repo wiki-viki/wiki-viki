@@ -97,6 +97,9 @@ const config: Config = {
       'xs-regular': ['12px', { lineHeight: '18px', fontWeight: '400' }],
     },
   },
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   plugins: [],
 };
 export default config;
