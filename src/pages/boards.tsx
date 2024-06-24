@@ -1,14 +1,16 @@
 import React, { KeyboardEvent, useState } from 'react';
 import Link from 'next/link';
-import BoardCard from '@/components/Boards/BoardCard';
-import BoardCarousel from '@/components/Boards/BoardCarousel';
+import {
+  BoardCard,
+  BoardCarousel,
+  BoardList,
+  DropDown,
+  MobileBoardList,
+} from '@/components/Boards';
 import CommonButton from '@/components/common/CommonButton';
-import BoardList from '@/components/Boards/BoardList';
 import Pagination from '@/components/common/Pagination';
-import DropDown from '@/components/Boards/DropDown';
 import { type OrderType } from '@/constants/orderOption';
 import SearchBar from '@/components/common/SearchBar';
-import MobileBoardList from '@/components/Boards/MobileBoardList';
 import testData from '../../public/data/boards.json';
 
 const PAGE_SIZE = 10;
