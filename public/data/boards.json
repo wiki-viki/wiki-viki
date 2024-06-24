@@ -6,11 +6,11 @@
       "createdAt": "2024-06-23T13:46:22.629Z",
       "likeCount": 0,
       "writer": {
-        "name": "이름",
+        "name": "가나다라마바사아자차카",
         "id": 1
       },
       "image": null,
-      "title": "안녕하세요 저는 긴 제목을 가지고있습니다.",
+      "title": "안녕하세요!! 저는 긴 제목을 가지고 있는 게시물이랍니다~!!",
       "id": 1
     },
     {
@@ -18,7 +18,7 @@
       "createdAt": "2024-06-23T13:46:22.629Z",
       "likeCount": 0,
       "writer": {
-        "name": "이름",
+        "name": "꽁꽁 얼어붙은 한강위로 고양이가 걸어다닙니다.",
         "id": 1
       },
       "image": null,
@@ -30,7 +30,7 @@
       "createdAt": "2024-06-23T13:46:22.629Z",
       "likeCount": 0,
       "writer": {
-        "name": "이름",
+        "name": "홍길동",
         "id": 1
       },
       "image": null,

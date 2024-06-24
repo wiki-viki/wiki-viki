@@ -8,6 +8,7 @@ import Pagination from '@/components/common/Pagination';
 import DropDown from '@/components/boards/DropDown';
 import { type OrderType } from '@/constants/orderOption';
 import SearchBar from '@/components/common/SearchBar';
+import MobileBoardList from '@/components/boards/MobileBoardList';
 import testData from '../../public/data/boards.json';
 
 const PAGE_SIZE = 10;
@@ -68,7 +69,14 @@ const Boards = () => {
             />
           </div>
         </div>
-        <BoardList boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)} />
+        <BoardList
+          className="hidden md:table"
+          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
+        />
+        <MobileBoardList
+          className="md:hidden"
+          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
+        />
         <div className="center my-[60px]">
           <Pagination
             totalCount={testData.totalCount}

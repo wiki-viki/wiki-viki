@@ -20,20 +20,25 @@ const BoardCard = ({ board }: BoardCardProps) => {
         <Image
           alt="게시물 이미지"
           src={board.image ? board.image : '/image/empty-image.png'}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-t-10"
+          fill
+          priority
+          className="rounded-t-10 object-cover"
         />
       </div>
       <Link href={`/board`}>
         <div className="mx-[19px] mt-[18px] flex flex-col gap-[6px]">
-          <h3 className="truncate text-2lg-semibold text-grayscale-500">{board.title}</h3>
-          <div className="flex justify-between text-md-regular text-grayscale-400">
+          <h3 className="truncate text-lg-semibold text-grayscale-500 md:text-2lg-semibold">
+            {board.title}
+          </h3>
+          <div className="flex justify-between text-xs-regular text-grayscale-400 md:text-md-regular">
             <div className="flex gap-[10px]">
-              <span>{board.writer.name}</span>
+              <span className="max-w-[70px] truncate md:max-w-[50px]">{board.writer.name}</span>
               <span>{dateToString(board.createdAt)}</span>
             </div>
-            <span>{board.likeCount}</span>
+            <span>
+              <span className="mr-1 text-primary-green-200">❤︎</span>
+              {board.likeCount}
+            </span>
           </div>
         </div>
       </Link>
