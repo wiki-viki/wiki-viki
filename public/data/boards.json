@@ -1,5 +1,5 @@
 {
-  "totalCount": 0,
+  "totalCount": 11,
   "list": [
     {
       "updatedAt": "2024-06-23T13:46:22.629Z",
@@ -48,6 +48,90 @@
       "image": null,
       "title": "게시글 제목입니다.",
       "id": 4
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 5
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 6
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 7
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 8
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 9
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 10
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 11
     }
   ]
 }
