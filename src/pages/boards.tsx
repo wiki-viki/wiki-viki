@@ -6,7 +6,7 @@ import {
   BoardList,
   DropDown,
   MobileBoardList,
-} from '@/components/Boards';
+} from '@/components/FreeBoards';
 import CommonButton from '@/components/common/CommonButton';
 import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
