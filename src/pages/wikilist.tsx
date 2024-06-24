@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import testData from '@/../public/data/wikilist.json';
-import UserCard from '@/components/WikiList/UserCard';
-import NoSearch from '@/components/WikiList/NoSearch';
-import SearchLabel from '@/components/WikiList/SearchLabel';
+import { NoSearch, SearchLabel, UserCard } from '@/components/WikiList';
 
 const PAGE_SIZE = 3;
 
