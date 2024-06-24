@@ -42,7 +42,7 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
           page < twoDimensionalPageArr[twoDimensionalPageArr.length - 1][0] ? false : true,
       };
     });
-  }, [page, twoDimensionalPageArr]);
+  }, [pageGroup, twoDimensionalPageArr.length]);
 
   const setPrevPageGroup = () => {
     setPageGroup((prevState) => {

@@ -1,0 +1,173 @@
+{
+  "totalCount": 11,
+  "list": [
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 100,
+      "writer": {
+        "name": "가나다라마바사아자차카",
+        "id": 1
+      },
+      "image": null,
+      "title": "안녕하세요!! 저는 긴 제목을 가지고 있는 게시물이랍니다~!!",
+      "id": 1
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 50,
+      "writer": {
+        "name": "꽁꽁 얼어붙은 한강위로 고양이가 걸어다닙니다.",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 2
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 10,
+      "writer": {
+        "name": "홍길동",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 3
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 5,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 4
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 5
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 6
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 7
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 8
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 9
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 10
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 11
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 12
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 14
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "createdAt": "2024-06-23T13:46:22.629Z",
+      "likeCount": 0,
+      "writer": {
+        "name": "이름",
+        "id": 1
+      },
+      "image": null,
+      "title": "게시글 제목입니다.",
+      "id": 15
+    }
+  ]
+}
