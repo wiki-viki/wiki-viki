@@ -27,7 +27,7 @@ const BoardCard = ({ board }: BoardCardProps) => {
       </div>
       <Link href={`/board`}>
         <div className="mx-[19px] mt-[18px] flex flex-col gap-[6px]">
-          <h3 className="text-2lg-semibold text-grayscale-500">{board.title}</h3>
+          <h3 className="truncate text-2lg-semibold text-grayscale-500">{board.title}</h3>
           <div className="flex justify-between text-md-regular text-grayscale-400">
             <div className="flex gap-[10px]">
               <span>{board.writer.name}</span>

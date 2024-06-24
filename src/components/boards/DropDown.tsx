@@ -27,7 +27,7 @@ const DropDown = ({ options, handleClickItem }: DropdownProps) => {
         onClick={() => {
           setIsVisible(!isVisible);
         }}
-        className="center h-[45px] w-[145px] justify-around rounded-md bg-grayscale-100 text-md-regular text-grayscale-400 hover:bg-grayscale-200"
+        className="center h-[45px] w-full justify-between rounded-md bg-grayscale-100 px-6 text-md-regular text-grayscale-400 hover:bg-grayscale-200 md:w-[110px] md:justify-around md:px-0 lg:w-[145px]"
       >
         <span>{ORDER_TYPE_DICT[labelName]}</span>
         <motion.span
@@ -45,7 +45,7 @@ const DropDown = ({ options, handleClickItem }: DropdownProps) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 top-[120%] z-10 flex w-[145px] flex-col items-center justify-around rounded-md border border-gray-100 bg-white text-center shadow-md"
+            className="absolute right-0 top-[120%] z-10 flex w-full flex-col items-center justify-around rounded-md border border-gray-100 bg-white text-center shadow-md md:w-[110px] lg:w-[145px]"
           >
             {options.map((option, index) => {
               return (

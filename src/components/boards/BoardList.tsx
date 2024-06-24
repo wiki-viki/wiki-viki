@@ -28,11 +28,11 @@ const BoardList = ({ boardList }: BoardListProps) => {
               className="border-y border-grayscale-200 text-lg-regular text-grayscale-600"
             >
               <td className="py-3">{board.id}</td>
-              <td>
+              <td className="max-w-[160px] px-1">
                 <Link href={`/board/${board.id}`}>
                   <motion.p
                     whileHover={{ scale: 1.1 }}
-                    className="hover:text-primary-green-200 hover:underline"
+                    className="truncate hover:text-primary-green-200 hover:underline"
                   >
                     {board.title}
                   </motion.p>

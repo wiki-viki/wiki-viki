@@ -18,7 +18,7 @@ const TopNavigationBar = () => {
   const activeLinkClassNames = 'font-bold text-primary-green-300';
 
   return (
-    <header className="fixed flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
+    <header className="fixed z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
       <div className="flex items-center gap-5">
         <Link href="/">
           <Logo width={107} height={30} />
