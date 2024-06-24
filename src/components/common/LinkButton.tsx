@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import LinkIcon from '@/../public/svg/link.svg';
 import { isValidUrl } from '@/utils/urlValidation';
+import ToastSelect from './ToastSelect';
 
 interface LinkButtonProps {
   url: string;
@@ -11,6 +12,14 @@ const LinkContainer = 'inline-flex items-center gap-2 rounded-10 px-3 py-2 sm:h-
 const LinkText = 'text-md-regular sm:text-xs-regular';
 
 const LinkButton = ({ url }: LinkButtonProps) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    setIsCopied(true);
+    ToastSelect({ type: 'check' });
+  };
+
   if (!isValidUrl(url)) {
     return (
       <div className={`${LinkContainer} bg-secondary-red-100`}>
@@ -20,16 +29,12 @@ const LinkButton = ({ url }: LinkButtonProps) => {
   }
 
   return (
-    <div className={`${LinkContainer} bg-primary-green-100`}>
+    <div
+      className={`${LinkContainer} cursor-pointer bg-primary-green-100`}
+      onClick={handleCopyToClipboard}
+    >
       <LinkIcon />
-      <Link
-        className={`${LinkText} text-primary-green-200 `}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {url}
-      </Link>
+      <div className={`${LinkText} text-primary-green-200 `}>{url}</div>
     </div>
   );
 };
