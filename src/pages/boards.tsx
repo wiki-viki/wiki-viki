@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import Link from 'next/link';
 import BoardCard from '@/components/boards/BoardCard';
 import BoardCarousel from '@/components/boards/BoardCarousel';
@@ -27,16 +27,25 @@ const Boards = () => {
     setOrder(value);
   };
 
-  const handleSearchItem = (value: string) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmitKeyword();
+    }
+  };
+
+  const handleSubmitKeyword = () => {
     console.log(keyword);
-    setKeyword(value);
   };
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
       <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
         <h2 className="text-2xl-bold">베스트 게시글</h2>
-        <Link href="/addboard">
+        <Link href="/addboard" rel="preload">
           <CommonButton variant="primary">게시물 등록하기</CommonButton>
         </Link>
       </div>
@@ -56,11 +65,20 @@ const Boards = () => {
         <div className="mt-[40px] flex w-full flex-col justify-between gap-4 md:mt-[60px] md:flex-row lg:gap-[20px]">
           <div className="flex w-full justify-between gap-4 lg:gap-[20px]">
             <div className="flex-1">
-              <SearchBar placeholder="제목을 검색해주세요" onSearchItem={handleSearchItem} />
+              <SearchBar
+                placeholder="제목을 검색해주세요"
+                onSearchItem={(value) => {
+                  setKeyword(value);
+                }}
+                isDebounce={false}
+                onKeyDown={(e) => {
+                  handleKeyDown(e);
+                }}
+              />
             </div>
-            <Link href="/addboard">
-              <CommonButton variant="primary">게시물 등록</CommonButton>
-            </Link>
+            <CommonButton variant="primary" onClick={handleSubmitKeyword}>
+              검색
+            </CommonButton>
           </div>
           <div>
             <DropDown

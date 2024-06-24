@@ -30,7 +30,7 @@ const BoardList = ({ boardList, className }: BoardListProps) => {
             >
               <td className="py-3">{board.id}</td>
               <td className="max-w-[140px] px-1">
-                <Link href={`/board/${board.id}`}>
+                <Link href={`/board/${board.id}`} rel="preload">
                   <motion.h3
                     whileHover={{ scale: 1.1 }}
                     className="truncate hover:text-primary-green-200 hover:underline"

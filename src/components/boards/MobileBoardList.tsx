@@ -14,7 +14,7 @@ const MobileBoardList = ({ boardList, className }: MobileBoardListProps) => {
       {boardList.map((board) => {
         return (
           <article key={board.id} className="border-b px-2 py-4 hover:bg-primary-green-100">
-            <Link href={`/board/${board.id}`}>
+            <Link href={`/board/${board.id}`} rel="preload">
               <h3 className="truncate text-lg-regular text-grayscale-600 hover:text-primary-green-200 hover:underline">
                 {board.title}
               </h3>

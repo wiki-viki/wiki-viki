@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { type boardType } from '@/types/board';
 import dateToString from '@/utils/dateToString';
+import EmptyImage from '../../../public/image/empty-image.png';
 
 interface BoardCardProps {
   board: boardType;
@@ -19,13 +20,13 @@ const BoardCard = ({ board }: BoardCardProps) => {
       <div className="relative h-3/5 w-full">
         <Image
           alt="게시물 이미지"
-          src={board.image ? board.image : '/image/empty-image.png'}
+          src={board.image ? board.image : EmptyImage}
           fill
           priority
-          className="rounded-t-10 object-cover"
+          className="absolute rounded-t-10 object-cover"
         />
       </div>
-      <Link href={`/board`}>
+      <Link href={`/board`} rel="preload">
         <div className="mx-[19px] mt-[18px] flex flex-col gap-[6px]">
           <h3 className="truncate text-lg-semibold text-grayscale-500 md:text-2lg-semibold">
             {board.title}
