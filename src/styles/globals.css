@@ -34,7 +34,11 @@
   }
 
   .input {
-    @apply h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular
+    @apply h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular;
+  }
+  
+  .input:focus {
+    @apply outline-none ring-2 ring-primary-green-200 bg-white
   }
 
   .errorMessage {
