@@ -37,7 +37,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   ];
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleProfileExtend = () => {
+  const handleProfileExpand = () => {
     setIsExpanded((prev) => {
       return !prev;
     });
@@ -67,7 +67,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </div>
       </div>
 
-      <div className="flex cursor-pointer justify-center" onClick={handleProfileExtend}>
+      <div className="flex cursor-pointer justify-center" onClick={handleProfileExpand}>
         <p className=" text-md-regular xl:hidden">버튼이다</p>
       </div>
     </section>
