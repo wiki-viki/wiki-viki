@@ -31,8 +31,8 @@ const ChangePassWord = () => {
             id="currentPassWord"
             type="password"
             placeholder="기존 비밀번호"
-            className="input"
-            {...register("currentPassWord", {
+            className={`input ${errors.currentPassWord ? 'bg-secondary-red-100' : ''}`}
+            {...register('currentPassWord', {
               required: REQUIRED_MESSAGE,
               minLength: {
                 value: 8,
@@ -40,13 +40,15 @@ const ChangePassWord = () => {
               },
             })}
           />
-          {errors.currentPassWord && <span className="errorMessage">{errors.currentPassWord.message as string}</span>}
+          {errors.currentPassWord && (
+            <span className="errorMessage">{errors.currentPassWord.message as string}</span>
+          )}
           <Input
             id="newPassWord"
             type="password"
             placeholder="새 비밀번호"
-            className="input"
-            {...register("newPassWord", {
+            className={`input ${errors.newPassWord ? 'bg-secondary-red-100' : ''}`}
+            {...register('newPassWord', {
               required: REQUIRED_MESSAGE,
               minLength: {
                 value: 8,
@@ -54,13 +56,15 @@ const ChangePassWord = () => {
               },
             })}
           />
-          {errors.newPassWord && <span className="errorMessage">{errors.newPassWord.message as string}</span>}
+          {errors.newPassWord && (
+            <span className="errorMessage">{errors.newPassWord.message as string}</span>
+          )}
           <Input
             id="confirmPassword"
             type="password"
             placeholder="새 비밀번호 확인"
             className="input"
-            {...register("confirmPassword", {
+            {...register('confirmPassword', {
               required: REQUIRED_MESSAGE,
               minLength: {
                 value: 8,
@@ -71,7 +75,9 @@ const ChangePassWord = () => {
               },
             })}
           />
-          {errors.confirmPassword && <span className="errorMessage">{errors.confirmPassword.message as string}</span>}
+          {errors.confirmPassword && (
+            <span className="errorMessage">{errors.confirmPassword.message as string}</span>
+          )}
         </div>
         <div className="flex justify-end">
           <CommonButton
