@@ -1,4 +1,5 @@
 .carousel :global .slick-slide > div {
   margin-inline: 6px;
-  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-bottom: 20px;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { type boardType } from '@/types/board';
 import dateToString from '@/utils/dateToString';
 
@@ -10,7 +11,11 @@ interface BoardCardProps {
 
 const BoardCard = ({ board }: BoardCardProps) => {
   return (
-    <article className="relative h-[220px] w-full rounded-10 shadow-lg">
+    <motion.article
+      className="relative h-[220px] w-full rounded-10 shadow-lg"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
       <div className="relative h-3/5 w-full">
         <Image
           alt="게시물 이미지"
@@ -32,7 +37,7 @@ const BoardCard = ({ board }: BoardCardProps) => {
           </div>
         </div>
       </Link>
-    </article>
+    </motion.article>
   );
 };
 

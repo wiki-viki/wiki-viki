@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { boardType } from '@/types/board';
 import dateToString from '@/utils/dateToString';
 
@@ -26,7 +28,16 @@ const BoardList = ({ boardList }: BoardListProps) => {
               className="border-y border-grayscale-200 text-lg-regular text-grayscale-600"
             >
               <td className="py-3">{board.id}</td>
-              <td>{board.title}</td>
+              <td>
+                <Link href={`/board/${board.id}`}>
+                  <motion.p
+                    whileHover={{ scale: 1.1 }}
+                    className="hover:text-primary-green-200 hover:underline"
+                  >
+                    {board.title}
+                  </motion.p>
+                </Link>
+              </td>
               <td>{board.writer.name}</td>
               <td>{board.likeCount}</td>
               <td>{dateToString(board.createdAt)}</td>

@@ -19,8 +19,9 @@ const Boards = () => {
     setPage(value);
   };
 
-  const handleClickItem = (sort: OrderType) => {
-    setOrder(sort);
+  const handleClickItem = (value: OrderType) => {
+    console.log(order);
+    setOrder(value);
   };
 
   return (
@@ -47,7 +48,9 @@ const Boards = () => {
       </section>
       <section>
         <div className="mt-5 flex">
-          <CommonButton variant="primary">게시물 등록</CommonButton>
+          <Link href="/addboard">
+            <CommonButton variant="primary">게시물 등록</CommonButton>
+          </Link>
           <DropDown
             options={[{ label: 'recent' }, { label: 'like' }]}
             handleClickItem={handleClickItem}
