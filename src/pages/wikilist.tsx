@@ -1,8 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import testData from '@/../public/data/wikilist.json';
 import UserCard from '@/components/WikiList/UserCard';
+import NoSearch from '@/components/WikiList/NoSearch';
+import SearchLabel from '@/components/WikiList/SearchLabel';
 
 const PAGE_SIZE = 3;
 
@@ -38,12 +41,7 @@ const WikiListPage = () => {
       <section>
         {filteredList.length > 0 ? (
           <>
-            <div
-              className={`mt-4 text-md-regular text-grayscale-400 ${keyword ? '' : 'invisible'}`}
-            >
-              "{keyword}" 님을 총 <span className=" text-primary-green-200">{totalCount}명</span>{' '}
-              찾았습니다.
-            </div>
+            <SearchLabel keyword={keyword} totalCount={totalCount} />
             <UserCard cardList={filteredList.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)} />
             <div className="center my-[60px]">
               <Pagination
@@ -55,7 +53,9 @@ const WikiListPage = () => {
             </div>
           </>
         ) : (
-          <div className="my-[60px] text-center">검색 결과가 없습니다.</div>
+          <div className="mt-60 sm:mt-40">
+            <NoSearch keyword={keyword} />
+          </div>
         )}
       </section>
     </main>
