@@ -1,6 +1,6 @@
 //eslint-disable-next-line
-const URLREGEX = /^(https?|ftp):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i;
+import { URL_REGEX } from '@/constants/regex';
 
 export const isValidUrl = (url: string): boolean => {
-  return URLREGEX.test(url);
+  return URL_REGEX.test(url);
 };
