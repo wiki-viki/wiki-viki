@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import LinkIcon from '@/../public/svg/link.svg';
 import { isValidUrl } from '@/utils/urlValidation';
 import ToastSelect from './ToastSelect';
@@ -12,11 +11,8 @@ const LinkContainer = 'inline-flex items-center gap-2 rounded-10 px-3 py-2 sm:h-
 const LinkText = 'text-md-regular sm:text-xs-regular';
 
 const LinkButton = ({ url }: LinkButtonProps) => {
-  const [isCopied, setIsCopied] = useState(false);
-
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(url);
-    setIsCopied(true);
     ToastSelect({ type: 'check' });
   };
 
