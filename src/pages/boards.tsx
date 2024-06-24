@@ -5,15 +5,22 @@ import BoardCarousel from '@/components/boards/BoardCarousel';
 import CommonButton from '@/components/common/CommonButton';
 import BoardList from '@/components/boards/BoardList';
 import Pagination from '@/components/common/Pagination';
+import DropDown from '@/components/boards/DropDown';
+import { type OrderType } from '@/constants/orderOption';
 import testData from '../../public/data/boards.json';
 
 const PAGE_SIZE = 10;
 
 const Boards = () => {
   const [page, setPage] = useState(1);
+  const [order, setOrder] = useState<OrderType>('recent');
 
   const handlePage = (value: number) => {
     setPage(value);
+  };
+
+  const handleClickItem = (sort: OrderType) => {
+    setOrder(sort);
   };
 
   return (
@@ -39,7 +46,13 @@ const Boards = () => {
         </BoardCarousel>
       </section>
       <section>
-        <div></div>
+        <div className="mt-5 flex">
+          <CommonButton variant="primary">게시물 등록</CommonButton>
+          <DropDown
+            options={[{ label: 'recent' }, { label: 'like' }]}
+            handleClickItem={handleClickItem}
+          />
+        </div>
         <BoardList boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)} />
         <div className="center my-[60px]">
           <Pagination
