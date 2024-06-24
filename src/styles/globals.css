@@ -32,4 +32,8 @@
   .centerOfScreen {
     @apply flex min-h-screen items-center justify-center;
   }
+
+  .card {
+    @apply relative mt-6 h-[142px] min-w-[600px] rounded-10 p-6 px-9 shadow sm:h-[180px] sm:min-w-[400px];
+  }
 }
