@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 
 interface PaginationProps {
@@ -42,6 +41,7 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
           page < twoDimensionalPageArr[twoDimensionalPageArr.length - 1][0] ? false : true,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageGroup, twoDimensionalPageArr.length]);
 
   const setPrevPageGroup = () => {
