@@ -32,6 +32,7 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
     handlePage(value);
   };
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setPageBtnDisabled((prevState) => {
       return {
