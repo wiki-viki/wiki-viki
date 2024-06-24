@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { toastOptions } from '@/types/toastOptions';
-import NotificationIcon from '@/../public/svg/notification.svg';
+import InfoIcon from '@/../public/svg/info.svg';
 import ErrorIcon from '@/../public/svg/error.svg';
 import CheckLottie from '@/../public/lottie/check.json';
 
@@ -40,7 +40,7 @@ const ToastSelect = ({ type }: ToastProps) => {
     case 'notification':
       toast.info('앞 사람의 편집이 끝나면 위키 참여가 가능합니다.', {
         ...toastOptions,
-        icon: <NotificationIcon />,
+        icon: <InfoIcon />,
       });
       break;
   }
