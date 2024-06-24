@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { cardType } from '@/types/UserCardProps';
 import { WIKI_BASE_URL } from '@/constants/url';
 import LinkButton from '../common/LinkButton';
@@ -12,10 +11,6 @@ interface CardListProps {
 }
 
 const UserCard = ({ cardList }: CardListProps) => {
-  const router = useRouter();
-  const { code } = router.query;
-  const URL = `${WIKI_BASE_URL}${code}`;
-
   return (
     <div className="relative mt-14 h-3/5 w-full">
       {cardList.map((card) => {
@@ -50,7 +45,7 @@ const UserCard = ({ cardList }: CardListProps) => {
               </div>
             </Link>
             <div className="absolute bottom-0 right-0 mb-6 mr-9 ">
-              <LinkButton url={URL} />
+              <LinkButton url={`${WIKI_BASE_URL}${card.id}`} />
             </div>
           </motion.div>
         );
