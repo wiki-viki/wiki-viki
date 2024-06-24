@@ -12,7 +12,6 @@ export const StyledToastContainer = styled(ToastContainer)<ToastStyleProps>`
     padding: 8px 12px;
     font-size: 14px;
     line-height: 24px;
-    width: 100%;
     margin: 10px;
   }
   .Toastify__toast--info {
