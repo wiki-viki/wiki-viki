@@ -45,7 +45,7 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="mx-2 flex h-auto w-[335px] flex-col rounded-[10px] bg-white p-[20px] shadow-lg md:w-[395px]">
+          <div className="mx-2 flex h-auto w-[335px] flex-col rounded-10 bg-white p-[20px] shadow-lg md:w-[395px]">
             <div className="flex justify-end">
               <CloseIcon className="cursor-pointer" onClick={onClose} />
             </div>
