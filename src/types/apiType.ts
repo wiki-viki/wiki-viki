@@ -1,3 +1,7 @@
+// 자주 사용되는 타입 정의
+type DateType = Date | string;
+type ImageType = string | null;
+
 // post, patch 요청 시 FormData 정의
 export type PasswordFormData = {
   passwordConfirmation: string;
@@ -26,7 +30,7 @@ export type ChangeProfilesFormData = {
   job: string;
   mbti: string;
   city: string;
-  image: null;
+  image: ImageType;
   content: string;
 };
 
@@ -35,7 +39,7 @@ export type CommentFormData = {
 };
 
 export type ArticleFormData = {
-  image: string;
+  image: ImageType;
   content: string;
   title: string;
 };
@@ -46,19 +50,19 @@ export type UserResponse = {
     code: string;
     id: number;
   };
-  updatedAt: Date | string;
-  createdAt: Date | string;
+  updatedAt: DateType;
+  createdAt: DateType;
   teamId: string;
   name: string;
   id: number;
 };
 
 export interface ProfileResponse {
-  updatedAt: Date | string;
+  updatedAt: DateType;
   job: string;
   nationality: string;
   city: string;
-  image: string;
+  image: ImageType;
   code: string;
   name: string;
   id: 1;
@@ -72,7 +76,7 @@ export interface ProfileListResponse {
 export interface DetailProfileResponse {
   id: number;
   code: string;
-  image: string | null;
+  image: ImageType;
   city: string;
   mbti: string;
   job: string;
@@ -85,18 +89,18 @@ export interface DetailProfileResponse {
   content: string;
   teamId: string;
   securityQuestion: string;
-  updatedAt: string;
+  updatedAt: DateType;
   name: string;
 }
 
 export interface PingResponse {
-  registeredAt: Date | string;
+  registeredAt: DateType;
   userId: number;
 }
 
 // Notification
 export interface NotificationResponse {
-  createdAt: Date | string;
+  createdAt: DateType;
   content: string;
   id: number;
 }
@@ -108,15 +112,15 @@ export interface NotificationListResponse {
 
 // Comment
 export interface CommentWriterResponse {
-  image: string;
+  image: ImageType;
   name: string;
   id: number;
 }
 
 export interface CommentResponse {
   writer: CommentWriterResponse;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: DateType;
+  createdAt: DateType;
   content: string;
   id: number;
 }
@@ -130,11 +134,11 @@ export interface CommentListResponse {
 type ArticleWriterResponse = Pick<CommentWriterResponse, 'name' | 'id'>;
 
 export interface ArticleResponse {
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: DateType;
+  createdAt: DateType;
   likeCount: number;
   writer: ArticleWriterResponse;
-  image: string;
+  image: ImageType;
   title: string;
   id: number;
 }
