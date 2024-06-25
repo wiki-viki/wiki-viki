@@ -65,7 +65,7 @@ const LoginPage = () => {
           disabled={buttonDisabled}
           isActive={!buttonDisabled}
           variant="primary"
-          className={`mb-10 md:w-[335px] lg:w-full`}
+          className={`mb-7 md:w-[335px] lg:w-full`}
         >
           로그인
         </CommonButton>

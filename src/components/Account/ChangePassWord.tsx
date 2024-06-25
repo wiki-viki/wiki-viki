@@ -11,24 +11,24 @@ import { Label, Input } from '../common/Form';
 import CommonButton from '../common/CommonButton';
 
 const ChangePassWord = () => {
-  const { value: showCurrentPassword, handleToggle: toggleCurrentPassword } = useBoolean();
-  const { value: showNewPassword, handleToggle: toggleNewPassword } = useBoolean();
-  const { value: showConfirmPassword, handleToggle: toggleConfirmPassword } = useBoolean();
-
   const {
     register,
     handleSubmit,
     getValues,
     formState: { errors, isValid },
   } = useForm({ mode: 'onBlur' });
-
+  
   const onSubmit = handleSubmit((data) => {
     console.log('submitting');
     console.log(data);
   });
-
+  
   const buttonDisabled = !isValid;
-
+  
+  const { value: showCurrentPassword, handleToggle: toggleCurrentPassword } = useBoolean();
+  const { value: showNewPassword, handleToggle: toggleNewPassword } = useBoolean();
+  const { value: showConfirmPassword, handleToggle: toggleConfirmPassword } = useBoolean();
+  
   return (
     <section>
       <form onSubmit={onSubmit}>
