@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
@@ -20,6 +21,7 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     getValues,
+    setFocus,
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
@@ -29,6 +31,10 @@ const SignUpPage = () => {
   });
 
   const buttonDisabled = !isValid;
+
+  useEffect(() => {
+    setFocus("name")
+  }, [setFocus]);
 
   return (
     <AuthContainer title="회원가입">
