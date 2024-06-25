@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import UserProfile from '@/components/Profiles/UserProfile';
 import CommonButton from '@/components/common/CommonButton';
-import LinkButton from '@/components/common/LinkButton';
+import CopyLinkButton from '@/components/common/CopyLinkButton';
 import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +29,7 @@ const UserWikiPage = () => {
       </div>
 
       <div className="mb-5 flex w-full justify-start">
-        <LinkButton url={URL} />
+        <CopyLinkButton url={URL} />
       </div>
 
       <UserProfile {...mockData} />

@@ -3,14 +3,14 @@ import LinkIcon from '@/../public/svg/link.svg';
 import { isValidUrl } from '@/utils/urlValidation';
 import ToastSelect from './ToastSelect';
 
-interface LinkButtonProps {
+interface CopyLinkButtonProps {
   url: string;
 }
 
 const LinkContainer = 'inline-flex items-center gap-2 rounded-10 px-3 py-2 sm:h-6.5';
 const LinkText = 'text-md-regular sm:text-xs-regular';
 
-const LinkButton = ({ url }: LinkButtonProps) => {
+const CopyLinkButton = ({ url }: CopyLinkButtonProps) => {
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(url);
     ToastSelect({ type: 'check' });
@@ -35,4 +35,4 @@ const LinkButton = ({ url }: LinkButtonProps) => {
   );
 };
 
-export default LinkButton;
+export default CopyLinkButton;
