@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { Zoom } from 'react-toastify';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import testData from '@/../public/data/wikilist.json';
 import { NoSearch, SearchLabel, UserCard } from '@/components/WikiList';
 import { cardType } from '@/types/UserCardProps';
 import { searchRegex } from '@/utils/searchRegex';
+import { StyledToastContainer } from '@/styles/ToastStyle';
 
 const PAGE_SIZE = 3;
 
@@ -35,6 +37,7 @@ const WikiListPage = () => {
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
+      <StyledToastContainer limit={1} transition={Zoom} />
       <div className="min-w-full">
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
       </div>
