@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import LinkIcon from '@/../public/svg/link.svg';
-import { isValidUrl } from '@/utils/urlValidation';
+import { urlRegex } from '@/utils/urlRegex';
 
 interface LinkButtonProps {
   url: string;
@@ -11,7 +11,7 @@ const LinkContainer = 'inline-flex items-center gap-2 rounded-10 px-3 py-2 sm:h-
 const LinkText = 'text-md-regular sm:text-xs-regular';
 
 const LinkButton = ({ url }: LinkButtonProps) => {
-  if (!isValidUrl(url)) {
+  if (!urlRegex(url)) {
     return (
       <div className={`${LinkContainer} bg-secondary-red-100`}>
         <span className={`${LinkText} truncate text-secondary-red-200`}>경로를 확인해주세요.</span>
