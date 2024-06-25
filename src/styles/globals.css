@@ -32,13 +32,14 @@
   .centerOfScreen {
     @apply flex min-h-screen items-center justify-center;
   }
-
+  
+  /* form */
   .label {
     @apply text-md-regular text-grayscale-500
   }
 
   .input {
-    @apply h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular;
+    @apply w-full h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular;
   }
   
   .input:focus {
@@ -48,4 +49,9 @@
   .errorMessage {
     @apply text-xs-regular text-secondary-red-200
   }
+
+  .checkPassword {
+    @apply absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer
+  }
+
 }

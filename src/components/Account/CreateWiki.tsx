@@ -71,7 +71,7 @@ const CreateWiki = () => {
           <CommonButton
             type="button"
             variant="primary"
-            className="mr-3 bg-secondary-yellow-100"
+            className="mr-3 bg-secondary-yellow-100 hover:bg-[#FFD700]"
             onClick={handleRandomQuestion}
           >
             질문 랜덤 생성
