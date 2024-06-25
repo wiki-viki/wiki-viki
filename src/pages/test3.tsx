@@ -4,6 +4,7 @@ import ToastSelect from '@/components/common/ToastSelect';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import SearchBar from '@/components/common/SearchBar';
+import { Zoom } from 'react-toastify';
 
 const url = 'https://www.youtube.com/';
 
@@ -62,7 +63,7 @@ const Test3 = () => {
         </button>
 
         <button onClick={handleShowToast}>Click me</button>
-        <StyledToastContainer limit={1} />
+        <StyledToastContainer limit={1} transition={Zoom} />
       </div>
 
       <div className="w-[300px]">
