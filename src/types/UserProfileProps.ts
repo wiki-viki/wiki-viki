@@ -8,5 +8,4 @@ export interface UserProfileProps {
   mbti: string;
   city: string;
   image: string;
-  expandIcon?: React.ReactNode;
 }
