@@ -7,7 +7,11 @@ import quizMockData from '../../../public/quizMockData.json';
 const modalFirstText = `text-md-regular text-grayscale-400`;
 const modalSecondText = `text-xs-regular text-grayscale-400`;
 
-const QuizModalTemplete = () => {
+type QuizModalTempleteProps = {
+  onClose: (value: void) => void;
+};
+
+const QuizModalTemplete = ({ onClose }: QuizModalTempleteProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isWrongAnswer, setIsWrongAnswer] = useState(false);
 
@@ -30,6 +34,7 @@ const QuizModalTemplete = () => {
       }, 3000);
     } else {
       alert('good!!');
+      onClose();
     }
   };
 

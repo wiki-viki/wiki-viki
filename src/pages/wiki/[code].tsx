@@ -48,7 +48,7 @@ const UserWikiPage: React.FC = () => {
       </div>
 
       <Modal isOpen={value} onClose={handleOff}>
-        <QuizModalTemplete />
+        <QuizModalTemplete onClose={handleOff} />
       </Modal>
     </div>
   );
