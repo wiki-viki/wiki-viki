@@ -17,7 +17,7 @@ const UserCard = ({ cardList }: CardListProps) => {
         return (
           <motion.div
             key={card.id}
-            className="card"
+            className="wikilist-card"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15 }}
           >
