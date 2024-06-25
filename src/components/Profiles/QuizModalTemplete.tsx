@@ -50,7 +50,7 @@ const QuizModalTemplete = () => {
       <input
         id="quizInput"
         name="quizInput"
-        className={`mb-2 h-[45px] w-full rounded-10 bg-grayscale-100 pl-4 ${isWrongAnswer && 'bg-secondary-red-100'} outline-none focus:border-2 focus:border-primary-green-200`}
+        className={`mb-2 h-[45px] w-full rounded-10 bg-grayscale-100 pl-4 ${isWrongAnswer && 'bg-secondary-red-100 focus:border-secondary-red-200'} outline-none focus:border-2 focus:border-primary-green-200`}
         placeholder="답안을 입력해주세요"
         onChange={handleAnswerInputChange}
         onKeyDown={handleAnswerInputKeyDown}
