@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
@@ -27,6 +29,10 @@ const LoginPage = () => {
   });
 
   const buttonDisabled = !isValid;
+
+  useEffect(() => {
+    setFocus("email")
+  }, [setFocus]);
 
   return (
     <AuthContainer title="로그인">
@@ -65,7 +71,7 @@ const LoginPage = () => {
           disabled={buttonDisabled}
           isActive={!buttonDisabled}
           variant="primary"
-          className={`mb-10 md:w-[335px] lg:w-full`}
+          className={`mb-7 w-full`}
         >
           로그인
         </CommonButton>
