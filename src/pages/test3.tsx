@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import LinkButton from '@/components/common/LinkButton';
+import { Zoom } from 'react-toastify';
+import CopyLinkButton from '@/components/common/CopyLinkButton';
 import ToastSelect from '@/components/common/ToastSelect';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
@@ -27,13 +28,13 @@ const Test3 = () => {
   return (
     <>
       <div className=" m-5">
-        <LinkButton url={url} />
+        <CopyLinkButton url={url} />
       </div>
       <div className=" m-5">
-        <LinkButton url="https://www.youtube." />
+        <CopyLinkButton url="https://www.youtube." />
       </div>
       <div className=" m-5">
-        <LinkButton url="adsfasdfasfd" />
+        <CopyLinkButton url="adsfasdfasfd" />
       </div>
 
       <div> 현재 type : {type}</div>
@@ -62,7 +63,7 @@ const Test3 = () => {
         </button>
 
         <button onClick={handleShowToast}>Click me</button>
-        <StyledToastContainer limit={1} />
+        <StyledToastContainer limit={1} transition={Zoom} />
       </div>
 
       <div className="w-[300px]">
