@@ -1,17 +1,17 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import testData from '@/../public/data/wikilist.json';
 import { NoSearch, SearchLabel, UserCard } from '@/components/WikiList';
+import { cardType } from '@/types/UserCardProps';
 
 const PAGE_SIZE = 3;
 
 const WikiListPage = () => {
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState('');
-  const [filteredList, setFilteredList] = useState(testData.list);
-  const [totalCount, setTotalCount] = useState(testData.totalCount);
+  const [filteredList, setFilteredList] = useState<cardType[]>(testData.list);
+  const [totalCount, setTotalCount] = useState<number>(testData.totalCount);
 
   const handleSearchItem = (keyword: string) => {
     setKeyword(keyword);
