@@ -1,9 +1,9 @@
 import { LabelProps } from "@/types/formType";
 
-const Label = ({ id, label, className }: LabelProps) => {
+const Label = ({ htmlFor, label, className }: LabelProps) => {
   return (
     <>
-      <label htmlFor={id} className={className}>
+      <label htmlFor={htmlFor} className={className}>
         {label}
       </label>
     </>
