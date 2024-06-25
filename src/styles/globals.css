@@ -30,7 +30,7 @@
   }
 
   .centerOfScreen {
-    @apply flex min-h-screen items-center justify-center;
+    @apply flex items-center justify-center mix-blend-darken
   }
   
   /* form */
