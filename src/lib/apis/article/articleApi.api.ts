@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { ArticleResponse, ArticleListResponse, ArticleFormData } from '@/types/apiType';
+import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import axiosWithIntercepter from '../axiosWithIntercepter';
 import axiosDefault from '../axiosDefault';
 
@@ -29,7 +30,7 @@ export const getArticle = async ({
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -45,7 +46,7 @@ export const getDetailArticle = async (articleId: number) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -62,7 +63,7 @@ export const postArticle = async (formData: ArticleFormData) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -79,7 +80,7 @@ export const changeDetailArticle = async (articleId: number, formData: ArticleFo
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -95,7 +96,7 @@ export const deleteDetailArticle = async (articleId: number) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -111,7 +112,7 @@ export const postArticleLike = async (articleId: number) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
@@ -127,7 +128,7 @@ export const deleteArticleLike = async (articleId: number) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };

@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import axiosWithIntercepter from '../axiosWithIntercepter';
 
 export type imageResponse = {
@@ -23,7 +24,7 @@ const getImageUrl = async (image: ImageData) => {
     if (axios.isAxiosError(e)) {
       throw e.response?.data.message;
     } else {
-      throw new Error('예상치 못한 오류가 발생하였습니다. 관리자에게 문의하세요!');
+      throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
   }
 };
