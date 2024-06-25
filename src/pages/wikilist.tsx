@@ -4,6 +4,7 @@ import Pagination from '@/components/common/Pagination';
 import testData from '@/../public/data/wikilist.json';
 import { NoSearch, SearchLabel, UserCard } from '@/components/WikiList';
 import { cardType } from '@/types/UserCardProps';
+import { searchRegex } from '@/utils/searchRegex';
 
 const PAGE_SIZE = 3;
 
@@ -14,9 +15,10 @@ const WikiListPage = () => {
   const [totalCount, setTotalCount] = useState<number>(testData.totalCount);
 
   const handleSearchItem = (keyword: string) => {
-    setKeyword(keyword);
+    const processedKeyword = keyword.replace(/\s/g, '');
+    setKeyword(processedKeyword);
     const filtered = testData.list.filter((item) => {
-      return item.name.toLowerCase().includes(keyword.toLowerCase());
+      return searchRegex(keyword, item.name);
     });
     setFilteredList(filtered);
     setTotalCount(filtered.length);
