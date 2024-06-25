@@ -42,7 +42,7 @@ const QuizModalTemplete = () => {
       </div>
 
       <Label
-        id="quizInput"
+        htmlFor="quizInput"
         className="mb-3 text-2lg-semibold text-grayscale-500"
         label={quizMockData.securityQuestion}
       ></Label>
