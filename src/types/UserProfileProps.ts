@@ -7,5 +7,5 @@ export interface UserProfileProps {
   job: string;
   mbti: string;
   city: string;
-  image: string;
+  image: string | null;
 }
