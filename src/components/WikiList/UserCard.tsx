@@ -21,7 +21,7 @@ const UserCard = ({ cardList }: CardListProps) => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15 }}
           >
-            <Link href={`/wiki/${card.id}`} rel="preload">
+            <Link href={`/wiki/${card.code}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Image
@@ -45,7 +45,7 @@ const UserCard = ({ cardList }: CardListProps) => {
               </div>
             </Link>
             <div className="absolute bottom-0 right-0 mb-6 mr-9 ">
-              <LinkButton url={`${WIKI_BASE_URL}${card.id}`} />
+              <LinkButton url={`${WIKI_BASE_URL}${card.code}`} />
             </div>
           </motion.div>
         );
