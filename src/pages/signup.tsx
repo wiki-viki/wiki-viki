@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
 import CommonButton from '@/components/common/CommonButton';
@@ -10,6 +11,7 @@ import {
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
 } from '@/constants/messages';
+import useAxiosFetch from '@/hooks/useAxiosFetch';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -17,6 +19,7 @@ const emailPattern = {
 };
 
 const SignUpPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,12 +28,32 @@ const SignUpPage = () => {
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log('submitting');
-    console.log(data);
+  const { isLoading, isError, statusCode, axiosFetch } = useAxiosFetch({
+    skip: true,
+    options: {
+      method: 'post',
+      url: 'auth/signup',
+    },
+  });
+
+  const onSubmit = handleSubmit(async (formData) => {
+    const requestData = {
+      data: formData,
+    };
+    await axiosFetch(requestData);
+    router.push('/login');
   });
 
   const buttonDisabled = !isValid;
+
+  const errorMessage = () => {
+    if (statusCode === 400) {
+      return isError;
+    } else if (statusCode) {
+      return `Error: ${statusCode}`;
+    }
+    return null;
+  };
 
   useEffect(() => {
     setFocus("name")
@@ -38,6 +61,7 @@ const SignUpPage = () => {
 
   return (
     <AuthContainer title="회원가입">
+      {isError && <p className="center">{errorMessage()}</p>}
       <form onSubmit={onSubmit}>
         <AuthInputWithLabel
           id="name"
