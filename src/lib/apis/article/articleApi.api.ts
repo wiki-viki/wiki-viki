@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ArticleResponse, ArticleListResponse, ArticleFormData } from '@/types/apiType';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
+import { OrderType } from '@/constants/orderOption';
 import axiosWithIntercepter from '../axiosWithIntercepter';
 import axiosDefault from '../axiosDefault';
 
@@ -8,12 +9,12 @@ import axiosDefault from '../axiosDefault';
 export const getArticle = async ({
   page = 1,
   pageSize = 10,
-  orderBy = 'resent',
+  orderBy = 'recent',
   keyword = '',
 }: {
   page?: number;
   pageSize?: number;
-  orderBy?: string;
+  orderBy?: OrderType;
   keyword?: string;
 }) => {
   const params = new URLSearchParams({

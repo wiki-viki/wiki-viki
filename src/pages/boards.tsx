@@ -1,21 +1,34 @@
 import React, { KeyboardEvent, useState } from 'react';
 import Link from 'next/link';
-import {
-  BoardCard,
-  BoardCarousel,
-  BoardList,
-  DropDown,
-  MobileBoardList,
-} from '@/components/FreeBoards';
+import { BoardList, DropDown, MobileBoardList, BestBoardContainer } from '@/components/FreeBoards';
 import CommonButton from '@/components/common/CommonButton';
 import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
 import SearchBar from '@/components/common/SearchBar';
+import { getArticle } from '@/lib/apis/article/articleApi.api';
+import { ArticleListResponse } from '@/types/apiType';
 import testData from '../../public/data/boards.json';
+
+// 베스트 게시글 가져오기 ISR
+export const getStaticProps = async () => {
+  const res = await getArticle({ pageSize: 4, orderBy: 'like' });
+  const bestBoardList = res;
+
+  return {
+    props: {
+      bestBoardList,
+    },
+    revalidate: 60,
+  };
+};
 
 const PAGE_SIZE = 10;
 
-const Boards = () => {
+interface BoardsProps {
+  bestBoardList: ArticleListResponse;
+}
+
+const Boards = ({ bestBoardList }: BoardsProps) => {
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState<OrderType>('recent');
   const [keyword, setKeyword] = useState('');
@@ -51,18 +64,7 @@ const Boards = () => {
           <CommonButton variant="primary">게시물 등록하기</CommonButton>
         </Link>
       </div>
-      <section className="hidden w-full grid-cols-2 gap-4 md:grid lg:grid-cols-4">
-        {testData.list.slice(0, 4).map((board) => {
-          return <BoardCard key={board.id} board={board} />;
-        })}
-      </section>
-      <section className="w-full md:hidden">
-        <BoardCarousel>
-          {testData.list.slice(0, 4).map((board) => {
-            return <BoardCard key={board.id} board={board} />;
-          })}
-        </BoardCarousel>
-      </section>
+      <BestBoardContainer boardList={bestBoardList} />
       <section>
         <div className="mt-[40px] flex w-full flex-col justify-between gap-4 md:mt-[60px] md:flex-row lg:gap-[20px]">
           <div className="flex w-full justify-between gap-4 lg:gap-[20px]">
