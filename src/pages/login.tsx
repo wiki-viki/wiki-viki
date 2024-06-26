@@ -66,51 +66,53 @@ const LoginPage = () => {
   }, [setFocus]);
 
   return (
-    <AuthContainer title="로그인">
-      {isLoading && <p>로딩중</p>}
-      {isError && <p className="center">{errorMessage()}</p>}
-      <form onSubmit={onSubmit}>
-        <AuthInputWithLabel
-          id="email"
-          name="email"
-          label="이메일"
-          type="text"
-          placeholder="이메일을 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-            pattern: emailPattern,
-          }}
-          errors={errors}
-        />
-        <AuthInputWithLabel
-          id="password"
-          name="password"
-          label="비밀번호"
-          type="password"
-          placeholder="비밀번호를 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-            minLength: {
-              value: 8,
-              message: PASSWORD_MIN_LENGTH_MESSAGE,
-            },
-          }}
-          errors={errors}
-        />
-        <CommonButton
-          type="submit"
-          disabled={buttonDisabled}
-          isActive={!buttonDisabled}
-          variant="primary"
-          className={`mb-7 w-full`}
-        >
-          로그인
-        </CommonButton>
-      </form>
-      <AuthSwitchPrompt href="/signup" auth="회원가입" />
-    </AuthContainer>
+    <>
+      {isLoading && <h1 className="center">로딩중</h1>}
+      <AuthContainer title="로그인">
+        {isError && <p className="center">{errorMessage()}</p>}
+        <form onSubmit={onSubmit}>
+          <AuthInputWithLabel
+            id="email"
+            name="email"
+            label="이메일"
+            type="text"
+            placeholder="이메일을 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              pattern: emailPattern,
+            }}
+            errors={errors}
+          />
+          <AuthInputWithLabel
+            id="password"
+            name="password"
+            label="비밀번호"
+            type="password"
+            placeholder="비밀번호를 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              minLength: {
+                value: 8,
+                message: PASSWORD_MIN_LENGTH_MESSAGE,
+              },
+            }}
+            errors={errors}
+          />
+          <CommonButton
+            type="submit"
+            disabled={buttonDisabled}
+            isActive={!buttonDisabled}
+            variant="primary"
+            className={`mb-7 w-full`}
+          >
+            로그인
+          </CommonButton>
+        </form>
+        <AuthSwitchPrompt href="/signup" auth="회원가입" />
+      </AuthContainer>
+    </>
   );
 };
 

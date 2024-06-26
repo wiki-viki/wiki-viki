@@ -56,86 +56,88 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    setFocus("name")
+    setFocus('name');
   }, [setFocus]);
 
   return (
-    <AuthContainer title="회원가입">
-      {isLoading && <p>로딩중</p>}
-      {isError && <p className="center">{errorMessage()}</p>}
-      <form onSubmit={onSubmit}>
-        <AuthInputWithLabel
-          id="name"
-          name="name"
-          label="이름"
-          type="text"
-          placeholder="이름을 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-          }}
-          errors={errors}
-        />
-        <AuthInputWithLabel
-          id="email"
-          name="email"
-          label="이메일"
-          type="text"
-          placeholder="이메일을 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-            pattern: emailPattern,
-          }}
-          errors={errors}
-        />
-        <AuthInputWithLabel
-          id="password"
-          name="password"
-          label="비밀번호"
-          type="password"
-          placeholder="비밀번호를 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-            minLength: {
-              value: 8,
-              message: PASSWORD_MIN_LENGTH_MESSAGE,
-            },
-          }}
-          errors={errors}
-        />
-        <AuthInputWithLabel
-          id="passwordConfirmation"
-          name="passwordConfirmation"
-          label="비밀번호 확인"
-          type="password"
-          placeholder="비밀번호를 입력해 주세요."
-          register={register}
-          rules={{
-            required: REQUIRED_MESSAGE,
-            minLength: {
-              value: 8,
-              message: PASSWORD_MIN_LENGTH_MESSAGE,
-            },
-            validate: (value) => {
-              return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
-            },
-          }}
-          errors={errors}
-        />
-        <CommonButton
-          type="submit"
-          disabled={buttonDisabled}
-          isActive={!buttonDisabled}
-          variant="primary"
-          className={`mb-7 w-full`}
-        >
-          가입하기
-        </CommonButton>
-      </form>
-      <AuthSwitchPrompt href="/login" auth="로그인" />
-    </AuthContainer>
+    <>
+      {isLoading && <h1 className="center">로딩중</h1>}
+      <AuthContainer title="회원가입">
+        {isError && <p className="center">{errorMessage()}</p>}
+        <form onSubmit={onSubmit}>
+          <AuthInputWithLabel
+            id="name"
+            name="name"
+            label="이름"
+            type="text"
+            placeholder="이름을 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+            }}
+            errors={errors}
+          />
+          <AuthInputWithLabel
+            id="email"
+            name="email"
+            label="이메일"
+            type="text"
+            placeholder="이메일을 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              pattern: emailPattern,
+            }}
+            errors={errors}
+          />
+          <AuthInputWithLabel
+            id="password"
+            name="password"
+            label="비밀번호"
+            type="password"
+            placeholder="비밀번호를 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              minLength: {
+                value: 8,
+                message: PASSWORD_MIN_LENGTH_MESSAGE,
+              },
+            }}
+            errors={errors}
+          />
+          <AuthInputWithLabel
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            label="비밀번호 확인"
+            type="password"
+            placeholder="비밀번호를 입력해 주세요."
+            register={register}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              minLength: {
+                value: 8,
+                message: PASSWORD_MIN_LENGTH_MESSAGE,
+              },
+              validate: (value) => {
+                return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
+              },
+            }}
+            errors={errors}
+          />
+          <CommonButton
+            type="submit"
+            disabled={buttonDisabled}
+            isActive={!buttonDisabled}
+            variant="primary"
+            className={`mb-7 w-full`}
+          >
+            가입하기
+          </CommonButton>
+        </form>
+        <AuthSwitchPrompt href="/login" auth="로그인" />
+      </AuthContainer>
+    </>
   );
 };
 
