@@ -1,5 +1,5 @@
 import { ToastContainer } from 'react-toastify';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 interface ToastStyleProps {
   type?: 'check' | 'error' | 'notification';
