@@ -62,6 +62,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
 
   const handleSubmitKeyword = () => {
     setKeyword(inputValue.trim());
+    setPage(1);
   };
 
   const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
