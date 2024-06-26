@@ -4,7 +4,7 @@ export const middleware = (request: NextRequest) => {
   const accessToken = request.cookies.get('accessToken');
   const { pathname } = request.nextUrl;
 
-  if (pathname === '/login' || pathname === '/signup' && accessToken) {
+  if ((pathname === '/login' || pathname === '/signup') && accessToken) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
   } else if (pathname !== '/login' && pathname !== '/signup' && !accessToken) {
     return NextResponse.redirect(new URL('/login', request.nextUrl));
