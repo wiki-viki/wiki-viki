@@ -2,17 +2,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useIsLogin from '@/hooks/useIsLogin';
 import useBoolean from '@/hooks/useBoolean';
+import useIsMobile from '@/hooks/useIsMobile';
 import Logo from '../../../../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '../../../../public/svg/notification.svg';
 import ProfileIcon from '../../../../public/svg/profile.svg';
 import HamburgerIcon from '../../../../public/svg/hamburger.svg';
 import UserMenu from './UserMenu';
-import HamburgerMenu from './HamburgerMenu';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
   const isLogin = useIsLogin();
-  const { value, handleOn, handleOff } = useBoolean();
+  const isMobile = useIsMobile();
+  const { value, handleOff, handleOn } = useBoolean();
 
   const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
   const activeLinkClassNames = 'font-bold text-primary-green-300';
@@ -58,8 +59,7 @@ const TopNavigationBar = () => {
           </>
         )}
       </div>
-      {isLogin && <UserMenu className="hidden md:block" isOpen={value} onClose={handleOff} />}
-      <HamburgerMenu className="md:hidden" isOpen={value} onClose={handleOff} isLogin={isLogin} />
+      {(!isMobile && !isLogin) || <UserMenu isOpen={value} onClose={handleOff} />}
     </header>
   );
 };
