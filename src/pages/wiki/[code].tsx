@@ -2,10 +2,13 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import UserProfile from '@/components/Profiles/UserProfile';
 import CommonButton from '@/components/common/CommonButton';
+import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
 import useBoolean from '@/hooks/useBoolean';
+import Modal from '@/components/common/Modal';
 import CopyLinkButton from '@/components/common/CopyLinkButton';
 import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
 import mockData from '../../../public/profileMockData.json';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
@@ -47,6 +50,10 @@ const UserWikiPage: React.FC = () => {
           </div>
         ) : null}
       </div>
+
+      <Modal isOpen={value} onClose={handleOff}>
+        <QuizModalTemplete />
+      </Modal>
     </div>
   );
 };
