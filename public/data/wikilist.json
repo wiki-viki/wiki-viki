@@ -1,0 +1,105 @@
+{
+  "totalCount": 20,
+  "list": [
+    {
+      "updatedAt": "2024-06-22T05:59:55.015Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 1
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "dudwns",
+      "name": "배영준",
+      "id": 2
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "이지현",
+      "id": 3
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "소혜린",
+      "id": 4
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 5
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 6
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "우기",
+      "id": 7
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 8
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 9
+    },
+    {
+      "updatedAt": "2024-06-23T13:46:22.629Z",
+      "job": "대학생",
+      "nationality": "대한민국",
+      "city": "서울",
+      "image": "https://i.namu.wiki/i/8I60NoRSRa_b_RqGWCn5ysU8Hh39VFDBLH6ADThaFMxmafO6zzAlNMdD3IyV_Rd-iFTyXHE24zk3KEE7I2csVA.webp",
+      "code": "woogi",
+      "name": "정우기",
+      "id": 10
+    }
+  ]
+}
