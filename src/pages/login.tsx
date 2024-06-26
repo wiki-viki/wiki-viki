@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
 import { DefaultFormData } from '@/types/authFormType';
 import CommonButton from '@/components/common/CommonButton';
@@ -9,6 +10,7 @@ import {
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
 } from '@/constants/messages';
+import useAxiosFetch from '@/hooks/useAxiosFetch';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -16,6 +18,7 @@ const emailPattern = {
 };
 
 const LoginPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,19 +26,49 @@ const LoginPage = () => {
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onBlur' });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log('submitting');
-    console.log(data);
+  const { isLoading, isError, statusCode, axiosFetch } = useAxiosFetch({
+    skip: true,
+    options: {
+      method: 'post',
+      url: 'auth/signin',
+    },
+    includeAuth: true,
+  });
+
+  const onSubmit = handleSubmit(async (formData) => {
+    const requestData = {
+      data: formData,
+    };
+    const response = await axiosFetch(requestData);
+    const accessToken = response?.data?.accessToken;
+    const refreshToken = response?.data?.refreshToken;
+
+    if (accessToken) {
+      document.cookie = `accessToken=${accessToken}`;
+      document.cookie = `refreshToken=${refreshToken}`;
+      router.push('/');
+    }
   });
 
   const buttonDisabled = !isValid;
 
+  const errorMessage = () => {
+    if (statusCode === 400) {
+      return isError;
+    } else if (statusCode) {
+      return `Error: ${statusCode}`;
+    }
+    return null;
+  };
+
   useEffect(() => {
-    setFocus("email")
+    setFocus('email');
   }, [setFocus]);
 
   return (
     <AuthContainer title="로그인">
+      {isLoading && <p>로딩중</p>}
+      {isError && <p className="center">{errorMessage()}</p>}
       <form onSubmit={onSubmit}>
         <AuthInputWithLabel
           id="email"
