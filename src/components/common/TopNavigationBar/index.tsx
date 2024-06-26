@@ -19,6 +19,7 @@ const TopNavigationBar = () => {
   const isLogin = useIsLogin();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const { value: isMenuOpen, handleOff: menuClose, handleToggle: menuToggle } = useBoolean();
 
   const noticeRef = useRef<HTMLDivElement | null>(null);
@@ -27,7 +28,12 @@ const TopNavigationBar = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        menuContainerRef.current &&
+        !menuContainerRef.current.contains(e.target as Node)
+      ) {
         menuClose();
       }
       if (
@@ -66,17 +72,23 @@ const TopNavigationBar = () => {
           </ul>
         </nav>
       </div>
-      <div className="flex gap-6">
+      <div>
         {isLogin ? (
           <>
-            <div ref={noticeRef} onClick={noticeToggle}>
-              <NotifyIcon width={24} height={24} className="cursor-pointer" />
+            <div className="flex gap-6">
+              <div ref={noticeRef} onClick={noticeToggle}>
+                <NotifyIcon width={24} height={24} className="cursor-pointer" />
+              </div>
+              <div ref={menuRef} onClick={menuToggle}>
+                <ProfileIcon width={24} height={24} className="cursor-pointer"></ProfileIcon>
+              </div>
             </div>
-            <div ref={menuRef} onClick={menuToggle}>
-              <ProfileIcon width={24} height={24} className="cursor-pointer" />
+            <div ref={menuContainerRef}>
+              <AuthUserMenu isOpen={isMenuOpen} handleClose={menuClose} />
             </div>
-            <AuthUserMenu isOpen={isMenuOpen} />
-            <NoticeMenu ref={noticeContainerRef} handleClose={noticeClose} isOpen={isNoticeOpen} />
+            <div ref={noticeContainerRef}>
+              <NoticeMenu handleClose={noticeClose} isOpen={isNoticeOpen} />
+            </div>
           </>
         ) : (
           <>
@@ -89,7 +101,9 @@ const TopNavigationBar = () => {
             <div ref={menuRef} onClick={menuToggle} className="cursor-pointer md:hidden">
               <HamburgerIcon />
             </div>
-            <UserMenu isOpen={isMenuOpen} />
+            <div ref={menuContainerRef}>
+              <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
+            </div>
           </>
         )}
       </div>

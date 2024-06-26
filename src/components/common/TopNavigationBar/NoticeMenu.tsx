@@ -1,4 +1,3 @@
-import React, { forwardRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '../../../../public/svg/close.svg';
 import testData from '../../../../public/data/notification.json';
@@ -9,12 +8,11 @@ interface NoticeMenuProps {
   handleClose: () => void;
 }
 
-const NoticeMenu = forwardRef<HTMLDivElement, NoticeMenuProps>(({ isOpen, handleClose }, ref) => {
+const NoticeMenu = ({ isOpen, handleClose }: NoticeMenuProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          ref={ref}
           className={`fixed right-4 top-12 z-10 w-[250px] flex-col rounded-10 border border-grayscale-200 bg-white px-5 py-4 shadow-md md:w-[280px] lg:right-[75px] lg:top-[58px] lg:w-[310px]`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -33,8 +31,6 @@ const NoticeMenu = forwardRef<HTMLDivElement, NoticeMenuProps>(({ isOpen, handle
       )}
     </AnimatePresence>
   );
-});
-
-NoticeMenu.displayName = 'NoticeMenu';
+};
 
 export default NoticeMenu;

@@ -17,7 +17,7 @@ const MenuItem = ({ href, title, className = '', onClick }: MenuItemProps) => {
 
   if (href) {
     return (
-      <Link href={href} rel="preload">
+      <Link href={href} rel="preload" onClick={onClick}>
         <li className={`${className} ${menuClassName} ${asPath === href && activeLinkClassNames}`}>
           {title}
         </li>
