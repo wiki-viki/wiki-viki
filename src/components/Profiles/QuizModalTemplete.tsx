@@ -1,6 +1,7 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import CommonButton from '@/components/common/CommonButton';
-import { Label } from '@/components/common/Form';
+import { Input, Label } from '@/components/common/Form';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
 import quizMockData from '../../../public/quizMockData.json';
 
@@ -9,32 +10,36 @@ const modalSecondText = `text-xs-regular text-grayscale-400`;
 
 type QuizModalProps = { onClose: (value: void) => void };
 
+type IForm = {
+  securityAnswer: string;
+};
+
 const QuizModalTemplete = ({ onClose }: QuizModalProps) => {
-  const [answer, setAnswer] = useState<string>('');
-  const [isWrongAnswer, setIsWrongAnswer] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    setError,
+    formState: { errors },
+  } = useForm<IForm>({
+    mode: 'onSubmit',
+  });
 
-  const handleAnswerInputChange = (e: ChangeEvent) => {
-    const { value } = e.target as HTMLInputElement;
-    setAnswer(value);
-  };
-
-  const handleAnswerInputKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleButtonClick();
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (quizMockData.securityAnswer !== answer) {
-      setIsWrongAnswer(true);
-      setTimeout(() => {
-        setIsWrongAnswer(false);
-      }, 3000);
+  const handleSubmitData: SubmitHandler<IForm> = async (data) => {
+    if (quizMockData.securityAnswer !== data.securityAnswer) {
+      setError('securityAnswer', {
+        type: 'required',
+        message: '정답이 아닙니다. 다시 시도해 주세요.',
+      });
     } else {
-      alert('good!!');
+      alert('정답입니다!');
       onClose();
     }
   };
+
+  useEffect(() => {
+    return setFocus('securityAnswer');
+  }, [setFocus]);
 
   return (
     <>
@@ -50,24 +55,25 @@ const QuizModalTemplete = ({ onClose }: QuizModalProps) => {
         label={quizMockData.securityQuestion}
       ></Label>
 
-      <input
-        id="quizInput"
-        name="quizInput"
-        className={`mb-2 h-[45px] w-full rounded-10 bg-grayscale-100 pl-4 ${isWrongAnswer && 'bg-secondary-red-100 focus:border-secondary-red-200'} outline-none focus:border-2 focus:border-primary-green-200`}
-        placeholder="답안을 입력해주세요"
-        onChange={handleAnswerInputChange}
-        onKeyDown={handleAnswerInputKeyDown}
-      />
+      <form onSubmit={handleSubmit(handleSubmitData)}>
+        <Input
+          type="text"
+          id="quizInput"
+          className={`mb-2 h-[45px] w-full rounded-10 bg-grayscale-100 pl-4 ${
+            errors.securityAnswer ? 'bg-secondary-red-100 focus:border-secondary-red-200' : ''
+          } outline-none focus:border-2 focus:border-primary-green-200`}
+          placeholder="답안을 입력해주세요"
+          {...register('securityAnswer', { required: '답안을 입력해주세요' })}
+        />
 
-      {isWrongAnswer && (
-        <p className="text-xs-regular text-secondary-red-200">
-          정답이 아닙니다. 다시 시도해 주세요.
-        </p>
-      )}
+        {errors.securityAnswer && (
+          <p className="text-xs-regular text-secondary-red-200">{errors.securityAnswer.message}</p>
+        )}
 
-      <CommonButton variant="primary" className="mt-8" onClick={handleButtonClick}>
-        확인
-      </CommonButton>
+        <CommonButton variant="primary" className="mt-8 w-full" type="submit">
+          확인
+        </CommonButton>
+      </form>
 
       <div className="mx-auto mt-5 text-center">
         <p className={modalSecondText}>위키비키는 지인들과 함께하는 즐거운 공간입니다.</p>
