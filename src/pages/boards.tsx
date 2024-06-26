@@ -27,7 +27,11 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    console.log('에러처리 어떻게 하면 좋을까요?');
+    return {
+      props: { error },
+    };
   }
 };
 
@@ -51,17 +55,17 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleSubmitKeyword();
+      setKeyword(inputValue);
     }
   };
 
-  const handleSubmitKeyword = () => {
-    setKeyword(inputValue);
-  };
-
   const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
-    const res = await getArticle({ page, orderBy, keyword });
-    setBoardListData(res);
+    try {
+      const res = await getArticle({ page, orderBy, keyword });
+      setBoardListData(res);
+    } catch (error) {
+      console.error('에러 처리 어떻게 하면 좋을까요?');
+    }
   };
 
   useEffect(() => {
@@ -81,7 +85,9 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
         <BoardFilterBar
           setInputValue={setInputValue}
           handleKeyDown={handleKeyDown}
-          handleSubmitKeyword={handleSubmitKeyword}
+          handleSubmitKeyword={() => {
+            setKeyword(inputValue);
+          }}
           setOrderBy={setOrderBy}
         />
         {boardListData.totalCount === 0 ? (
