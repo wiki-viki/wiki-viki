@@ -53,7 +53,9 @@ const UserWikiPage: React.FC = () => {
 
       <UserProfile {...mockData} isEditing={isEditing} />
 
-      <div className="w-full xl:absolute xl:bottom-[500px] xl:right-[440px] xl:mb-auto xl:w-[856px]">
+      <div
+        className={`w-full xl:absolute ${mockData.content ? 'xl:top-[200px]' : 'xl:bottom-[500px]'} md:mt-5 xl:right-[440px] xl:mb-auto xl:w-[856px]`}
+      >
         {mockData.content === null
           ? isEditing || (
               <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-14 md:h-[192px]">
@@ -68,11 +70,13 @@ const UserWikiPage: React.FC = () => {
                 </CommonButton>
               </div>
             )
-          : null}
+          : isEditing
+            ? ''
+            : mockData.content}
       </div>
 
       {isEditing && (
-        <div className="ml-auto mt-auto flex gap-3 sm:absolute sm:right-[45px] sm:top-[75px] md:absolute md:right-[75px] md:top-[75px] lg:right-[75px] lg:top-[95px] xl:static">
+        <div className="ml-auto mt-auto flex gap-3 sm:absolute sm:right-[45px] sm:top-[75px] md:absolute md:right-[75px] md:top-[75px] lg:right-[75px] lg:top-[95px] xl:static xl:mt-5">
           <CommonButton variant="secondary" onClick={handleCancelClick}>
             취소
           </CommonButton>
