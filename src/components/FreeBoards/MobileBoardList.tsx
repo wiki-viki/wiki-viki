@@ -19,7 +19,7 @@ const MobileBoardList = ({ boardList, className }: MobileBoardListProps) => {
                 {board.title}
               </h3>
             </Link>
-            <div className="mt-1 flex justify-between text-lg-regular text-grayscale-400">
+            <div className="mt-1 flex justify-between text-md-regular text-grayscale-400">
               <div className="flex gap-3">
                 <span className="max-w-[100px] truncate">{board.writer.name}</span>
                 <span>{dateToString(board.createdAt)}</span>

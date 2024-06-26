@@ -7,8 +7,9 @@ import { type OrderType } from '@/constants/orderOption';
 import SearchBar from '@/components/common/SearchBar';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
+import { NoSearch } from '@/components/WikiList';
 
-// 게시물 목록 가져오기
+// 게시물 가져오기 SSR
 export const getServerSideProps = async () => {
   try {
     const [bestBoardList, boardList] = await Promise.all([
@@ -37,6 +38,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
+  const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
 
   const handlePage = (value: number) => {
@@ -58,18 +60,18 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   };
 
   const handleSubmitKeyword = () => {
-    console.log(keyword);
+    setKeyword(inputValue);
   };
 
-  const fetchArticleData = async (page: number, orderBy: OrderType) => {
-    const res = await getArticle({ page, orderBy });
+  const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
+    const res = await getArticle({ page, orderBy, keyword });
     setBoardListData(res);
     console.log('실행됨');
   };
 
   useEffect(() => {
-    fetchArticleData(page, orderBy);
-  }, [page, orderBy]);
+    fetchArticleData(page, orderBy, keyword);
+  }, [page, orderBy, keyword]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
@@ -87,7 +89,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
               <SearchBar
                 placeholder="제목을 검색해주세요"
                 onSearchItem={(value) => {
-                  setKeyword(value);
+                  setInputValue(value);
                 }}
                 isDebounce={false}
                 onKeyDown={(e) => {
@@ -106,15 +108,25 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
             />
           </div>
         </div>
-        <BoardList className="hidden md:table" boardList={boardListData.list} />
-        <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+        {boardListData.totalCount === 0 ? (
+          <div className="mt-10">
+            <NoSearch keyword={keyword} />
+          </div>
+        ) : (
+          <>
+            <BoardList className="hidden md:table" boardList={boardListData.list} />
+            <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+          </>
+        )}
         <div className="center my-[60px]">
-          <Pagination
-            totalCount={boardListData.totalCount}
-            pageSize={PAGE_SIZE}
-            page={page}
-            handlePage={handlePage}
-          />
+          {boardListData.totalCount > PAGE_SIZE && (
+            <Pagination
+              totalCount={boardListData.totalCount}
+              pageSize={PAGE_SIZE}
+              page={page}
+              handlePage={handlePage}
+            />
+          )}
         </div>
       </section>
     </main>
