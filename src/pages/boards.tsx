@@ -1,15 +1,19 @@
 import React, { KeyboardEvent, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { BoardList, DropDown, MobileBoardList, BestBoardContainer } from '@/components/FreeBoards';
+import {
+  BoardList,
+  MobileBoardList,
+  BestBoardContainer,
+  BoardFilterBar,
+} from '@/components/FreeBoards';
 import CommonButton from '@/components/common/CommonButton';
 import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
-import SearchBar from '@/components/common/SearchBar';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
 import { NoSearch } from '@/components/WikiList';
 
-// 게시물 가져오기 SSR
+// 베스트 게시물, 게시물 목록 가져오기 [SSR]
 export const getServerSideProps = async () => {
   try {
     const [bestBoardList, boardList] = await Promise.all([
@@ -41,14 +45,6 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
 
-  const handlePage = (value: number) => {
-    setPage(value);
-  };
-
-  const handleClickOrderType = (value: OrderType) => {
-    setOrderBy(value);
-  };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) {
       return;
@@ -66,7 +62,6 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
     const res = await getArticle({ page, orderBy, keyword });
     setBoardListData(res);
-    console.log('실행됨');
   };
 
   useEffect(() => {
@@ -83,31 +78,12 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
       </div>
       <BestBoardContainer boardList={bestBoardList} />
       <section>
-        <div className="mt-[40px] flex w-full flex-col justify-between gap-4 md:mt-[60px] md:flex-row lg:gap-[20px]">
-          <div className="flex w-full justify-between gap-4 lg:gap-[20px]">
-            <div className="flex-1">
-              <SearchBar
-                placeholder="제목을 검색해주세요"
-                onSearchItem={(value) => {
-                  setInputValue(value);
-                }}
-                isDebounce={false}
-                onKeyDown={(e) => {
-                  handleKeyDown(e);
-                }}
-              />
-            </div>
-            <CommonButton variant="primary" onClick={handleSubmitKeyword}>
-              검색
-            </CommonButton>
-          </div>
-          <div>
-            <DropDown
-              options={[{ label: 'recent' }, { label: 'like' }]}
-              handleClickItem={handleClickOrderType}
-            />
-          </div>
-        </div>
+        <BoardFilterBar
+          setInputValue={setInputValue}
+          handleKeyDown={handleKeyDown}
+          handleSubmitKeyword={handleSubmitKeyword}
+          setOrderBy={setOrderBy}
+        />
         {boardListData.totalCount === 0 ? (
           <div className="mt-10">
             <NoSearch keyword={keyword} />
@@ -124,7 +100,9 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
               totalCount={boardListData.totalCount}
               pageSize={PAGE_SIZE}
               page={page}
-              handlePage={handlePage}
+              handlePage={(value) => {
+                setPage(value);
+              }}
             />
           )}
         </div>
