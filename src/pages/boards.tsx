@@ -108,16 +108,14 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
           </>
         )}
         <div className="center my-[60px]">
-          {boardListData.totalCount > PAGE_SIZE && (
-            <Pagination
-              totalCount={boardListData.totalCount}
-              pageSize={PAGE_SIZE}
-              page={page}
-              handlePage={(value) => {
-                setPage(value);
-              }}
-            />
-          )}
+          <Pagination
+            totalCount={boardListData.totalCount}
+            pageSize={PAGE_SIZE}
+            page={page}
+            handlePage={(value) => {
+              setPage(value);
+            }}
+          />
         </div>
       </section>
     </main>
