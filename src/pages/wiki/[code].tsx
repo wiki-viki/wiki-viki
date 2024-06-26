@@ -3,10 +3,13 @@ import { useRouter } from 'next/router';
 import UserProfile from '@/components/Profiles/UserProfile';
 import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
-import LinkButton from '@/components/common/LinkButton';
-import { WIKI_BASE_URL } from '@/constants/url';
 import useBoolean from '@/hooks/useBoolean';
 import Modal from '@/components/common/Modal';
+import CopyLinkButton from '@/components/common/CopyLinkButton';
+import { WIKI_BASE_URL } from '@/constants/url';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
+
 import mockData from '../../../public/profileMockData.json';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
@@ -20,6 +23,8 @@ const UserWikiPage: React.FC = () => {
 
   return (
     <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative">
+      <StyledToastContainer limit={1} />
+
       <div className="mb-5 flex w-full items-center justify-between">
         <h1 className="text-3_5xl-bold text-grayscale-500">{mockData.name}</h1>
         {mockData.content && (
@@ -30,7 +35,7 @@ const UserWikiPage: React.FC = () => {
       </div>
 
       <div className="mb-5 flex w-full justify-start">
-        <LinkButton url={URL} />
+        <CopyLinkButton url={URL} />
       </div>
 
       <UserProfile {...mockData} />
