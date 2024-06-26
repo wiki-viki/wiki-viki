@@ -1,22 +1,35 @@
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useIsLogin from '@/hooks/useIsLogin';
 import useBoolean from '@/hooks/useBoolean';
-import useIsMobile from '@/hooks/useIsMobile';
 import Logo from '../../../../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '../../../../public/svg/notification.svg';
 import ProfileIcon from '../../../../public/svg/profile.svg';
 import HamburgerIcon from '../../../../public/svg/hamburger.svg';
 import UserMenu from './UserMenu';
+import AuthUserMenu from './AuthUserMenu';
 
 const TopNavigationBar = () => {
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const { pathname } = useRouter();
   const isLogin = useIsLogin();
-  const isMobile = useIsMobile();
-  const { value, handleOff, handleOn } = useBoolean();
+  const { value: isMenuOpen, handleOff: menuClose, handleToggle: menuToggle } = useBoolean();
 
   const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
   const activeLinkClassNames = 'font-bold text-primary-green-300';
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        menuClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuClose, isMenuOpen]);
 
   return (
     <header className="fixed z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
@@ -43,7 +56,10 @@ const TopNavigationBar = () => {
         {isLogin ? (
           <>
             <NotifyIcon width={24} height={24} className="cursor-pointer" />
-            <ProfileIcon onClick={handleOn} width={24} height={24} className="cursor-pointer" />
+            <div ref={menuRef}>
+              <ProfileIcon onClick={menuToggle} width={24} height={24} className="cursor-pointer" />
+            </div>
+            <AuthUserMenu isOpen={isMenuOpen} />
           </>
         ) : (
           <>
@@ -53,13 +69,13 @@ const TopNavigationBar = () => {
             >
               로그인
             </Link>
-            <div className="cursor-pointer md:hidden" onClick={handleOn}>
-              <HamburgerIcon />
+            <div ref={menuRef} className="cursor-pointer md:hidden">
+              <HamburgerIcon onClick={menuToggle} />
             </div>
+            <UserMenu isOpen={isMenuOpen} />
           </>
         )}
       </div>
-      {(!isMobile && !isLogin) || <UserMenu isOpen={value} onClose={handleOff} />}
     </header>
   );
 };
