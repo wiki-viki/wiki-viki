@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BoardList, DropDown, MobileBoardList, BestBoardContainer } from '@/components/FreeBoards';
 import CommonButton from '@/components/common/CommonButton';
@@ -7,39 +7,44 @@ import { type OrderType } from '@/constants/orderOption';
 import SearchBar from '@/components/common/SearchBar';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
-import testData from '../../public/data/boards.json';
 
-// 베스트 게시글 가져오기 ISR
-export const getStaticProps = async () => {
-  const res = await getArticle({ pageSize: 4, orderBy: 'like' });
-  const bestBoardList = res;
-
-  return {
-    props: {
-      bestBoardList,
-    },
-    revalidate: 60,
-  };
+// 게시물 목록 가져오기
+export const getServerSideProps = async () => {
+  try {
+    const [bestBoardList, boardList] = await Promise.all([
+      getArticle({ pageSize: 4, orderBy: 'like' }),
+      getArticle({}),
+    ]);
+    return {
+      props: {
+        bestBoardList,
+        boardList,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const PAGE_SIZE = 10;
 
 interface BoardsProps {
   bestBoardList: ArticleListResponse;
+  boardList: ArticleListResponse;
 }
 
-const Boards = ({ bestBoardList }: BoardsProps) => {
+const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
+  const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
-  const [order, setOrder] = useState<OrderType>('recent');
+  const [orderBy, setOrderBy] = useState<OrderType>('recent');
   const [keyword, setKeyword] = useState('');
 
   const handlePage = (value: number) => {
     setPage(value);
   };
 
-  const handleClickItem = (value: OrderType) => {
-    console.log(order);
-    setOrder(value);
+  const handleClickOrderType = (value: OrderType) => {
+    setOrderBy(value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -55,6 +60,16 @@ const Boards = ({ bestBoardList }: BoardsProps) => {
   const handleSubmitKeyword = () => {
     console.log(keyword);
   };
+
+  const fetchArticleData = async (page: number, orderBy: OrderType) => {
+    const res = await getArticle({ page, orderBy });
+    setBoardListData(res);
+    console.log('실행됨');
+  };
+
+  useEffect(() => {
+    fetchArticleData(page, orderBy);
+  }, [page, orderBy]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
@@ -87,21 +102,15 @@ const Boards = ({ bestBoardList }: BoardsProps) => {
           <div>
             <DropDown
               options={[{ label: 'recent' }, { label: 'like' }]}
-              handleClickItem={handleClickItem}
+              handleClickItem={handleClickOrderType}
             />
           </div>
         </div>
-        <BoardList
-          className="hidden md:table"
-          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
-        />
-        <MobileBoardList
-          className="md:hidden"
-          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
-        />
+        <BoardList className="hidden md:table" boardList={boardListData.list} />
+        <MobileBoardList className="md:hidden" boardList={boardListData.list} />
         <div className="center my-[60px]">
           <Pagination
-            totalCount={testData.totalCount}
+            totalCount={boardListData.totalCount}
             pageSize={PAGE_SIZE}
             page={page}
             handlePage={handlePage}
