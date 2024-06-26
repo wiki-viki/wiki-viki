@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState, useEffect } from 'react';
+import React, { KeyboardEvent, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
   BoardList,
@@ -13,12 +13,14 @@ import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
 import { NoSearch } from '@/components/WikiList';
 
+const PAGE_SIZE = 10;
+
 // 베스트 게시물, 게시물 목록 가져오기 [SSR]
 export const getServerSideProps = async () => {
   try {
     const [bestBoardList, boardList] = await Promise.all([
       getArticle({ pageSize: 4, orderBy: 'like' }),
-      getArticle({}),
+      getArticle({ pageSize: PAGE_SIZE }),
     ]);
     return {
       props: {
@@ -35,14 +37,13 @@ export const getServerSideProps = async () => {
   }
 };
 
-const PAGE_SIZE = 10;
-
 interface BoardsProps {
   bestBoardList: ArticleListResponse;
   boardList: ArticleListResponse;
 }
 
 const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
+  const isInitialRender = useRef(true);
   const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
@@ -65,8 +66,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
 
   const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
     try {
-      const res = await getArticle({ page, orderBy, keyword });
-      console.log('실행');
+      const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
       setBoardListData(res);
     } catch (error) {
       console.error('에러 처리 어떻게 하면 좋을까요?');
@@ -74,6 +74,10 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     fetchArticleData(page, orderBy, keyword);
   }, [page, orderBy, keyword]);
 
