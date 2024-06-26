@@ -61,6 +61,7 @@ const SignUpPage = () => {
 
   return (
     <AuthContainer title="회원가입">
+      {isLoading && <p>로딩중</p>}
       {isError && <p className="center">{errorMessage()}</p>}
       <form onSubmit={onSubmit}>
         <AuthInputWithLabel

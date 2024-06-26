@@ -2,7 +2,7 @@ import useAxiosFetch from '@/hooks/useAxiosFetch';
 
 const TestInterceptor = () => {
 
-  const { data, isLoading, isError, axiosFetch } = useAxiosFetch({
+  useAxiosFetch({
     skip: false,
     options: {
       method: 'get',
