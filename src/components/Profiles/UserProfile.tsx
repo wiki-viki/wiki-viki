@@ -43,7 +43,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow ${isEditing ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:sticky xl:bottom-[150px] xl:mb-6 xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10`}
+        className={`profile-shadow ${isEditing ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
       >
         <div className={`flex w-full ${isEditing ? 'flex-col gap-5' : ''} xl:flex-col`}>
           {isEditing ? (
