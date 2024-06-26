@@ -55,13 +55,18 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      setKeyword(inputValue);
+      handleSubmitKeyword();
     }
+  };
+
+  const handleSubmitKeyword = () => {
+    setKeyword(inputValue.trim());
   };
 
   const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
     try {
       const res = await getArticle({ page, orderBy, keyword });
+      console.log('실행');
       setBoardListData(res);
     } catch (error) {
       console.error('에러 처리 어떻게 하면 좋을까요?');
@@ -85,9 +90,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
         <BoardFilterBar
           setInputValue={setInputValue}
           handleKeyDown={handleKeyDown}
-          handleSubmitKeyword={() => {
-            setKeyword(inputValue);
-          }}
+          handleSubmitKeyword={handleSubmitKeyword}
           setOrderBy={setOrderBy}
         />
         {boardListData.totalCount === 0 ? (
