@@ -41,12 +41,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow xl:center flex w-full flex-col justify-start rounded-10 bg-white p-5 xl:sticky xl:top-[110px] xl:ml-auto xl:h-[671px] xl:w-[320px] xl:p-10`}
+        className={`profile-shadow xl:center flex w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:sticky xl:bottom-16 xl:top-[110px] xl:ml-auto xl:h-[671px] xl:w-[320px] xl:p-10`}
       >
         <div className="flex w-full xl:flex-col">
           <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-12 xl:size-[200px]">
             <Image
-              src={image}
+              src={image ? image : '/images/basic_profile.png'}
               sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
               fill
               priority

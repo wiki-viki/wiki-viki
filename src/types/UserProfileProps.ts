@@ -7,6 +7,5 @@ export interface UserProfileProps {
   job: string;
   mbti: string;
   city: string;
-  image: string;
-  expandIcon?: React.ReactNode;
+  image: string | null;
 }
