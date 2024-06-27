@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cardType } from '@/types/UserCardProps';
 import { WIKI_BASE_URL } from '@/constants/url';
+import BasicProfileImage from '@/../public/images/basic_profile.png';
 import CopyLinkButton from '../common/CopyLinkButton';
 
 interface CardListProps {
@@ -24,9 +25,15 @@ const UserCard = ({ cardList }: CardListProps) => {
             <Link href={`/wiki/${card.name}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className=" relative size-[85px] rounded-full ">
-                    <Image src={card.image} alt="프로필 이미지" layout="fill" />
-                  </div>
+                  {card.image ? (
+                    <div className=" relative size-[85px] rounded-full ">
+                      <Image src={card.image} alt="프로필 이미지" layout="fill" />
+                    </div>
+                  ) : (
+                    <div className=" relative size-[85px] rounded-full ">
+                      <Image src={BasicProfileImage} alt="기본 프로필 이미지" layout="fill" />
+                    </div>
+                  )}
                   <div className="ml-8 text-grayscale-400 ">
                     <h3 className="truncate text-2xl-semibold text-grayscale-500 sm:text-xl-semibold">
                       {card.name}
