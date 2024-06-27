@@ -5,18 +5,20 @@ import ToastSelect from '@/components/common/ToastSelect';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import SearchBar from '@/components/common/SearchBar';
+import { ToastType, CopyLinkMessage, UneditableMessage, NotificationMessage } from '@/types/toast';
 
 const url = 'https://www.youtube.com/';
 
 const Test3 = () => {
-  const [type, setType] = useState('check');
+  const [type, setType] = useState<ToastType>('check');
+  const [message, setMessage] = useState('');
 
-  const handleTypeChange = (e: string) => {
-    setType(e);
+  const handleToastChange = (type: ToastType) => {
+    setType(type);
   };
 
   const handleShowToast = () => {
-    ToastSelect({ type });
+    ToastSelect({ type, message });
   };
 
   const [keyword, setKeyword] = useState('');
@@ -39,24 +41,27 @@ const Test3 = () => {
 
       <div> 현재 type : {type}</div>
 
-      <div className=" m-5">
+      <div className="flex">
         <button
+          className="m-5"
           onClick={() => {
-            handleTypeChange('notification');
+            handleToastChange('notification'), setMessage(NotificationMessage);
           }}
         >
           Notification
         </button>
         <button
+          className="m-5"
           onClick={() => {
-            handleTypeChange('check');
+            handleToastChange('check'), setMessage(CopyLinkMessage);
           }}
         >
           check
         </button>
         <button
+          className="m-5"
           onClick={() => {
-            handleTypeChange('error');
+            handleToastChange('error'), setMessage(UneditableMessage);
           }}
         >
           Error
