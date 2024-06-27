@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useIsLogin from '@/hooks/useIsLogin';
 import useBoolean from '@/hooks/useBoolean';
+import { useUserStore } from '@/store/userStore';
 import Logo from '../../../../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '../../../../public/svg/notification.svg';
 import ProfileIcon from '../../../../public/svg/profile.svg';
@@ -16,7 +16,7 @@ const activeLinkClassNames = 'font-bold text-primary-green-300';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
-  const isLogin = useIsLogin();
+  const { isLogin, checkLogin } = useUserStore();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
@@ -25,6 +25,10 @@ const TopNavigationBar = () => {
   const noticeRef = useRef<HTMLDivElement | null>(null);
   const noticeContainerRef = useRef<HTMLDivElement | null>(null);
   const { value: isNoticeOpen, handleOff: noticeClose, handleToggle: noticeToggle } = useBoolean();
+
+  useEffect(() => {
+    checkLogin();
+  }, [checkLogin]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
