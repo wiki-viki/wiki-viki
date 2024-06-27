@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useIsLogin from '@/hooks/useIsLogin';
@@ -7,15 +8,48 @@ import NotifyIcon from '../../../../public/svg/notification.svg';
 import ProfileIcon from '../../../../public/svg/profile.svg';
 import HamburgerIcon from '../../../../public/svg/hamburger.svg';
 import UserMenu from './UserMenu';
-import HamburgerMenu from './HamburgerMenu';
+import AuthUserMenu from './AuthUserMenu';
+import NoticeMenu from './NoticeMenu';
+
+const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
+const activeLinkClassNames = 'font-bold text-primary-green-300';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
   const isLogin = useIsLogin();
-  const { value, handleOn, handleOff } = useBoolean();
 
-  const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
-  const activeLinkClassNames = 'font-bold text-primary-green-300';
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuContainerRef = useRef<HTMLDivElement | null>(null);
+  const { value: isMenuOpen, handleOff: menuClose, handleToggle: menuToggle } = useBoolean();
+
+  const noticeRef = useRef<HTMLDivElement | null>(null);
+  const noticeContainerRef = useRef<HTMLDivElement | null>(null);
+  const { value: isNoticeOpen, handleOff: noticeClose, handleToggle: noticeToggle } = useBoolean();
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        menuContainerRef.current &&
+        !menuContainerRef.current.contains(e.target as Node)
+      ) {
+        menuClose();
+      }
+      if (
+        noticeRef.current &&
+        !noticeRef.current.contains(e.target as Node) &&
+        noticeContainerRef.current &&
+        !noticeContainerRef.current.contains(e.target as Node)
+      ) {
+        noticeClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuClose, noticeClose]);
 
   return (
     <header className="fixed z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
@@ -38,11 +72,23 @@ const TopNavigationBar = () => {
           </ul>
         </nav>
       </div>
-      <div className="flex gap-6">
+      <div>
         {isLogin ? (
           <>
-            <NotifyIcon width={24} height={24} className="cursor-pointer" />
-            <ProfileIcon onClick={handleOn} width={24} height={24} className="cursor-pointer" />
+            <div className="flex gap-6">
+              <div ref={noticeRef} onClick={noticeToggle}>
+                <NotifyIcon width={24} height={24} className="cursor-pointer" />
+              </div>
+              <div ref={menuRef} onClick={menuToggle}>
+                <ProfileIcon width={24} height={24} className="cursor-pointer"></ProfileIcon>
+              </div>
+            </div>
+            <div ref={menuContainerRef}>
+              <AuthUserMenu isOpen={isMenuOpen} handleClose={menuClose} />
+            </div>
+            <div ref={noticeContainerRef}>
+              <NoticeMenu handleClose={noticeClose} isOpen={isNoticeOpen} />
+            </div>
           </>
         ) : (
           <>
@@ -52,14 +98,15 @@ const TopNavigationBar = () => {
             >
               로그인
             </Link>
-            <div className="cursor-pointer md:hidden" onClick={handleOn}>
+            <div ref={menuRef} onClick={menuToggle} className="cursor-pointer md:hidden">
               <HamburgerIcon />
+            </div>
+            <div ref={menuContainerRef}>
+              <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
             </div>
           </>
         )}
       </div>
-      {isLogin && <UserMenu className="hidden md:block" isOpen={value} onClose={handleOff} />}
-      <HamburgerMenu className="md:hidden" isOpen={value} onClose={handleOff} isLogin={isLogin} />
     </header>
   );
 };
