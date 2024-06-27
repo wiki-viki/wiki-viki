@@ -25,15 +25,13 @@ const UserCard = ({ cardList }: CardListProps) => {
             <Link href={`/wiki/${card.name}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  {card.image ? (
-                    <div className=" relative size-[85px] rounded-full ">
-                      <Image src={card.image} alt="프로필 이미지" layout="fill" />
-                    </div>
-                  ) : (
-                    <div className=" relative size-[85px] rounded-full ">
-                      <Image src={BasicProfileImage} alt="기본 프로필 이미지" layout="fill" />
-                    </div>
-                  )}
+                  <div className=" relative size-[85px] rounded-full ">
+                    <Image
+                      src={card.image || BasicProfileImage}
+                      alt="프로필 이미지"
+                      layout="fill"
+                    />
+                  </div>
                   <div className="ml-8 text-grayscale-400 ">
                     <h3 className="truncate text-2xl-semibold text-grayscale-500 sm:text-xl-semibold">
                       {card.name}
