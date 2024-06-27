@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUserStore } from '@/store/userStore';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
@@ -8,9 +9,11 @@ interface UserMenuProps {
 }
 
 const AuthUserMenu = ({ isOpen, handleClose }: UserMenuProps) => {
+  const { logout } = useUserStore();
+
   const handleClickLogout = () => {
-    // [TODO]
-    // 로그아웃 기능 구현
+    logout();
+    handleClose();
   };
 
   return (
