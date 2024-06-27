@@ -7,6 +7,7 @@ import Logo from '@/../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '@/../public/svg/notification.svg';
 import ProfileIcon from '@/../public/svg/profile.svg';
 import HamburgerIcon from '@/../public/svg/hamburger.svg';
+import useIsMobile from '@/hooks/useIsMobile';
 import UserMenu from './UserMenu';
 import AuthUserMenu from './AuthUserMenu';
 import NoticeMenu from './NoticeMenu';
@@ -17,6 +18,7 @@ const activeLinkClassNames = 'font-bold text-primary-green-300';
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
   const { isLogin, checkLogin } = useUserStore();
+  const isMobile = useIsMobile();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
@@ -61,20 +63,22 @@ const TopNavigationBar = () => {
         <Link href="/" rel="preload">
           <Logo width={107} height={30} />
         </Link>
-        <nav className="hidden md:block">
-          <ul className="flex gap-5 text-md-regular text-grayscale-500 ">
-            <Link href="/wikilist" className={linkClassNames} rel="preload">
-              <li className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}>
-                위키목록
-              </li>
-            </Link>
-            <Link href="/boards" className={linkClassNames} rel="preload">
-              <li className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}>
-                자유게시판
-              </li>
-            </Link>
-          </ul>
-        </nav>
+        {isMobile || (
+          <nav>
+            <ul className="flex gap-5 text-md-regular text-grayscale-500 ">
+              <Link href="/wikilist" className={linkClassNames} rel="preload">
+                <li className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}>
+                  위키목록
+                </li>
+              </Link>
+              <Link href="/boards" className={linkClassNames} rel="preload">
+                <li className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}>
+                  자유게시판
+                </li>
+              </Link>
+            </ul>
+          </nav>
+        )}
       </div>
       <div>
         {isLogin ? (
@@ -88,7 +92,7 @@ const TopNavigationBar = () => {
               </div>
             </div>
             <div ref={menuContainerRef}>
-              <AuthUserMenu isOpen={isMenuOpen} handleClose={menuClose} />
+              <AuthUserMenu isMobile={isMobile} isOpen={isMenuOpen} handleClose={menuClose} />
             </div>
             <div ref={noticeContainerRef}>
               <NoticeMenu handleClose={noticeClose} isOpen={isNoticeOpen} />
@@ -96,19 +100,24 @@ const TopNavigationBar = () => {
           </>
         ) : (
           <>
-            <Link
-              rel="preload"
-              href="/login"
-              className={`${linkClassNames} hidden py-1 text-md-regular text-grayscale-400 md:block`}
-            >
-              로그인
-            </Link>
-            <div ref={menuRef} onClick={menuToggle} className="cursor-pointer md:hidden">
-              <HamburgerIcon />
-            </div>
-            <div ref={menuContainerRef}>
-              <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
-            </div>
+            {isMobile ? (
+              <>
+                <div ref={menuRef} onClick={menuToggle} className="cursor-pointer">
+                  <HamburgerIcon />
+                </div>
+                <div ref={menuContainerRef}>
+                  <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
+                </div>
+              </>
+            ) : (
+              <Link
+                rel="preload"
+                href="/login"
+                className={`${linkClassNames} py-1 text-md-regular text-grayscale-400`}
+              >
+                로그인
+              </Link>
+            )}
           </>
         )}
       </div>
