@@ -12,43 +12,52 @@ import { type OrderType } from '@/constants/orderOption';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
 import { NoSearch } from '@/components/WikiList';
+import CustomError from '@/components/common/CustomError';
 
 const PAGE_SIZE = 10;
 
 // 베스트 게시물, 게시물 목록 가져오기 [SSR]
 export const getServerSideProps = async () => {
   try {
-    const [bestBoardList, boardList] = await Promise.all([
+    const [bestBoardListRes, boardListRes] = await Promise.allSettled([
       getArticle({ pageSize: 4, orderBy: 'like' }),
       getArticle({ pageSize: PAGE_SIZE }),
     ]);
+
+    const bestBoardListError = bestBoardListRes.status === 'rejected';
+    const boardListError = boardListRes.status === 'rejected';
+
+    const bestBoardList = bestBoardListError ? null : bestBoardListRes.value;
+    const boardList = boardListError ? null : boardListRes.value;
+
     return {
       props: {
+        bestBoardListError,
+        boardListError,
         bestBoardList,
         boardList,
       },
     };
   } catch (error) {
-    console.log(error);
-    console.log('에러처리 어떻게 하면 좋을까요?');
-    return {
-      props: { error },
-    };
+    console.error(error);
   }
 };
 
 interface BoardsProps {
+  bestBoardListError: boolean;
+  boardListError: boolean;
   bestBoardList: ArticleListResponse;
   boardList: ArticleListResponse;
 }
 
-const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
+const Boards = ({ bestBoardListError, boardListError, bestBoardList, boardList }: BoardsProps) => {
   const isInitialRender = useRef(true);
   const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
   const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
+  const [boardError, setBoardError] = useState<boolean>(boardListError);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -70,7 +79,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
       const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
       setBoardListData(res);
     } catch (error) {
-      console.error('에러 처리 어떻게 하면 좋을까요?');
+      setBoardError(true);
     }
   };
 
@@ -90,7 +99,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
           <CommonButton variant="primary">게시물 등록하기</CommonButton>
         </Link>
       </div>
-      <BestBoardContainer boardList={bestBoardList} />
+      {bestBoardListError ? <CustomError /> : <BestBoardContainer boardList={bestBoardList} />}
       <section>
         <BoardFilterBar
           setInputValue={setInputValue}
@@ -98,26 +107,34 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
           handleSubmitKeyword={handleSubmitKeyword}
           setOrderBy={setOrderBy}
         />
-        {boardListData.totalCount === 0 ? (
-          <div className="mt-10">
-            <NoSearch keyword={keyword} />
+        {boardError ? (
+          <div className="my-10">
+            <CustomError />
           </div>
         ) : (
           <>
-            <BoardList className="hidden md:table" boardList={boardListData.list} />
-            <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+            {boardListData.totalCount === 0 ? (
+              <div className="my-10">
+                <NoSearch keyword={keyword} />
+              </div>
+            ) : (
+              <>
+                <BoardList className="hidden md:table" boardList={boardListData.list} />
+                <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+                <div className="center my-[60px]">
+                  <Pagination
+                    totalCount={boardListData.totalCount}
+                    pageSize={PAGE_SIZE}
+                    page={page}
+                    handlePage={(value) => {
+                      setPage(value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
-        <div className="center my-[60px]">
-          <Pagination
-            totalCount={boardListData.totalCount}
-            pageSize={PAGE_SIZE}
-            page={page}
-            handlePage={(value) => {
-              setPage(value);
-            }}
-          />
-        </div>
       </section>
     </main>
   );
