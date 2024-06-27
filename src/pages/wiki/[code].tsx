@@ -9,7 +9,6 @@ import CopyLinkButton from '@/components/common/CopyLinkButton';
 import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
-
 import mockData from '../../../public/profileMockData.json';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
@@ -53,7 +52,7 @@ const UserWikiPage: React.FC = () => {
       </div>
 
       <Modal isOpen={value} onClose={handleOff}>
-        <QuizModalTemplete />
+        <QuizModalTemplete onClose={handleOff} />
       </Modal>
     </div>
   );
