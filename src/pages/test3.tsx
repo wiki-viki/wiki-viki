@@ -67,6 +67,24 @@ const Test3 = () => {
           Error
         </button>
 
+        <button
+          className="m-5"
+          onClick={() => {
+            handleToastChange('check'), setMessage('예시문구한번넣어볼게요!');
+          }}
+        >
+          예시문구한번넣어볼게요!
+        </button>
+
+        <button
+          className="m-5"
+          onClick={() => {
+            handleToastChange('notification'), setMessage('과연될지모르겠네요 ㅠ');
+          }}
+        >
+          과연될지모르겠네요 ㅠ
+        </button>
+
         <button onClick={handleShowToast}>Click me</button>
         <StyledToastContainer limit={1} transition={Zoom} />
       </div>
