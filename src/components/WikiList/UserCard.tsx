@@ -21,17 +21,12 @@ const UserCard = ({ cardList }: CardListProps) => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15 }}
           >
-            <Link href={`/wiki/${card.code}`} rel="preload">
+            <Link href={`/wiki/${card.name}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Image
-                    className="rounded-full border-2 sm:size-[60px]"
-                    src={card.image}
-                    alt="프로필 이미지"
-                    width={85}
-                    height={85}
-                  />
-
+                  <div className=" relative size-[85px] rounded-full ">
+                    <Image src={card.image} alt="프로필 이미지" layout="fill" />
+                  </div>
                   <div className="ml-8 text-grayscale-400 ">
                     <h3 className="truncate text-2xl-semibold text-grayscale-500 sm:text-xl-semibold">
                       {card.name}
@@ -45,7 +40,7 @@ const UserCard = ({ cardList }: CardListProps) => {
               </div>
             </Link>
             <div className="absolute bottom-0 right-0 mb-6 mr-9 ">
-              <CopyLinkButton url={`${WIKI_BASE_URL}${card.code}`} />
+              <CopyLinkButton url={`${WIKI_BASE_URL}${card.name}`} />
             </div>
           </motion.div>
         );
