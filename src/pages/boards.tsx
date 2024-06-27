@@ -1,33 +1,57 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
-  BoardCard,
-  BoardCarousel,
   BoardList,
-  DropDown,
   MobileBoardList,
+  BestBoardContainer,
+  BoardFilterBar,
 } from '@/components/FreeBoards';
 import CommonButton from '@/components/common/CommonButton';
 import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
-import SearchBar from '@/components/common/SearchBar';
-import testData from '../../public/data/boards.json';
+import { getArticle } from '@/lib/apis/article/articleApi.api';
+import { ArticleListResponse } from '@/types/apiType';
+import { NoSearch } from '@/components/WikiList';
 
 const PAGE_SIZE = 10;
 
-const Boards = () => {
+// 베스트 게시물, 게시물 목록 가져오기 [SSR]
+export const getServerSideProps = async () => {
+  try {
+    const [bestBoardList, boardList] = await Promise.all([
+      getArticle({ pageSize: 4, orderBy: 'like' }),
+      getArticle({ pageSize: PAGE_SIZE }),
+    ]);
+    return {
+      props: {
+        bestBoardList,
+        boardList,
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
+    };
+  }
+};
+
+interface BoardsProps {
+  bestBoardList: ArticleListResponse;
+  boardList: ArticleListResponse;
+}
+
+const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
+  const router = useRouter();
+  const isInitialRender = useRef(true);
+  const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
-  const [order, setOrder] = useState<OrderType>('recent');
+  const [orderBy, setOrderBy] = useState<OrderType>('recent');
+  const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
-
-  const handlePage = (value: number) => {
-    setPage(value);
-  };
-
-  const handleClickItem = (value: OrderType) => {
-    console.log(order);
-    setOrder(value);
-  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -40,8 +64,27 @@ const Boards = () => {
   };
 
   const handleSubmitKeyword = () => {
-    console.log(keyword);
+    setKeyword(inputValue.trim());
+    setPage(1);
   };
+
+  const fetchArticleData = async (page: number, orderBy: OrderType, keyword: string) => {
+    try {
+      const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
+      setBoardListData(res);
+    } catch (error) {
+      router.push('/500');
+    }
+  };
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    fetchArticleData(page, orderBy, keyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, orderBy, keyword]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
@@ -51,60 +94,36 @@ const Boards = () => {
           <CommonButton variant="primary">게시물 등록하기</CommonButton>
         </Link>
       </div>
-      <section className="hidden w-full grid-cols-2 gap-4 md:grid lg:grid-cols-4">
-        {testData.list.slice(0, 4).map((board) => {
-          return <BoardCard key={board.id} board={board} />;
-        })}
-      </section>
-      <section className="w-full md:hidden">
-        <BoardCarousel>
-          {testData.list.slice(0, 4).map((board) => {
-            return <BoardCard key={board.id} board={board} />;
-          })}
-        </BoardCarousel>
-      </section>
+      <BestBoardContainer boardList={bestBoardList} />
       <section>
-        <div className="mt-[40px] flex w-full flex-col justify-between gap-4 md:mt-[60px] md:flex-row lg:gap-[20px]">
-          <div className="flex w-full justify-between gap-4 lg:gap-[20px]">
-            <div className="flex-1">
-              <SearchBar
-                placeholder="제목을 검색해주세요"
-                onSearchItem={(value) => {
-                  setKeyword(value);
-                }}
-                isDebounce={false}
-                onKeyDown={(e) => {
-                  handleKeyDown(e);
-                }}
-              />
+        <BoardFilterBar
+          setInputValue={setInputValue}
+          handleKeyDown={handleKeyDown}
+          handleSubmitKeyword={handleSubmitKeyword}
+          setOrderBy={setOrderBy}
+        />
+        <>
+          {boardListData.totalCount === 0 ? (
+            <div className="my-10">
+              <NoSearch keyword={keyword} />
             </div>
-            <CommonButton variant="primary" onClick={handleSubmitKeyword}>
-              검색
-            </CommonButton>
-          </div>
-          <div>
-            <DropDown
-              options={[{ label: 'recent' }, { label: 'like' }]}
-              handleClickItem={handleClickItem}
-            />
-          </div>
-        </div>
-        <BoardList
-          className="hidden md:table"
-          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
-        />
-        <MobileBoardList
-          className="md:hidden"
-          boardList={testData.list.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)}
-        />
-        <div className="center my-[60px]">
-          <Pagination
-            totalCount={testData.totalCount}
-            pageSize={PAGE_SIZE}
-            page={page}
-            handlePage={handlePage}
-          />
-        </div>
+          ) : (
+            <>
+              <BoardList className="hidden md:table" boardList={boardListData.list} />
+              <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+              <div className="center my-[60px]">
+                <Pagination
+                  totalCount={boardListData.totalCount}
+                  pageSize={PAGE_SIZE}
+                  page={page}
+                  handlePage={(value) => {
+                    setPage(value);
+                  }}
+                />
+              </div>
+            </>
+          )}
+        </>
       </section>
     </main>
   );
