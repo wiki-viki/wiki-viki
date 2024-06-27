@@ -29,20 +29,17 @@ const AuthInputWithLabel = <T extends FieldValues>({
 
   return (
     <div className="mb-6 flex flex-col gap-2.5">
-      <Label htmlFor={id} label={label} className="label" />
-      <div className="relative">
+      <div className="authContainer">
         <Input
           id={id}
           type={inputType}
           {...props}
           {...register(name, rules)}
-          className={`input ${hasError ? 'bg-secondary-red-100' : ''}`}
+          className={`input ${hasError ? 'inputError' : ''}`}
         />
+        <Label htmlFor={id} label={label} className={`label ${hasError && 'labelError'}`} />
         {type === 'password' && (
-          <span
-            className={`checkPassword ${hasError ? 'top-1/3' : ''}`}
-            onClick={handleIconClick}
-          >
+          <span className={`checkPassword ${hasError ? 'top-1/3' : ''}`} onClick={handleIconClick}>
             {showPassWord ? <UnLockIcon /> : <LockIcon />}
           </span>
         )}
