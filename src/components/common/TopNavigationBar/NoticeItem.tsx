@@ -14,13 +14,13 @@ const NoticeItem = ({ item }: NoticeItemProps) => {
   };
 
   return (
-    <div className="flex flex-col rounded-md border px-2 py-1">
+    <div className="flex flex-col rounded-md border bg-white px-2 py-3 md:px-3 md:py-4">
       <div className="flex items-center justify-between">
-        <div>·</div>
+        <div className="text-red-600">•</div>
         <DeleteIcon onClick={handleClickDelete} className="cursor-pointer" />
       </div>
-      <span>{item.content}</span>
-      <span>{timeDiff(item.createdAt)}</span>
+      <span className="text-sm-semibold md:text-md-semibold">{item.content}</span>
+      <span className="text-xs-regular text-grayscale-300">{timeDiff(item.createdAt)}</span>
     </div>
   );
 };
