@@ -62,10 +62,10 @@ export interface ProfileResponse {
   job: string;
   nationality: string;
   city: string;
-  image: ImageType;
+  image: string;
   code: string;
   name: string;
-  id: 1;
+  id: number;
 }
 
 export interface ProfileListResponse {
