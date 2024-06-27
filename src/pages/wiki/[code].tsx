@@ -58,7 +58,7 @@ const UserWikiPage: React.FC = () => {
       >
         {mockData.content === null
           ? isEditing || (
-              <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-14 md:h-[192px]">
+              <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px]">
                 <p className={noContentClassName}>아직 작성된 내용이 없네요.</p>
                 <p className={noContentClassName}>위키에 참여해보세요!</p>
                 <CommonButton
