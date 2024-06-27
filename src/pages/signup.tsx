@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
@@ -7,6 +6,7 @@ import CommonButton from '@/components/common/CommonButton';
 import { EMAIL_REGEX } from '@/constants/regex';
 import {
   REQUIRED_MESSAGE,
+  NAME_MAX_LENGTH_MESSAGE,
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
@@ -23,10 +23,9 @@ const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    setFocus,
+    watch,
     formState: { errors, isValid },
-  } = useForm<DefaultFormData>({ mode: 'onBlur' });
+  } = useForm<DefaultFormData>({ mode: 'onChange' });
 
   const { isLoading, isError, statusCode, axiosFetch } = useAxiosFetch({
     skip: true,
@@ -55,9 +54,7 @@ const SignUpPage = () => {
     return null;
   };
 
-  useEffect(() => {
-    setFocus('name');
-  }, [setFocus]);
+  const password = watch('password');
 
   return (
     <>
@@ -74,6 +71,10 @@ const SignUpPage = () => {
             register={register}
             rules={{
               required: REQUIRED_MESSAGE,
+              maxLength: {
+                value: 10,
+                message: NAME_MAX_LENGTH_MESSAGE,
+              },
             }}
             errors={errors}
           />
@@ -120,7 +121,7 @@ const SignUpPage = () => {
                 message: PASSWORD_MIN_LENGTH_MESSAGE,
               },
               validate: (value) => {
-                return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
+                return value === password || PASSWORD_MISMATCH_MESSAGE;
               },
             }}
             errors={errors}
