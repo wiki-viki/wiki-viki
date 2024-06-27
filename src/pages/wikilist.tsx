@@ -3,23 +3,19 @@ import { Zoom } from 'react-toastify';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import { EmptySearch, SearchLabel, UserCard } from '@/components/WikiList';
-import { searchRegex } from '@/utils/searchRegex';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { getProfiles } from '@/lib/apis/profile/profileApi.api';
-import { ProfileResponse } from '@/types/apiType';
+import { ProfileListResponse } from '@/types/apiType';
 
 const PAGE_SIZE = 3;
 
 export const getServerSideProps = async () => {
   try {
-    const { list, totalCount } = await getProfiles({ pageSize: PAGE_SIZE });
+    const profileList = await getProfiles({ pageSize: PAGE_SIZE });
     return {
       props: {
-        profileList: {
-          list,
-          totalCount,
-        },
+        profileList,
       },
     };
   } catch (error) {
@@ -31,24 +27,20 @@ export const getServerSideProps = async () => {
 };
 
 interface WikiListProps {
-  profileList: {
-    list: ProfileResponse[];
-    totalCount: number;
-  };
+  profileList: ProfileListResponse;
 }
 
 const WikiListPage = ({ profileList }: WikiListProps) => {
   const isInitialRender = useRef(true);
   const [page, setPage] = useState(1);
   const [name, setName] = useState('');
-  const [profileListData, setProfileListData] = useState<ProfileResponse[]>(profileList.list);
-  const [profileListCount, setProfileListCount] = useState(profileList.totalCount);
+  const [profileListData, setProfileListData] = useState<ProfileListResponse>(profileList);
 
-  const fetchProfilesData = async (page: number) => {
+  const fetchProfilesData = async (page: number, name: string) => {
     try {
       const res = await getProfiles({ pageSize: PAGE_SIZE, page, name });
-      setProfileListData(res.list);
-      setProfileListCount(res.totalCount);
+      setProfileListData(res);
+      console.log('fetchdata:', profileListData);
     } catch (error) {
       console.error('error');
     }
@@ -57,16 +49,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   const handleSearchItem = async (name: string) => {
     const processedKeyword = name.replace(/\s/g, '');
     setName(processedKeyword);
-    const filtered = profileListData.filter((item) => {
-      return searchRegex(name, item.name);
-    });
-    setProfileListData(filtered);
-    setProfileListCount(filtered.length);
     setPage(1);
-  };
-
-  const handlePage = (value: number) => {
-    setPage(value);
   };
 
   useEffect(() => {
@@ -74,8 +57,8 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
       isInitialRender.current = false;
       return;
     }
-    fetchProfilesData(page);
-  }, [page, name]);
+    fetchProfilesData(page, name);
+  }, [name, page]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
@@ -84,16 +67,18 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
       </div>
       <section>
-        {profileListCount !== 0 ? (
+        {profileListData.totalCount !== 0 ? (
           <>
-            <SearchLabel name={name} totalCount={profileListCount} />
-            <UserCard cardList={profileListData.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)} />
+            <SearchLabel name={name} totalCount={profileListData.totalCount} />
+            <UserCard cardList={profileListData.list} />
             <div className="center my-[60px]">
               <Pagination
-                totalCount={profileListCount}
+                totalCount={profileListData.totalCount}
                 pageSize={PAGE_SIZE}
                 page={page}
-                handlePage={handlePage}
+                handlePage={(value) => {
+                  setPage(value);
+                }}
               />
             </div>
           </>
