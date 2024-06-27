@@ -2,7 +2,7 @@ import React from 'react';
 import Lottie from 'lottie-react';
 import { motion } from 'framer-motion';
 import LinkIcon from '@/../public/svg/link.svg';
-import { urlRegex } from '@/utils/urlRegex';
+import { urlVaildation } from '@/utils/urlVaildation';
 import ErrorLottie from '@/../public/lottie/error.json';
 import ToastSelect from './ToastSelect';
 
@@ -19,7 +19,7 @@ const CopyLinkButton = ({ url }: CopyLinkButtonProps) => {
     ToastSelect({ type: 'check' });
   };
 
-  if (!urlRegex(url)) {
+  if (!urlVaildation(url)) {
     return (
       <button
         className={`${LinkContainer} cursor-not-allowed bg-secondary-red-100`}
