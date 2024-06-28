@@ -6,10 +6,13 @@ import '@/lib/axiosInterceptor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps, router }: AppProps) => {
+  const noNavBarPages = ['/404', '/500'];
+  const isNoNavBarPage = noNavBarPages.includes(router.pathname);
+
   return (
     <>
-      <TopNavigationBar />
+      {!isNoNavBarPage && <TopNavigationBar />}
       <Wrapper>
         <Component {...pageProps} />
       </Wrapper>

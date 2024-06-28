@@ -26,7 +26,7 @@ const BoardCard = ({ board }: BoardCardProps) => {
           className="absolute rounded-t-10 object-cover"
         />
       </div>
-      <Link href={`/board`} rel="preload">
+      <Link href={`/board/${board.id}`} rel="preload">
         <div className="mx-[19px] mt-[18px] flex flex-col gap-[6px]">
           <h3 className="truncate text-lg-semibold text-grayscale-500 md:text-2lg-semibold">
             {board.title}

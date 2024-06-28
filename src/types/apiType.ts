@@ -1,6 +1,6 @@
 // 자주 사용되는 타입 정의
-type DateType = Date | string;
-type ImageType = string | null;
+export type DateType = Date | string;
+export type ImageType = string | null;
 
 // post, patch 요청 시 FormData 정의
 export type PasswordFormData = {
@@ -62,10 +62,10 @@ export interface ProfileResponse {
   job: string;
   nationality: string;
   city: string;
-  image: ImageType;
+  image: string;
   code: string;
   name: string;
-  id: 1;
+  id: number;
 }
 
 export interface ProfileListResponse {
