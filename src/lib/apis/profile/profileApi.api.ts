@@ -29,6 +29,7 @@ export const getProfiles = async ({
 
   try {
     const res: AxiosResponse<ProfileListResponse> = await axiosDefault.get(`profiles?${params}`);
+    console.log(page, pageSize, name, res.data);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
