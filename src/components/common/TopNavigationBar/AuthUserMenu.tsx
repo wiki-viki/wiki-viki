@@ -1,33 +1,44 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+import { useUserStore } from '@/store/userStore';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
 interface UserMenuProps {
   isOpen: boolean;
   handleClose: () => void;
+  isMobile: boolean;
 }
 
-const AuthUserMenu = ({ isOpen, handleClose }: UserMenuProps) => {
+const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
+  const { logout } = useUserStore();
+  const router = useRouter();
+
   const handleClickLogout = () => {
-    // [TODO]
-    // 로그아웃 기능 구현
+    logout();
+    handleClose();
+    router.push('/');
   };
 
   return (
     <MenuContainer isOpen={isOpen}>
-      <MenuItem
-        onClick={handleClose}
-        title="위키목록"
-        href="/wikilist"
-        className="text-grayscale-600 md:hidden"
-      />
-      <MenuItem
-        onClick={handleClose}
-        title="자유게시판"
-        href="/boards"
-        className="text-grayscale-600 md:hidden"
-      />
-      <div className="mb-2 border-b md:hidden" />
+      {isMobile && (
+        <>
+          <MenuItem
+            onClick={handleClose}
+            title="위키목록"
+            href="/wikilist"
+            className="text-grayscale-600"
+          />
+          <MenuItem
+            onClick={handleClose}
+            title="자유게시판"
+            href="/boards"
+            className="text-grayscale-600"
+          />
+          <div className="mb-2 border-b" />
+        </>
+      )}
       <MenuItem
         onClick={handleClose}
         title="계정 설정"
