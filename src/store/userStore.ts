@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getCookie, deleteCookie } from '@/utils/cookieUtil';
 
 type userInfo = {
   id: number;
@@ -12,19 +13,6 @@ interface userInfoProps {
   checkLogin: () => void; // 로그인 여부 확인 함수
   logout: () => void; // 로그아웃
 }
-
-const getCookie = (name: string) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(';').shift();
-  }
-  return null;
-};
-
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
 
 export const useUserStore = create<userInfoProps>((set) => {
   return {
