@@ -9,7 +9,12 @@ const axiosWithIntercepter = axios.create({
 
 axiosWithIntercepter.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
+    const token = document.cookie
+      .split('; ')
+      .find((row) => {
+        return row.startsWith('accessToken=');
+      })
+      ?.split('=')[1];
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -37,13 +42,18 @@ axiosWithIntercepter.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
+        const refreshToken = document.cookie
+          .split('; ')
+          .find((row) => {
+            return row.startsWith('refreshToken=');
+          })
+          ?.split('=')[1];
         const response = await axios.post(`${API_URL}/auth/refresh-token`, {
           refreshToken: refreshToken,
         });
 
         const newToken = response.data.accessToken;
-        localStorage.setItem('accessToken', newToken);
+        document.cookie = `accessToken=${newToken}`;
 
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return axiosWithIntercepter(originalRequest);

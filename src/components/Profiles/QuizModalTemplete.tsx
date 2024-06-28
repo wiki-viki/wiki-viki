@@ -8,13 +8,13 @@ import quizMockData from '../../../public/quizMockData.json';
 const modalFirstText = `text-md-regular text-grayscale-400`;
 const modalSecondText = `text-xs-regular text-grayscale-400`;
 
-type QuizModalProps = { onClose: (value: void) => void };
+type QuizModalProps = { onClose: (value: void) => void; setEditingMode: (value: void) => void };
 
 type IForm = {
   securityAnswer: string;
 };
 
-const QuizModalTemplete = ({ onClose }: QuizModalProps) => {
+const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
   const {
     register,
     handleSubmit,
@@ -32,7 +32,7 @@ const QuizModalTemplete = ({ onClose }: QuizModalProps) => {
         message: '정답이 아닙니다. 다시 시도해 주세요.',
       });
     } else {
-      alert('정답입니다!');
+      setEditingMode();
       onClose();
     }
   };
