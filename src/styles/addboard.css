@@ -1,0 +1,41 @@
+.quill {
+  display: flex;
+  flex-direction: column-reverse;
+
+  .ql-toolbar {
+    border-radius: 20px;
+  }
+
+  .ql-container.ql-snow {
+    border: none;
+    height: 50dvh;
+    max-height: 360px;
+  }
+}
+
+.quill > .ql-toolbar.ql-snow > .ql-formats {
+  margin-right: 10px;
+
+  button {
+    width: 22px;
+  }
+}
+
+.quill > .ql-container > .ql-editor {
+  font-size: 16px;
+}
+
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  font-style: normal;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+  fill: none;
+  stroke: #8f95b2 !important;
+}
+
+.ql-active .ql-stroke {
+  fill: none;
+  stroke: #4cbfa4 !important;
+}

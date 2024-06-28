@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
+import QuillEditor from '@/components/AddBoard/QuillEditor';
 
 const TITLE_MAX_LEN = 30;
 
 const AddBoard = () => {
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
+
+  const handleSubmit = () => {
+    console.log('Title:', title);
+    console.log('Content:', content);
+  };
+
+  const handleSearchItem = (
+    content: string,
+    length: { withSpaces: number; withoutSpaces: number },
+  ) => {
+    setContent(content);
+    setContentLength(length);
+  };
 
   return (
     <div className="center mt-4 flex-col">
@@ -14,7 +30,9 @@ const AddBoard = () => {
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
             게시물 등록하기
           </h2>
-          <CommonButton variant="primary">등록하기</CommonButton>
+          <CommonButton onClick={handleSubmit} variant="primary">
+            등록하기
+          </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
           등록일 {dateToString(new Date())}
@@ -38,10 +56,15 @@ const AddBoard = () => {
           <div className="border-t" />
         </div>
         <span className="text-md-medium md:text-lg-medium">
-          공백포함 : 총 0자 | 공백제외: 총 0자
+          공백포함 : 총 <span className="text-primary-green-200">{contentLength.withSpaces}</span>자
+          | 공백제외: 총{' '}
+          <span className="text-primary-green-200">{contentLength.withoutSpaces}</span>자
         </span>
+        <QuillEditor setContent={handleSearchItem} />
       </main>
-      <CommonButton variant="secondary">목록으로</CommonButton>
+      <CommonButton variant="secondary" className="my-8">
+        목록으로
+      </CommonButton>
     </div>
   );
 };
