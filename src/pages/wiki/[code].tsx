@@ -34,7 +34,7 @@ const UserWikiPage: React.FC = () => {
 
   const { value, handleOff, handleOn } = useBoolean();
 
-  const hadnleWikiStateButtonClick = () => {
+  const handleWikiButtonClick = () => {
     setIsEditing(true);
   };
 
@@ -53,7 +53,7 @@ const UserWikiPage: React.FC = () => {
   const handleSaveClick = () => {};
 
   return (
-    <div className="center xl:h-auto m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative">
+    <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:h-auto">
       <StyledToastContainer limit={1} />
       {isEditing || (
         <>
@@ -78,7 +78,7 @@ const UserWikiPage: React.FC = () => {
           <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px]">
             <p className={noContentClassName}>아직 작성된 내용이 없네요.</p>
             <p className={noContentClassName}>위키에 참여해보세요!</p>
-            <CommonButton variant="primary" className="mt-4" onClick={hadnleWikiStateButtonClick}>
+            <CommonButton variant="primary" className="mt-4" onClick={handleWikiButtonClick}>
               시작하기
             </CommonButton>
           </div>
