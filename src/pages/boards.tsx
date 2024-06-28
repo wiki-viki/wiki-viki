@@ -12,7 +12,7 @@ import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
-import { NoSearch } from '@/components/WikiList';
+import { EmptySearch } from '@/components/WikiList';
 
 const PAGE_SIZE = 10;
 
@@ -105,7 +105,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
         <>
           {boardListData.totalCount === 0 ? (
             <div className="my-10">
-              <NoSearch keyword={keyword} />
+              <EmptySearch name={keyword} />
             </div>
           ) : (
             <>
