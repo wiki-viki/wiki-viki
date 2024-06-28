@@ -8,4 +8,5 @@ export interface UserProfileProps {
   mbti: string;
   city: string;
   image: string | null;
+  isEditing: boolean;
 }
