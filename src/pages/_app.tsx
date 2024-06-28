@@ -4,13 +4,22 @@ import Wrapper from '@/components/common/Container';
 import TopNavigationBar from '@/components/common/TopNavigationBar';
 import '@/lib/axiosInterceptor';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps, router }: AppProps) => {
+  const noNavBarPages = ['/404', '/500'];
+  const isNoNavBarPage = noNavBarPages.includes(router.pathname);
+
   return (
     <>
-      <TopNavigationBar />
-      <Wrapper>
+      {isNoNavBarPage ? (
         <Component {...pageProps} />
-      </Wrapper>
+      ) : (
+        <>
+          <TopNavigationBar />
+          <Wrapper>
+            <Component {...pageProps} />
+          </Wrapper>
+        </>
+      )}
     </>
   );
 };

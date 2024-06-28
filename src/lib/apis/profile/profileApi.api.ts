@@ -12,9 +12,24 @@ import axiosWithIntercepter from '../axiosWithIntercepter';
 import axiosDefault from '../axiosDefault';
 
 // 위키 프로필 목록 GET 요청
-export const getProfiles = async () => {
+export const getProfiles = async ({
+  page = 1,
+  pageSize = 3,
+  name = '',
+}: {
+  page?: number;
+  pageSize?: number;
+  name?: string;
+}) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    name: name,
+  });
+
   try {
-    const res: AxiosResponse<ProfileListResponse> = await axiosDefault.get(`profiles`);
+    const res: AxiosResponse<ProfileListResponse> = await axiosDefault.get(`profiles?${params}`);
+    console.log(page, pageSize, name, res.data);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
