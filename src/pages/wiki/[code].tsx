@@ -5,12 +5,12 @@ import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
 import useBoolean from '@/hooks/useBoolean';
 import Modal from '@/components/common/Modal';
-import CopyLinkButton from '@/components/common/CopyLinkButton';
 import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { Editor, EditorMarkdown } from '@/components/Profiles/Editor';
 import { EDITOR_TEXT } from '@/constants/editorBasicText';
+import BasicWikiSection from '@/components/Profiles/BasicWikiSection';
 import mockData from '../../../public/profileMockData.json';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
@@ -56,19 +56,12 @@ const UserWikiPage: React.FC = () => {
     <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:h-auto">
       <StyledToastContainer limit={1} />
       {isEditing || (
-        <>
-          <div className="mb-5 flex w-full items-center justify-between">
-            <h1 className="text-3_5xl-bold text-grayscale-500">{mockData.name}</h1>
-            {mockData.content && (
-              <CommonButton variant="primary" className="xl:mr-[385px]" onClick={handleOn}>
-                위키 참여하기
-              </CommonButton>
-            )}
-          </div>
-          <div className="mb-5 flex w-full justify-start">
-            <CopyLinkButton url={URL} />
-          </div>
-        </>
+        <BasicWikiSection
+          name={mockData.name}
+          content={mockData.content}
+          onClick={handleOn}
+          url={URL}
+        />
       )}
 
       <UserProfile {...mockData} isEditing={isEditing} />
