@@ -38,12 +38,8 @@ const LoginPage = () => {
       data: formData,
     };
     const response = await axiosFetch(requestData);
-    const accessToken = response?.data?.accessToken;
-    const refreshToken = response?.data?.refreshToken;
 
-    if (accessToken) {
-      document.cookie = `accessToken=${accessToken}`;
-      document.cookie = `refreshToken=${refreshToken}`;
+    if (response?.data?.accessToken) {
       router.push('/');
     }
   });
