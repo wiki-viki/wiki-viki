@@ -10,6 +10,7 @@ import {
   PASSWORD_MIN_LENGTH_MESSAGE,
 } from '@/constants/messages';
 import useAxiosFetch from '@/hooks/useAxiosFetch';
+import { useUserStore } from '@/store/userStore';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -17,6 +18,7 @@ const emailPattern = {
 };
 
 const LoginPage = () => {
+  const { saveUser } = useUserStore();
   const router = useRouter();
   const {
     register,
@@ -38,7 +40,7 @@ const LoginPage = () => {
       data: formData,
     };
     const response = await axiosFetch(requestData);
-
+    saveUser({ id: response.data.user.id, name: response.data.user.name });
     if (response?.data?.accessToken) {
       router.push('/');
     }

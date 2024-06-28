@@ -33,7 +33,7 @@ const BoardList = ({ boardList, className }: BoardListProps) => {
                 <Link href={`/board/${board.id}`} rel="preload">
                   <motion.h3
                     whileHover={{ scale: 1.1 }}
-                    className="truncate hover:text-primary-green-200 hover:underline"
+                    className="inline-block max-w-full truncate hover:text-primary-green-200 hover:underline"
                   >
                     {board.title}
                   </motion.h3>
