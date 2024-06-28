@@ -8,10 +8,13 @@ export const axiosInstance = axios.create({
   },
 });
 
-type AxiosRequester = <T>(options: AxiosRequestConfig<T>, includeAuth?: boolean) => Promise<AxiosResponse<T>>;
+type AxiosRequester = <T>(
+  options: AxiosRequestConfig<T>,
+  includeAuth?: boolean,
+) => Promise<AxiosResponse<T>>;
 
 export const axiosRequester: AxiosRequester = async (options, includeAuth) => {
-  const headers  = { ...options.headers } as AxiosRequestHeaders;
+  const headers = { ...options.headers } as AxiosRequestHeaders;
 
   if (includeAuth) {
     const accessToken = document.cookie

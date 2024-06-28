@@ -1,39 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Zoom } from 'react-toastify';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
-import testData from '@/../public/data/wikilist.json';
-import { NoSearch, SearchLabel, UserCard } from '@/components/WikiList';
-import { cardType } from '@/types/UserCardProps';
-import { searchRegex } from '@/utils/searchRegex';
+import { EmptySearch, SearchLabel, UserCard } from '@/components/WikiList';
 import { StyledToastContainer } from '@/styles/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
+import { getProfiles } from '@/lib/apis/profile/profileApi.api';
+import { ProfileListResponse } from '@/types/apiType';
 
 const PAGE_SIZE = 3;
 
-const WikiListPage = () => {
-  const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState('');
-  const [filteredList, setFilteredList] = useState<cardType[]>(testData.list);
-  const [totalCount, setTotalCount] = useState<number>(testData.totalCount);
+export const getServerSideProps = async () => {
+  try {
+    const profileList = await getProfiles({ pageSize: PAGE_SIZE });
+    return {
+      props: {
+        profileList,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching profiles:', error);
+    return {
+      props: { error },
+    };
+  }
+};
 
-  const handleSearchItem = (keyword: string) => {
-    const processedKeyword = keyword.replace(/\s/g, '');
-    setKeyword(processedKeyword);
-    const filtered = testData.list.filter((item) => {
-      return searchRegex(keyword, item.name);
-    });
-    setFilteredList(filtered);
-    setTotalCount(filtered.length);
+interface WikiListProps {
+  profileList: ProfileListResponse;
+}
+
+const WikiListPage = ({ profileList }: WikiListProps) => {
+  const isInitialRender = useRef(true);
+  const [page, setPage] = useState(1);
+  const [name, setName] = useState('');
+  const [profileListData, setProfileListData] = useState<ProfileListResponse>(profileList);
+
+  const fetchProfilesData = async (page: number, name: string) => {
+    try {
+      const res = await getProfiles({ pageSize: PAGE_SIZE, page, name });
+      setProfileListData(res);
+      console.log('fetchdata:', profileListData);
+    } catch (error) {
+      console.error('error');
+    }
+  };
+
+  const handleSearchItem = async (name: string) => {
+    const processedKeyword = name.replace(/\s/g, '');
+    setName(processedKeyword);
     setPage(1);
   };
 
-  const handlePage = (value: number) => {
-    setPage(value);
-  };
-
   useEffect(() => {
-    handleSearchItem(keyword);
-  }, [keyword]);
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    fetchProfilesData(page, name);
+  }, [name, page]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
@@ -42,22 +67,24 @@ const WikiListPage = () => {
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
       </div>
       <section>
-        {filteredList.length > 0 ? (
+        {profileListData.totalCount !== 0 ? (
           <>
-            <SearchLabel keyword={keyword} totalCount={totalCount} />
-            <UserCard cardList={filteredList.slice((page - 1) * PAGE_SIZE, PAGE_SIZE * page)} />
+            <SearchLabel name={name} totalCount={profileListData.totalCount} />
+            <UserCard cardList={profileListData.list} />
             <div className="center my-[60px]">
               <Pagination
-                totalCount={totalCount}
+                totalCount={profileListData.totalCount}
                 pageSize={PAGE_SIZE}
                 page={page}
-                handlePage={handlePage}
+                handlePage={(value) => {
+                  setPage(value);
+                }}
               />
             </div>
           </>
         ) : (
           <div className="mt-60 sm:mt-40">
-            <NoSearch keyword={keyword} />
+            <EmptySearch name={name} />
           </div>
         )}
       </section>
