@@ -5,7 +5,7 @@ import ToastSelect from '@/components/common/ToastSelect';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import SearchBar from '@/components/common/SearchBar';
-import { ToastType, CopyLinkMessage, UneditableMessage, NotificationMessage } from '@/types/toast';
+import { ToastType } from '@/types/toast';
 
 const url = 'https://www.youtube.com/';
 
@@ -45,7 +45,7 @@ const Test3 = () => {
         <button
           className="m-5"
           onClick={() => {
-            handleToastChange('notification'), setMessage(NotificationMessage);
+            handleToastChange('notification');
           }}
         >
           Notification
@@ -53,7 +53,7 @@ const Test3 = () => {
         <button
           className="m-5"
           onClick={() => {
-            handleToastChange('check'), setMessage(CopyLinkMessage);
+            handleToastChange('check');
           }}
         >
           check
@@ -61,7 +61,7 @@ const Test3 = () => {
         <button
           className="m-5"
           onClick={() => {
-            handleToastChange('error'), setMessage(UneditableMessage);
+            handleToastChange('error');
           }}
         >
           Error

@@ -13,7 +13,7 @@ export const toastOptions: ToastOptions = {
 
 export interface ToastProps {
   type: ToastType;
-  message: string;
+  message?: string;
 }
 
 export type ToastType = 'check' | 'error' | 'notification';
