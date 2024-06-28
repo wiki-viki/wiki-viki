@@ -1,7 +1,7 @@
 import React from 'react';
 import { NotificationResponse } from '@/types/apiType';
 import { timeDiff } from '@/utils/timeDiff';
-import DeleteIcon from '../../../../public/svg/close.svg';
+import DeleteIcon from '@/../public/svg/close.svg';
 
 interface NoticeItemProps {
   item: NotificationResponse;

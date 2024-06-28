@@ -42,6 +42,9 @@ const config: Config = {
         'secondary-yellow': {
           100: '#FDD181',
         },
+        'secondary-blue': {
+          100: '#1967D6',
+        },
       },
     },
     fontSize: {

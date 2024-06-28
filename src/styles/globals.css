@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './editor.css';
 
 @font-face {
   font-family: 'Pretendard-Regular';
