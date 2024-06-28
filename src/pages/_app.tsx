@@ -12,10 +12,16 @@ const App = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <>
-      {!isNoNavBarPage && <TopNavigationBar />}
-      <Wrapper>
+      {isNoNavBarPage ? (
         <Component {...pageProps} />
-      </Wrapper>
+      ) : (
+        <>
+          <TopNavigationBar />
+          <Wrapper>
+            <Component {...pageProps} />
+          </Wrapper>
+        </>
+      )}
     </>
   );
 };

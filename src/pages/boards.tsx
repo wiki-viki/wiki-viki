@@ -30,6 +30,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: '/500',
@@ -73,6 +74,7 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
       const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
       setBoardListData(res);
     } catch (error) {
+      console.log(error);
       router.push('/500');
     }
   };
