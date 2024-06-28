@@ -13,7 +13,7 @@ const Custom404Error = () => {
   const router = useRouter();
 
   return (
-    <div className="center relative flex-col py-14">
+    <div className="center relative flex-col pt-36">
       <div className="absolute inset-0 -z-10 opacity-20">
         <Image src={Logo} alt="이미지" fill objectFit="cover" />
       </div>
