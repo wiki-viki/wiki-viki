@@ -10,11 +10,11 @@ const Custom500Error = () => {
   const router = useRouter();
 
   return (
-    <div className="center relative flex-col py-14">
+    <div className="center relative flex-col pt-36">
       <div className="absolute inset-0 -z-10 opacity-20">
         <Image src={Logo} alt="이미지" fill objectFit="cover" />
       </div>
-      <Lottie animationData={ErrorLottie} style={{ width: '180px', height: '180px' }} />
+      <Lottie animationData={ErrorLottie} style={{ width: '110px', height: '180px' }} />
       <span className="text-2xl-bold ">
         죄송합니다. <span className="text-secondary-red-200">시스템 오류</span>입니다
       </span>
