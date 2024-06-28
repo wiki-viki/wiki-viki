@@ -7,8 +7,10 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { getProfiles } from '@/lib/apis/profile/profileApi.api';
 import { ProfileListResponse } from '@/types/apiType';
+
 import ToastSelect from '@/components/common/ToastSelect';
 import { ToastProps } from '@/types/toast';
+
 
 const PAGE_SIZE = 3;
 
@@ -37,6 +39,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   const [page, setPage] = useState(1);
   const [name, setName] = useState('');
   const [profileListData, setProfileListData] = useState<ProfileListResponse>(profileList);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchProfilesData = async (page: number, name: string) => {
@@ -78,6 +81,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
     fetchProfilesData(page, name);
   }, [page, name]);
 
+
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
       <StyledToastContainer limit={1} transition={Zoom} />
@@ -87,7 +91,9 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
       <section>
         {profileListData.totalCount !== 0 ? (
           <>
+
             {!isLoading && <SearchLabel name={name} totalCount={profileListData.totalCount} />}
+
             <UserCard cardList={profileListData.list} />
             <div className="center my-[60px]">
               <Pagination
@@ -96,7 +102,9 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
                 page={page}
                 handlePage={(value) => {
                   setPage(value);
+
                   fetchProfilesData(value, name);
+
                 }}
               />
             </div>
