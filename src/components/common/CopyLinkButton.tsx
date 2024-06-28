@@ -2,8 +2,9 @@ import React from 'react';
 import Lottie from 'lottie-react';
 import { motion } from 'framer-motion';
 import LinkIcon from '@/../public/svg/link.svg';
-import { urlRegex } from '@/utils/urlRegex';
+import { urlVaildation } from '@/utils/urlVaildation';
 import ErrorLottie from '@/../public/lottie/error.json';
+import { CopyLinkMessage } from '@/types/toast';
 import ToastSelect from './ToastSelect';
 
 interface CopyLinkButtonProps {
@@ -16,19 +17,16 @@ const LinkText = 'text-md-regular sm:text-xs-regular text-primary-green-200';
 const CopyLinkButton = ({ url }: CopyLinkButtonProps) => {
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(url);
-    ToastSelect({ type: 'check' });
+    ToastSelect({ type: 'check', message: CopyLinkMessage });
   };
 
-  if (!urlRegex(url)) {
+  if (!urlVaildation(url)) {
     return (
       <button
         className={`${LinkContainer} cursor-not-allowed bg-secondary-red-100`}
         disabled={true}
       >
-        <Lottie
-          animationData={ErrorLottie}
-          style={{ width: '20px', height: '20px', marginTop: '2px' }}
-        />
+        <Lottie animationData={ErrorLottie} style={{ width: '12px', height: '12px' }} />
         <span className={`${LinkText} truncate text-secondary-red-200`}>경로를 확인해주세요.</span>
       </button>
     );

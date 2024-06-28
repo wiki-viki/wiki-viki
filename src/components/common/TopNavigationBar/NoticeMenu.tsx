@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import CloseIcon from '../../../../public/svg/close.svg';
-import testData from '../../../../public/data/notification.json';
+import CloseIcon from '@/../public/svg/close.svg';
+import testData from '@/../public/data/notification.json';
 import NoticeItem from './NoticeItem';
 
 interface NoticeMenuProps {
