@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { UnprivilegedEditor } from 'react-quill';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 
@@ -38,10 +39,17 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
     };
   }, []);
 
-  const handleQuillChange = (value: string) => {
-    const textOnly = value.replace(/(<([^>]+)>)/gi, '');
-    const withSpaces = textOnly.length;
-    const withoutSpaces = textOnly.replace(/\s/g, '').length;
+  const handleQuillChange = (
+    value: string,
+    _: unknown,
+    __: unknown,
+    editor: UnprivilegedEditor,
+  ) => {
+    const inputText = editor.getText().replace(/\n/g, '');
+
+    const withSpaces = inputText.length;
+    const withoutSpaces = inputText.replace(/\s/g, '').length;
+
     setContent(value, { withSpaces, withoutSpaces });
   };
 
