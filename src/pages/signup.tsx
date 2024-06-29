@@ -14,11 +14,11 @@ import {
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
 } from '@/constants/messages';
-import useAxiosFetch from '@/hooks/useAxiosFetch';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
+import { getSignUpData } from '@/lib/apis/Auth';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -27,6 +27,7 @@ const emailPattern = {
 
 const SignUpPage = () => {
   const router = useRouter();
+  const { isError, statusCode, axiosFetch } = getSignUpData();
   const {
     register,
     handleSubmit,
@@ -34,39 +35,30 @@ const SignUpPage = () => {
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onChange' });
 
-  const { isError, statusCode, axiosFetch } = useAxiosFetch({
-    skip: true,
-    options: {
-      method: 'post',
-      url: 'auth/signup',
-    },
-  });
+  const password = watch('password');
+  const buttonDisabled = !isValid;
 
   const onSubmit = handleSubmit(async (formData) => {
     const requestData = {
       data: formData,
     };
     const response = await axiosFetch(requestData);
+
     if (response?.status === 201) {
       ToastSelect({ type: 'check', message: '가입이 완료되었습니다' });
       router.push('/login');
     }
   });
 
-  const password = watch('password');
-  const buttonDisabled = !isValid;
-
   useEffect(() => {
-    (() => {
-      if (statusCode === 400) {
-        ToastSelect({ type: 'error', message: isError });
-      } else if (statusCode) {
-        ToastSelect({
-          type: 'error',
-          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
-        });
-      }
-    })();
+    if (statusCode === 400) {
+      ToastSelect({ type: 'error', message: isError });
+    } else if (statusCode) {
+      ToastSelect({
+        type: 'error',
+        message: '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+      });
+    }
   }, [isError, statusCode]);
 
   return (

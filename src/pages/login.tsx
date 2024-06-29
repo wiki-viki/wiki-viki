@@ -12,12 +12,12 @@ import {
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
 } from '@/constants/messages';
-import useAxiosFetch from '@/hooks/useAxiosFetch';
 import { useUserStore } from '@/store/userStore';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
+import { getLoginData } from '@/lib/apis/Auth';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -25,22 +25,14 @@ const emailPattern = {
 };
 
 const LoginPage = () => {
-  const { saveUser } = useUserStore();
   const router = useRouter();
+  const { isError, statusCode, axiosFetch } = getLoginData();
+  const { saveUser } = useUserStore();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<DefaultFormData>({ mode: 'onChange' });
-
-  const { isError, statusCode, axiosFetch } = useAxiosFetch({
-    skip: true,
-    options: {
-      method: 'post',
-      url: 'auth/signin',
-    },
-    includeAuth: true,
-  });
 
   const onSubmit = handleSubmit(async (formData) => {
     const requestData = {
@@ -54,18 +46,16 @@ const LoginPage = () => {
   });
 
   const buttonDisabled = !isValid;
-
+  
   useEffect(() => {
-    (() => {
-      if (statusCode === 400) {
-        ToastSelect({ type: 'error', message: isError });
-      } else if (statusCode) {
-        ToastSelect({
-          type: 'error',
-          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
-        });
-      }
-    })();
+    if (statusCode === 400) {
+      ToastSelect({ type: 'error', message: isError });
+    } else if (statusCode) {
+      ToastSelect({
+        type: 'error',
+        message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
+      });
+    }
   }, [isError, statusCode]);
 
   return (
