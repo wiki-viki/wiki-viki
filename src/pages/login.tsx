@@ -12,7 +12,7 @@ import {
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
 } from '@/constants/messages';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/userAuthStore';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
@@ -27,7 +27,7 @@ const emailPattern = {
 const LoginPage = () => {
   const router = useRouter();
   const { isError, statusCode, axiosFetch } = getLoginData();
-  const { saveUser } = useUserStore();
+  const { saveUser } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -46,7 +46,7 @@ const LoginPage = () => {
   });
 
   const buttonDisabled = !isValid;
-  
+
   useEffect(() => {
     if (statusCode === 400) {
       ToastSelect({ type: 'error', message: isError });
