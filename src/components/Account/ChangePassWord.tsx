@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Zoom } from 'react-toastify';
 import {
   REQUIRED_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
 } from '@/constants/messages';
-import useBoolean from '@/hooks/useBoolean';
-import UnLockIcon from '@/components/Auth/UnLock';
-import LockIcon from '@/components/Auth/Lock';
 import useAxiosFetch from '@/hooks/useAxiosFetch';
-import { Label, Input } from '../common/Form';
+import { Container, InputWithLabel } from '@/components/common/Form';
+import 'react-toastify/dist/ReactToastify.css';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
 import CommonButton from '../common/CommonButton';
 
 const ChangePassWord = () => {
@@ -18,105 +20,86 @@ const ChangePassWord = () => {
     getValues,
     formState: { errors, isValid },
   } = useForm({ mode: 'onBlur' });
-  
+
   const { isError, statusCode, axiosFetch } = useAxiosFetch({
     skip: true,
     options: {
       method: 'patch',
       url: 'users/me/password',
     },
-    includeAuth: true
-  })
-  
+    includeAuth: true,
+  });
+
   const onSubmit = handleSubmit(async (formData) => {
     const requestData = {
       data: formData,
     };
-    await axiosFetch(requestData);
+    const response = await axiosFetch(requestData);
+    if (response?.status === 200) {
+      ToastSelect({ type: 'check', message: '비밀번호가 변경되었습니다' });
+    } 
   });
-  
+
   const buttonDisabled = !isValid;
-  
-  const { value: currentPassword, handleToggle: toggleCurrentPassword } = useBoolean();
-  const { value: password, handleToggle: togglePassword } = useBoolean();
-  const { value: passwordConfirmation, handleToggle: togglePasswordConfirmation } = useBoolean();
-  
-  const errorMessage = () => {
-    if (statusCode === 400) {
-      return isError;
-    } else if (statusCode) {
-      return `Error: ${statusCode}`;
-    }
-    return null;
-  };
+
+  useEffect(() => {
+    (() => {
+      if (statusCode === 400) {
+        ToastSelect({ type: 'error', message: isError });
+      } else if (statusCode) {
+        ToastSelect({
+          type: 'error',
+          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
+        });
+      }
+    })();
+  }, [isError, statusCode]);
 
   return (
-    <section>
-      <form onSubmit={onSubmit}>
-      {isError && <p className="center">{errorMessage()}</p>}
-        <Label label="비밀번호 변경" className="label mb-2.5 block" />
-
-        {/* 기존 비밀번호 필드 */}
-        <div className="mb-4 flex flex-col gap-2">
-          <div className="relative">
-            <Input
+    <>
+      <Container title="비밀번호 변경" className="mt-[30px]">
+        <form onSubmit={onSubmit}>
+          <div className="mb-4">
+            <InputWithLabel
               id="currentPassword"
-              type={currentPassword ? 'text' : 'password'}
-              placeholder="기존 비밀번호"
-              className={`input ${errors.currentPassword ? 'bg-secondary-red-100' : ''}`}
-              {...register('currentPassword', {
+              name="currentPassword"
+              label="비밀번호 변경"
+              type="password"
+              placeholder="비밀번호 변경"
+              register={register}
+              rules={{
                 required: REQUIRED_MESSAGE,
                 minLength: {
                   value: 8,
                   message: PASSWORD_MIN_LENGTH_MESSAGE,
                 },
-              })}
+              }}
+              errors={errors}
             />
-            <span
-              className={`checkPassword ${errors.currentPassword ? 'top-1/3' : ''}`}
-              onClick={toggleCurrentPassword}
-            >
-              {currentPassword ? <UnLockIcon /> : <LockIcon />}
-            </span>
-            {errors.currentPassword && (
-              <span className="errorMessage">{errors.currentPassword.message as string}</span>
-            )}
-          </div>
-
-          {/* 새 비밀번호 필드 */}
-          <div className="relative">
-            <Input
+            <InputWithLabel
               id="password"
-              type={password ? 'text' : 'password'}
+              name="password"
+              label="새 비밀번호"
+              type="password"
               placeholder="새 비밀번호"
-              className={`input ${errors.password ? 'bg-secondary-red-100' : ''}`}
-              {...register('password', {
+              register={register}
+              rules={{
                 required: REQUIRED_MESSAGE,
                 minLength: {
                   value: 8,
                   message: PASSWORD_MIN_LENGTH_MESSAGE,
                 },
-              })}
+              }}
+              errors={errors}
             />
-            <span
-              className={`checkPassword ${errors.password ? 'top-1/3' : ''}`}
-              onClick={togglePassword}
-            >
-              {password ? <UnLockIcon /> : <LockIcon />}
-            </span>
-            {errors.password && (
-              <span className="errorMessage">{errors.password.message as string}</span>
-            )}
-          </div>
-
-          {/* 새 비밀번호 확인 필드 */}
-          <div className="relative">
-            <Input
+            <InputWithLabel
               id="passwordConfirmation"
-              type={passwordConfirmation ? 'text' : 'password'}
+              name="passwordConfirmation"
+              label="새 비밀번호 확인"
+              type="password"
               placeholder="새 비밀번호 확인"
-              className={`input ${errors.passwordConfirmation ? 'bg-secondary-red-100' : ''}`}
-              {...register('passwordConfirmation', {
+              register={register}
+              rules={{
                 required: REQUIRED_MESSAGE,
                 minLength: {
                   value: 8,
@@ -125,32 +108,25 @@ const ChangePassWord = () => {
                 validate: (value) => {
                   return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
                 },
-              })}
+              }}
+              errors={errors}
             />
-            <span
-              className={`checkPassword ${errors.passwordConfirmation ? 'top-1/3' : ''}`}
-              onClick={togglePasswordConfirmation}
-            >
-              {passwordConfirmation ? <UnLockIcon /> : <LockIcon />}
-            </span>
-            {errors.passwordConfirmation && (
-              <span className="errorMessage">{errors.passwordConfirmation.message as string}</span>
-            )}
           </div>
-        </div>
-        <div className="flex justify-end">
-          <CommonButton
-            type="submit"
-            disabled={buttonDisabled}
-            isActive={!buttonDisabled}
-            variant="primary"
-          >
-            변경하기
-          </CommonButton>
-        </div>
-      </form>
-      <div className="my-8 h-px w-full bg-grayscale-100"></div>
-    </section>
+          <div className="flex justify-end">
+            <CommonButton
+              type="submit"
+              disabled={buttonDisabled}
+              isActive={!buttonDisabled}
+              variant="primary"
+            >
+              변경하기
+            </CommonButton>
+          </div>
+        </form>
+        <div className="my-8 h-px w-full bg-grayscale-200"></div>
+      </Container>
+      <StyledToastContainer limit={1} transition={Zoom} />
+    </>
   );
 };
 

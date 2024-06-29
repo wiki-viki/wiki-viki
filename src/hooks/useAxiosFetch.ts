@@ -17,7 +17,7 @@ const useAxiosFetch = <T>({
   options,
   skip = false,
   deps = [],
-  includeAuth = true,
+  includeAuth = false,
 }: RequestConfig) => {
   const [data, setData] = useState<AxiosResponse<T> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +26,20 @@ const useAxiosFetch = <T>({
 
   const axiosFetch: AxiosFetch = async (args) => {
     setIsLoading(true);
-    setStatusCode(null);
-
+    
     try {
       const response = await axiosRequester({ ...options, ...args }, includeAuth);
+
+      if (includeAuth) {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+
+        if (accessToken && refreshToken) {
+          document.cookie = `accessToken=${accessToken}`;
+          document.cookie = `refreshToken=${refreshToken}`;
+        }
+      }
+
       setData(response);
       return response;
     } catch (err) {

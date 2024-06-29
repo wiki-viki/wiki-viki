@@ -6,7 +6,14 @@ export const middleware = (request: NextRequest) => {
 
   if ((pathname === '/login' || pathname === '/signup') && accessToken) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
-  } else if (pathname !== '/login' && pathname !== '/signup' && !accessToken) {
+  } else if (
+    pathname !== '/login' &&
+    pathname !== '/signup' &&
+    pathname !== '/boards' &&
+    pathname !== '/wikilist' &&
+    !pathname.startsWith('/board/') &&
+    !accessToken
+  ) {
     return NextResponse.redirect(new URL('/login', request.nextUrl));
   }
 };
@@ -21,6 +28,5 @@ export const config = {
     '/boards',
     '/board/:path*',
     '/addboards',
-    '/testinterceptor'
   ],
 };

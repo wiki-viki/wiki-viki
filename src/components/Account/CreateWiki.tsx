@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Zoom } from 'react-toastify';
 import {
   REQUIRED_MESSAGE,
   WIKI_QUESTION_MIN_lENGTH_MESSAGE,
@@ -6,7 +8,10 @@ import {
 } from '@/constants/messages';
 import { questions } from '@/constants/questions';
 import useAxiosFetch from '@/hooks/useAxiosFetch';
-import { Label, Input } from '../common/Form';
+import { Container, InputWithLabel } from '@/components/common/Form';
+import 'react-toastify/dist/ReactToastify.css';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
 import CommonButton from '../common/CommonButton';
 
 const CreateWiki = () => {
@@ -33,7 +38,10 @@ const CreateWiki = () => {
         securityAnswer: formData.securityAnswer,
       },
     };
-    await axiosFetch(requestData);
+    const response = await axiosFetch(requestData);
+    if (response?.status === 200) {
+      ToastSelect({ type: 'check', message: '위키가 생성되었습니다' });
+    } 
   });
 
   const buttonDisabled = !isValid;
@@ -44,74 +52,78 @@ const CreateWiki = () => {
     setValue('securityQuestion', randomQuestion);
   };
 
-  const errorMessage = () => {
-    if (statusCode === 400) {
-      return isError;
-    } else if (statusCode) {
-      return `Error: ${statusCode}`;
-    }
-    return null;
-  };
+  useEffect(() => {
+    (() => {
+      if (statusCode === 400) {
+        ToastSelect({ type: 'error', message: isError });
+      } else if (statusCode) {
+        ToastSelect({
+          type: 'error',
+          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
+        });
+      }
+    })();
+  }, [isError, statusCode]);
 
   return (
-    <section>
-      <form onSubmit={onSubmit}>
-        {isError && <p className="center">{errorMessage()}</p>}
-        <Label label="위키 생성하기" className="label mb-2.5 block" />
-        <div className="mb-4 flex flex-col gap-2">
-          <Input
+    <>
+      <Container title="위키 생성하기">
+        <form onSubmit={onSubmit}>
+          <InputWithLabel
             id="securityQuestion"
+            name="securityQuestion"
+            label="질문을 생성해주세요"
             type="text"
             placeholder="질문을 생성해주세요"
-            className={`input ${errors.securityQuestion ? 'bg-secondary-red-100' : ''}`}
-            {...register('securityQuestion', {
+            register={register}
+            rules={{
               required: REQUIRED_MESSAGE,
               minLength: {
                 value: 1,
                 message: WIKI_QUESTION_MIN_lENGTH_MESSAGE,
               },
-            })}
+            }}
+            errors={errors}
           />
-          {errors.securityQuestion && (
-            <span className="errorMessage">{errors?.securityQuestion.message as string}</span>
-          )}
-          <Input
+          <InputWithLabel
             id="securityAnswer"
+            name="securityAnswer"
+            label="답을 입력해주세요"
             type="text"
             placeholder="답을 입력해주세요"
-            className={`input ${errors.securityAnswer ? 'bg-secondary-red-100' : ''}`}
-            {...register('securityAnswer', {
+            register={register}
+            rules={{
               required: REQUIRED_MESSAGE,
               minLength: {
                 value: 1,
                 message: WIKI_ANSWER_MIN_lENGTH_MESSAGE,
               },
-            })}
+            }}
+            errors={errors}
           />
-          {errors.securityAnswer && (
-            <span className="errorMessage">{errors?.securityAnswer.message as string}</span>
-          )}
-        </div>
-        <div className="flex justify-end">
-          <CommonButton
-            type="button"
-            variant="primary"
-            className="mr-3 bg-secondary-yellow-100 hover:bg-[#FFD700]"
-            onClick={handleRandomQuestion}
-          >
-            질문 랜덤 생성
-          </CommonButton>
-          <CommonButton
-            type="submit"
-            disabled={buttonDisabled}
-            isActive={!buttonDisabled}
-            variant="primary"
-          >
-            생성하기
-          </CommonButton>
-        </div>
-      </form>
-    </section>
+
+          <div className="flex justify-end">
+            <CommonButton
+              type="button"
+              variant="primary"
+              className="mr-3 bg-secondary-yellow-100 hover:bg-[#FFD700]"
+              onClick={handleRandomQuestion}
+            >
+              질문 랜덤 생성
+            </CommonButton>
+            <CommonButton
+              type="submit"
+              disabled={buttonDisabled}
+              isActive={!buttonDisabled}
+              variant="primary"
+            >
+              생성하기
+            </CommonButton>
+          </div>
+        </form>
+      </Container>
+      <StyledToastContainer limit={1} transition={Zoom} />
+    </>
   );
 };
 

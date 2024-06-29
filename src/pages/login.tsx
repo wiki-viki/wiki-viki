@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Zoom } from 'react-toastify';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
+import { Container, InputWithLabel, SwitchPrompt } from '@/components/common/Form';
 import { DefaultFormData } from '@/types/authFormType';
 import CommonButton from '@/components/common/CommonButton';
 import { EMAIL_REGEX } from '@/constants/regex';
@@ -12,6 +14,10 @@ import {
 } from '@/constants/messages';
 import useAxiosFetch from '@/hooks/useAxiosFetch';
 import { useUserStore } from '@/store/userStore';
+import 'react-toastify/dist/ReactToastify.css';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
+import Logo from '@/../public/svg/wiki-viki-logo.svg';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -24,11 +30,10 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    setFocus,
     formState: { errors, isValid },
-  } = useForm<DefaultFormData>({ mode: 'onBlur' });
+  } = useForm<DefaultFormData>({ mode: 'onChange' });
 
-  const { isLoading, isError, statusCode, axiosFetch } = useAxiosFetch({
+  const { isError, statusCode, axiosFetch } = useAxiosFetch({
     skip: true,
     options: {
       method: 'post',
@@ -42,45 +47,43 @@ const LoginPage = () => {
       data: formData,
     };
     const response = await axiosFetch(requestData);
-    const accessToken = response?.data?.accessToken;
-    const refreshToken = response?.data?.refreshToken;
-
-    saveUser({ id: response.data.user.id, name: response.data.user.name });
-
-    if (accessToken) {
-      document.cookie = `accessToken=${accessToken}`;
-      document.cookie = `refreshToken=${refreshToken}`;
+    if (response?.data?.accessToken) {
+      saveUser({ id: response?.data?.user?.id, name: response?.data?.user?.name });
       router.push('/');
     }
   });
 
   const buttonDisabled = !isValid;
 
-  const errorMessage = () => {
-    if (statusCode === 400) {
-      return isError;
-    } else if (statusCode) {
-      return `Error: ${statusCode}`;
-    }
-    return null;
-  };
-
   useEffect(() => {
-    setFocus('email');
-  }, [setFocus]);
+    (() => {
+      if (statusCode === 400) {
+        ToastSelect({ type: 'error', message: isError });
+      } else if (statusCode) {
+        ToastSelect({
+          type: 'error',
+          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
+        });
+      }
+    })();
+  }, [isError, statusCode]);
 
   return (
     <>
-      {isLoading && <h1 className="center">로딩중</h1>}
-      <AuthContainer title="로그인">
-        {isError && <p className="center">{errorMessage()}</p>}
+      <Container className="sm:mt-[130px] md:mt-[150px]">
+        <div className="center mb-[40px] flex-col gap-4">
+          <Link href="/" rel="preload">
+            <Logo width={250} height={70} />
+          </Link>
+          <SwitchPrompt href="/signup" auth="회원가입" />
+        </div>
         <form onSubmit={onSubmit}>
-          <AuthInputWithLabel
+          <InputWithLabel
             id="email"
             name="email"
             label="이메일"
             type="text"
-            placeholder="이메일을 입력해 주세요."
+            placeholder="이메일"
             register={register}
             rules={{
               required: REQUIRED_MESSAGE,
@@ -88,7 +91,7 @@ const LoginPage = () => {
             }}
             errors={errors}
           />
-          <AuthInputWithLabel
+          <InputWithLabel
             id="password"
             name="password"
             label="비밀번호"
@@ -109,13 +112,13 @@ const LoginPage = () => {
             disabled={buttonDisabled}
             isActive={!buttonDisabled}
             variant="primary"
-            className={`mb-7 w-full`}
+            className={`mb-7 h-[50px] w-full`}
           >
-            로그인
+            이메일로 로그인
           </CommonButton>
         </form>
-        <AuthSwitchPrompt href="/signup" auth="회원가입" />
-      </AuthContainer>
+      </Container>
+      <StyledToastContainer limit={1} transition={Zoom} />
     </>
   );
 };
