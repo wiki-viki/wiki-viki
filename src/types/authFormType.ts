@@ -2,8 +2,9 @@ import { ReactNode } from "react";
 import { UseFormRegister, FieldValues, FieldErrors, Path } from 'react-hook-form';
 
 export interface AuthContainerProps {
-  title: string;
+  title?: string;
   children: ReactNode;
+  className?: string;
 }
 
 export interface AuthSwitchPromptProps {
@@ -30,6 +31,10 @@ export interface InputWithLabelProps<T extends FieldValues> {
     required: string;
     pattern?: {
       value: RegExp;
+      message: string;
+    };
+    maxLength?: {
+      value: number;
       message: string;
     };
     minLength?: {

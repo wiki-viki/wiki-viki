@@ -37,16 +37,68 @@
   .wikilist-card {
     @apply relative mt-6 h-[142px] min-w-[600px] rounded-10 p-6 px-9 shadow sm:h-[180px] sm:min-w-[400px];
   }
+
+  /* animation */
+  .transition-300 {
+    @apply transition-all duration-300;
+  }
+
+  /* Form */
+  .formContainer {
+    @apply relative;
+  }
+
   .label {
-    @apply text-md-regular text-grayscale-500;
+    @apply absolute left-5 text-lg-regular transition-300 transform top-1/2 -translate-y-1/2 pointer-events-none text-gray-500;
+  }
+  
+  .labelError {
+    @apply top-[35%] text-secondary-red-200;
   }
 
   .input {
-    @apply w-full h-[45px] rounded-xl bg-grayscale-100 px-5 py-3.5 placeholder:text-md-regular;
+    @apply w-full h-[50px] rounded-xl ring-1 ring-gray-400 px-5 py-3.5 placeholder-transparent outline-none hover:bg-primary-green-100 transition-300;
+  }
+
+  .inputError {
+    @apply ring-1 ring-secondary-red-200 outline-none hover:bg-[#ffe6e6] transition-300;
   }
 
   .input:focus {
-    @apply outline-none ring-2 ring-primary-green-200 bg-white;
+    @apply ring-1 ring-primary-green-200 outline-none;
+  }
+
+  .inputError:focus {
+    @apply ring-1 ring-secondary-red-200 outline-none;
+  }
+
+  .input:focus + .label,
+  .input:not(:placeholder-shown) + .label {
+    @apply top-0 left-5 text-md-regular z-10 bg-white px-1;
+  }
+
+  .input:not(:focus):not(:placeholder-shown) + .label {
+    @apply text-gray-500;
+  }
+
+  .input:focus + .label {
+    @apply text-primary-green-200;
+  }
+
+  .inputError:focus + .label {
+    @apply text-secondary-red-200;
+  }
+
+  .inputError:focus:not(:placeholder-shown) + .label {
+    @apply text-secondary-red-200;
+  }
+
+  .inputError:not(:focus):not(:placeholder-shown) + .label {
+    @apply text-secondary-red-200;
+  }
+
+  .lockIcon {
+    @apply top-1/3;
   }
 
   .errorMessage {
@@ -54,6 +106,6 @@
   }
 
   .checkPassword {
-    @apply absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer;
+    @apply absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer;
   }
 }

@@ -1,17 +1,24 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Zoom } from 'react-toastify';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { AuthContainer, AuthSwitchPrompt, AuthInputWithLabel } from '@/components/Auth';
+import { Container, InputWithLabel, SwitchPrompt } from '@/components/common/Form';
 import { DefaultFormData } from '@/types/authFormType';
 import CommonButton from '@/components/common/CommonButton';
 import { EMAIL_REGEX } from '@/constants/regex';
 import {
   REQUIRED_MESSAGE,
+  NAME_MAX_LENGTH_MESSAGE,
   INVALID_EMAIL_MESSAGE,
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
 } from '@/constants/messages';
 import useAxiosFetch from '@/hooks/useAxiosFetch';
+import 'react-toastify/dist/ReactToastify.css';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
+import Logo from '@/../public/svg/wiki-viki-logo.svg';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -23,12 +30,11 @@ const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    setFocus,
+    watch,
     formState: { errors, isValid },
-  } = useForm<DefaultFormData>({ mode: 'onBlur' });
+  } = useForm<DefaultFormData>({ mode: 'onChange' });
 
-  const { isLoading, isError, statusCode, axiosFetch } = useAxiosFetch({
+  const { isError, statusCode, axiosFetch } = useAxiosFetch({
     skip: true,
     options: {
       method: 'post',
@@ -40,32 +46,40 @@ const SignUpPage = () => {
     const requestData = {
       data: formData,
     };
-    await axiosFetch(requestData);
-    router.push('/login');
+    const response = await axiosFetch(requestData);
+    if (response?.status === 201) {
+      ToastSelect({ type: 'check', message: '가입이 완료되었습니다' });
+      router.push('/login');
+    }
   });
 
+  const password = watch('password');
   const buttonDisabled = !isValid;
 
-  const errorMessage = () => {
-    if (statusCode === 400) {
-      return isError;
-    } else if (statusCode) {
-      return `Error: ${statusCode}`;
-    }
-    return null;
-  };
-
   useEffect(() => {
-    setFocus('name');
-  }, [setFocus]);
+    (() => {
+      if (statusCode === 400) {
+        ToastSelect({ type: 'error', message: isError });
+      } else if (statusCode) {
+        ToastSelect({
+          type: 'error',
+          message: '예상치 못한 오류가 발생했습니다. 관리자에게 문의 바랍니다.',
+        });
+      }
+    })();
+  }, [isError, statusCode]);
 
   return (
     <>
-      {isLoading && <h1 className="center">로딩중</h1>}
-      <AuthContainer title="회원가입">
-        {isError && <p className="center">{errorMessage()}</p>}
+      <Container className="mt-[100px]">
+        <div className="center mb-[40px] flex-col gap-4">
+          <Link href="/" rel="preload">
+            <Logo width={250} height={70} />
+          </Link>
+          <SwitchPrompt href="/login" auth="로그인" />
+        </div>
         <form onSubmit={onSubmit}>
-          <AuthInputWithLabel
+          <InputWithLabel
             id="name"
             name="name"
             label="이름"
@@ -74,10 +88,14 @@ const SignUpPage = () => {
             register={register}
             rules={{
               required: REQUIRED_MESSAGE,
+              maxLength: {
+                value: 10,
+                message: NAME_MAX_LENGTH_MESSAGE,
+              },
             }}
             errors={errors}
           />
-          <AuthInputWithLabel
+          <InputWithLabel
             id="email"
             name="email"
             label="이메일"
@@ -90,7 +108,7 @@ const SignUpPage = () => {
             }}
             errors={errors}
           />
-          <AuthInputWithLabel
+          <InputWithLabel
             id="password"
             name="password"
             label="비밀번호"
@@ -106,7 +124,7 @@ const SignUpPage = () => {
             }}
             errors={errors}
           />
-          <AuthInputWithLabel
+          <InputWithLabel
             id="passwordConfirmation"
             name="passwordConfirmation"
             label="비밀번호 확인"
@@ -120,7 +138,7 @@ const SignUpPage = () => {
                 message: PASSWORD_MIN_LENGTH_MESSAGE,
               },
               validate: (value) => {
-                return value === getValues('password') || PASSWORD_MISMATCH_MESSAGE;
+                return value === password || PASSWORD_MISMATCH_MESSAGE;
               },
             }}
             errors={errors}
@@ -135,8 +153,8 @@ const SignUpPage = () => {
             가입하기
           </CommonButton>
         </form>
-        <AuthSwitchPrompt href="/login" auth="로그인" />
-      </AuthContainer>
+      </Container>
+      <StyledToastContainer limit={1} transition={Zoom} />
     </>
   );
 };
