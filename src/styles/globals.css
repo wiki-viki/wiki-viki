@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './editor.css';
+@import './addboard.css';
 
 @font-face {
   font-family: 'Pretendard-Regular';
