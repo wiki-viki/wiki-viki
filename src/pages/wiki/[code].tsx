@@ -38,9 +38,7 @@ const UserWikiPage: React.FC = () => {
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
 
-  const [md, setMD] = useState<string | undefined>(
-    userProfile && userProfile.content ? userProfile.content : EDITOR_TEXT,
-  );
+  const [md, setMD] = useState<string | undefined>(undefined);
 
   const handleChange = (id: string, value?: string | File | null) => {
     setFormData((prev) => {
@@ -60,6 +58,7 @@ const UserWikiPage: React.FC = () => {
 
       if (profileResult.status === 'fulfilled') {
         setUserProfile(profileResult.value);
+        setEditorInitialValue(profileResult.value.content);
       } else {
         console.error('에러 :', profileResult.reason);
       }
@@ -76,11 +75,15 @@ const UserWikiPage: React.FC = () => {
 
   const contentClassName = `
   w-full xl:absolute
-  ${userProfile && userProfile.content ? 'xl:top-[200px] break-words' : 'xl:bottom-[500px]'}
-  ${isEditing ? 'xl:top-[37px]' : ''}
   md:mt-5 xl:right-[440px] xl:w-[856px]
+  ${userProfile && userProfile.content ? 'xl:top-[200px]' : 'xl:bottom-[500px]'}
+  ${isEditing ? 'xl:top-[37px]' : ''}
   ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
 `.trim();
+
+  const setEditorInitialValue = (value: string | null) => {
+    setMD(value ? value : EDITOR_TEXT);
+  };
 
   const handleWikiButtonClick = () => {
     handleOn();
@@ -162,7 +165,7 @@ const UserWikiPage: React.FC = () => {
   }
 
   return (
-    <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:h-auto">
+    <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
       <StyledToastContainer limit={1} />
       {isEditing || (
         <BasicWikiSection
