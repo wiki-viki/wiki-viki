@@ -7,14 +7,15 @@ import {
   WIKI_ANSWER_MIN_lENGTH_MESSAGE,
 } from '@/constants/messages';
 import { questions } from '@/constants/questions';
-import useAxiosFetch from '@/hooks/useAxiosFetch';
 import { Container, InputWithLabel } from '@/components/common/Form';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
+import getCreateWikiApi from '@/lib/apis/Auth/createWikiApi';
 import CommonButton from '../common/CommonButton';
 
 const CreateWiki = () => {
+  const { isError, statusCode, axiosFetch } = getCreateWikiApi();
   const {
     register,
     handleSubmit,
@@ -22,14 +23,11 @@ const CreateWiki = () => {
     formState: { errors, isValid },
   } = useForm({ mode: 'onBlur' });
 
-  const { isError, statusCode, axiosFetch } = useAxiosFetch({
-    skip: true,
-    options: {
-      method: 'post',
-      url: 'profiles',
-    },
-    includeAuth: true,
-  });
+  const handleRandomQuestion = () => {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomQuestion = questions[randomIndex];
+    setValue('securityQuestion', randomQuestion);
+  };
 
   const onSubmit = handleSubmit(async (formData) => {
     const requestData = {
@@ -41,16 +39,10 @@ const CreateWiki = () => {
     const response = await axiosFetch(requestData);
     if (response?.status === 200) {
       ToastSelect({ type: 'check', message: '위키가 생성되었습니다' });
-    } 
+    }
   });
 
   const buttonDisabled = !isValid;
-
-  const handleRandomQuestion = () => {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const randomQuestion = questions[randomIndex];
-    setValue('securityQuestion', randomQuestion);
-  };
 
   useEffect(() => {
     (() => {
