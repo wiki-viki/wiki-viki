@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const axiosWithIntercepter = axios.create({
+const axiosWithInterceptor = axios.create({
   baseURL: API_URL,
   timeout: 30000,
 });
 
-axiosWithIntercepter.interceptors.request.use(
+axiosWithInterceptor.interceptors.request.use(
   (config) => {
     const token = document.cookie
       .split('; ')
@@ -20,25 +20,30 @@ axiosWithIntercepter.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    config.url?.includes('/upload')
-      ? (config.headers['content-Type'] = 'multipart/form-data')
-      : (config.headers['Content-Type'] = 'application/json');
+    if (
+      config.url?.includes('/upload') ||
+      (config.url?.includes('/profiles') && config.method === 'patch')
+    ) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+    } else {
+      config.headers['Content-Type'] = 'application/json';
+    }
 
     return config;
   },
-  (e) => {
-    return Promise.reject(e);
+  (error) => {
+    return Promise.reject(error);
   },
 );
 
-axiosWithIntercepter.interceptors.response.use(
+axiosWithInterceptor.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (e) => {
-    const originalRequest = e.config;
+  async (error) => {
+    const originalRequest = error.config;
 
-    if (e.response && e.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -48,22 +53,25 @@ axiosWithIntercepter.interceptors.response.use(
             return row.startsWith('refreshToken=');
           })
           ?.split('=')[1];
-        const response = await axios.post(`${API_URL}/auth/refresh-token`, {
-          refreshToken: refreshToken,
-        });
 
-        const newToken = response.data.accessToken;
-        document.cookie = `accessToken=${newToken}`;
+        if (refreshToken) {
+          const response = await axios.post(`${API_URL}/auth/refresh-token`, {
+            refreshToken: refreshToken,
+          });
 
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        return axiosWithIntercepter(originalRequest);
-      } catch (e) {
-        console.error('토큰 재발급 요청 실패 :', e);
+          const newToken = response.data.accessToken;
+          document.cookie = `accessToken=${newToken}`;
+
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return axiosWithInterceptor(originalRequest);
+        }
+      } catch (refreshError) {
+        console.error('토큰 재발급 요청 실패:', refreshError);
       }
     }
 
-    return Promise.reject(e);
+    return Promise.reject(error);
   },
 );
 
-export default axiosWithIntercepter;
+export default axiosWithInterceptor;
