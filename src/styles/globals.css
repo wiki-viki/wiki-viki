@@ -44,20 +44,20 @@
   }
 
   /* Form */
-  .authContainer {
+  .formContainer {
     @apply relative;
   }
 
   .label {
-    @apply absolute left-5 text-md-regular transition-300 transform top-1/2 -translate-y-1/2 pointer-events-none text-gray-500;
+    @apply absolute left-5 text-lg-regular transition-300 transform top-1/2 -translate-y-1/2 pointer-events-none text-gray-500;
   }
-
+  
   .labelError {
     @apply top-[35%] text-secondary-red-200;
   }
 
   .input {
-    @apply w-full h-[45px] rounded-xl ring-1 ring-gray-400 px-5 py-3.5 placeholder-transparent outline-none hover:bg-primary-green-100 transition-300;
+    @apply w-full h-[50px] rounded-xl ring-1 ring-gray-400 px-5 py-3.5 placeholder-transparent outline-none hover:bg-primary-green-100 transition-300;
   }
 
   .inputError {
@@ -74,7 +74,7 @@
 
   .input:focus + .label,
   .input:not(:placeholder-shown) + .label {
-    @apply top-0 left-5 text-xs-regular z-10 bg-white px-1;
+    @apply top-0 left-5 text-md-regular z-10 bg-white px-1;
   }
 
   .input:not(:focus):not(:placeholder-shown) + .label {
