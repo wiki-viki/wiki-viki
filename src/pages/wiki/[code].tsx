@@ -40,6 +40,14 @@ const UserWikiPage: React.FC = () => {
 
   const [md, setMD] = useState<string | undefined>(undefined);
 
+  const contentClassName = `
+  w-full xl:absolute
+  md:mt-5 xl:right-[440px] xl:w-[856px]
+  ${userProfile && userProfile.content ? 'xl:top-[200px]' : 'xl:bottom-[500px]'}
+  ${isEditing ? 'xl:top-[37px]' : ''}
+  ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
+`.trim();
+
   const handleChange = (id: string, value?: string | File | null) => {
     setFormData((prev) => {
       return {
@@ -72,14 +80,6 @@ const UserWikiPage: React.FC = () => {
       alert(e);
     }
   };
-
-  const contentClassName = `
-  w-full xl:absolute
-  md:mt-5 xl:right-[440px] xl:w-[856px]
-  ${userProfile && userProfile.content ? 'xl:top-[200px]' : 'xl:bottom-[500px]'}
-  ${isEditing ? 'xl:top-[37px]' : ''}
-  ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
-`.trim();
 
   const setEditorInitialValue = (value: string | null) => {
     setMD(value ? value : EDITOR_TEXT);
