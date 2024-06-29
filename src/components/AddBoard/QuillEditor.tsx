@@ -1,6 +1,9 @@
 import React, { useMemo, useRef } from 'react';
-import ReactQuill, { UnprivilegedEditor } from 'react-quill';
+import ReactQuill, { UnprivilegedEditor, Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { ImageActions } from '@xeger/quill-image-actions';
+
+Quill.register('modules/imageActions', ImageActions);
 
 const formats = [
   'bold',
@@ -12,6 +15,8 @@ const formats = [
   'color',
   'image',
   'link',
+  'height',
+  'width',
 ];
 
 interface QuillEditorProps {
@@ -30,7 +35,7 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
       editor.insertEmbed(
         range.index,
         'image',
-        'https://cdn.pixabay.com/photo/2024/02/28/07/42/european-shorthair-8601492_1280.jpg',
+        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/114/1719367563327/imagetest.jpeg',
       );
       editor.setSelection(range.index + 1, 0);
     }
@@ -38,6 +43,7 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
 
   const modules = useMemo(() => {
     return {
+      imageActions: {},
       toolbar: {
         container: [
           ['bold', 'italic', 'underline'],
@@ -48,6 +54,9 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
         ],
         handlers: {
           image: handleClickImage,
+        },
+        ImageResize: {
+          modules: ['Resize'],
         },
       },
     };
