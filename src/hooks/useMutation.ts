@@ -5,7 +5,6 @@ import { axiosRequester } from '@/lib/axios';
 
 interface RequestConfig {
   options: AxiosRequestConfig<any>;
-  deps?: any[];
   includeAuth?: boolean;
 }
 
