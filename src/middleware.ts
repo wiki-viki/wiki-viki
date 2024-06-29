@@ -11,7 +11,7 @@ export const middleware = (request: NextRequest) => {
     pathname !== '/signup' &&
     pathname !== '/boards' &&
     pathname !== '/wikilist' &&
-    pathname !== '/board/:path' &&
+    !pathname.startsWith('/board/') &&
     !accessToken
   ) {
     return NextResponse.redirect(new URL('/login', request.nextUrl));
