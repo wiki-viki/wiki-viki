@@ -5,7 +5,7 @@ import axiosWithIntercepter from '../axiosWithIntercepter';
 
 export const getMyInfo = async () => {
   try {
-    const res: AxiosResponse<UserResponse> = await axiosWithIntercepter.get(`user/me`);
+    const res: AxiosResponse<UserResponse> = await axiosWithIntercepter.get(`users/me`);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
@@ -19,7 +19,7 @@ export const getMyInfo = async () => {
 export const changePassword = async (formData: PasswordFormData) => {
   try {
     const res: AxiosResponse<UserResponse> = await axiosWithIntercepter.patch(
-      `user/me/password`,
+      `users/me/password`,
       formData,
     );
     return res.data;
