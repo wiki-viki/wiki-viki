@@ -136,7 +136,7 @@ const UserWikiPage: React.FC = () => {
         // 이미지가 없을 경우 프로필 데이터만 전송
         try {
           if (formData.image === null) {
-            data.append('image', null);
+            data.append('image', 'null');
           }
           const res = await changeProfile(
             userProfile?.code,

@@ -116,7 +116,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
-                src={image ? image : '/images/basic_profile.png'}
+                src={image || image === 'null' ? image : '/images/basic_profile.png'}
                 sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
                 fill
                 priority
