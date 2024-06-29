@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
-import QuillEditor from '@/components/AddBoard/QuillEditor';
+
+const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
+  ssr: false,
+  loading: () => {
+    return <p>Loading...</p>;
+  },
+});
 
 const TITLE_MAX_LEN = 30;
 
@@ -70,7 +77,7 @@ const AddBoard = () => {
           | 공백제외: 총
           <span className="text-primary-green-200"> {contentLength.withoutSpaces}</span>자
         </span>
-        <QuillEditor setContent={handleSearchItem} content={content} />
+        <ReactQuillWrapper setContent={handleSearchItem} content={content} />
       </main>
       <CommonButton variant="secondary" className="my-8">
         목록으로

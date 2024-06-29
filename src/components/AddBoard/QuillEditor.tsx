@@ -1,16 +1,18 @@
-import React, { useMemo } from 'react';
-import { UnprivilegedEditor } from 'react-quill';
-import dynamic from 'next/dynamic';
+import React, { useMemo, useRef } from 'react';
+import ReactQuill, { UnprivilegedEditor } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => {
-    return <p>Loading...</p>;
-  },
-});
-
-const formats = ['bold', 'italic', 'underline', 'align', 'list', 'bullet', 'color', 'link'];
+const formats = [
+  'bold',
+  'italic',
+  'underline',
+  'align',
+  'list',
+  'bullet',
+  'color',
+  'image',
+  'link',
+];
 
 interface QuillEditorProps {
   content: string;
@@ -18,8 +20,20 @@ interface QuillEditorProps {
 }
 
 const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
+  const QuillRef = useRef<ReactQuill>(null);
+
   const handleClickImage = () => {
-    alert('추후 모달에서 이미지 업로드할 예정');
+    const editor = QuillRef.current?.getEditor();
+    if (editor) {
+      console.log(editor);
+      const range = editor.getSelection(true);
+      editor.insertEmbed(
+        range.index,
+        'image',
+        'https://cdn.pixabay.com/photo/2024/02/28/07/42/european-shorthair-8601492_1280.jpg',
+      );
+      editor.setSelection(range.index + 1, 0);
+    }
   };
 
   const modules = useMemo(() => {
@@ -54,7 +68,8 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   };
 
   return (
-    <QuillNoSSRWrapper
+    <ReactQuill
+      ref={QuillRef}
       placeholder="본문을 입력해주세요"
       theme="snow"
       modules={modules}
