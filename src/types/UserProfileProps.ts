@@ -9,4 +9,7 @@ export interface UserProfileProps {
   city: string;
   image: string | null;
   isEditing: boolean;
+  isMyPage: boolean;
+  onChange: (name: string, value: string | File | null) => void;
+  value: string | File | null;
 }
