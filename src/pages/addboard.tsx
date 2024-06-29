@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import QuillEditor from '@/components/AddBoard/QuillEditor';
@@ -9,6 +9,7 @@ const AddBoard = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
+  const [isValid, setIsValid] = useState(false);
 
   const handleSubmit = () => {
     console.log('Title:', title);
@@ -23,6 +24,10 @@ const AddBoard = () => {
     setContentLength(length);
   };
 
+  useEffect(() => {
+    setIsValid(title.trim().length > 0 && content.trim().length > 0);
+  }, [title, content]);
+
   return (
     <div className="center mt-4 flex-col">
       <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
@@ -30,7 +35,12 @@ const AddBoard = () => {
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
             게시물 등록하기
           </h2>
-          <CommonButton onClick={handleSubmit} variant="primary">
+          <CommonButton
+            isActive={isValid}
+            disabled={!isValid}
+            onClick={handleSubmit}
+            variant="primary"
+          >
             등록하기
           </CommonButton>
         </div>
@@ -56,11 +66,11 @@ const AddBoard = () => {
           <div className="border-t" />
         </div>
         <span className="text-md-medium md:text-lg-medium">
-          공백포함 : 총 <span className="text-primary-green-200">{contentLength.withSpaces}</span>자
-          | 공백제외: 총{' '}
-          <span className="text-primary-green-200">{contentLength.withoutSpaces}</span>자
+          공백포함 : 총<span className="text-primary-green-200"> {contentLength.withSpaces}</span>자
+          | 공백제외: 총
+          <span className="text-primary-green-200"> {contentLength.withoutSpaces}</span>자
         </span>
-        <QuillEditor setContent={handleSearchItem} />
+        <QuillEditor setContent={handleSearchItem} content={content} />
       </main>
       <CommonButton variant="secondary" className="my-8">
         목록으로

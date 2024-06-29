@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 
@@ -12,14 +12,13 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
 const formats = ['bold', 'italic', 'underline', 'align', 'list', 'bullet', 'color', 'link'];
 
 interface QuillEditorProps {
+  content: string;
   setContent: (value: string, length: { withSpaces: number; withoutSpaces: number }) => void;
 }
 
-const QuillEditor = ({ setContent }: QuillEditorProps) => {
-  const [value, setValue] = useState('');
-
+const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   const handleClickImage = () => {
-    alert('추후 모달 배치할 예정');
+    alert('추후 모달에서 이미지 업로드할 예정');
   };
 
   const modules = useMemo(() => {
@@ -40,7 +39,6 @@ const QuillEditor = ({ setContent }: QuillEditorProps) => {
   }, []);
 
   const handleQuillChange = (value: string) => {
-    setValue(value);
     const textOnly = value.replace(/(<([^>]+)>)/gi, '');
     const withSpaces = textOnly.length;
     const withoutSpaces = textOnly.replace(/\s/g, '').length;
@@ -52,7 +50,7 @@ const QuillEditor = ({ setContent }: QuillEditorProps) => {
       placeholder="본문을 입력해주세요"
       theme="snow"
       modules={modules}
-      value={value}
+      value={content}
       formats={formats}
       onChange={handleQuillChange}
     />
