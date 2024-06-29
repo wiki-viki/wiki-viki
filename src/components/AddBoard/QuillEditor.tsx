@@ -2,6 +2,8 @@ import React, { useMemo, useRef } from 'react';
 import ReactQuill, { UnprivilegedEditor, Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageActions } from '@xeger/quill-image-actions';
+import useBoolean from '@/hooks/useBoolean';
+import ImageAddModal from './ImageAddModal';
 
 Quill.register('modules/imageActions', ImageActions);
 
@@ -26,18 +28,19 @@ interface QuillEditorProps {
 
 const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   const QuillRef = useRef<ReactQuill>(null);
+  const { value, handleOn, handleOff } = useBoolean();
 
   const handleClickImage = () => {
+    handleOn();
+  };
+
+  const handleInsertImage = (url: string) => {
     const editor = QuillRef.current?.getEditor();
     if (editor) {
-      console.log(editor);
       const range = editor.getSelection(true);
-      editor.insertEmbed(
-        range.index,
-        'image',
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/114/1719367563327/imagetest.jpeg',
-      );
+      editor.insertEmbed(range.index, 'image', url);
       editor.setSelection(range.index + 1, 0);
+      handleOff();
     }
   };
 
@@ -60,6 +63,7 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
         },
       },
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleQuillChange = (
@@ -77,15 +81,24 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   };
 
   return (
-    <ReactQuill
-      ref={QuillRef}
-      placeholder="본문을 입력해주세요"
-      theme="snow"
-      modules={modules}
-      value={content}
-      formats={formats}
-      onChange={handleQuillChange}
-    />
+    <>
+      <ReactQuill
+        ref={QuillRef}
+        placeholder="본문을 입력해주세요"
+        theme="snow"
+        modules={modules}
+        value={content}
+        formats={formats}
+        onChange={handleQuillChange}
+      />
+      <ImageAddModal
+        isOpen={value}
+        onClose={handleOff}
+        handleImageUrl={(url: string) => {
+          handleInsertImage(url);
+        }}
+      />
+    </>
   );
 };
 
