@@ -26,8 +26,7 @@ const useAxiosFetch = <T>({
 
   const axiosFetch: AxiosFetch = async (args) => {
     setIsLoading(true);
-    setStatusCode(null);
-
+    
     try {
       const response = await axiosRequester({ ...options, ...args }, includeAuth);
 
