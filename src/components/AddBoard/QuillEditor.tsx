@@ -9,7 +9,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   },
 });
 
-const formats = ['bold', 'italic', 'underline', 'align', 'list', 'bullet', 'color'];
+const formats = ['bold', 'italic', 'underline', 'align', 'list', 'bullet', 'color', 'link'];
 
 interface QuillEditorProps {
   setContent: (value: string, length: { withSpaces: number; withoutSpaces: number }) => void;
@@ -18,6 +18,10 @@ interface QuillEditorProps {
 const QuillEditor = ({ setContent }: QuillEditorProps) => {
   const [value, setValue] = useState('');
 
+  const handleClickImage = () => {
+    alert('추후 모달 배치할 예정');
+  };
+
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -25,16 +29,19 @@ const QuillEditor = ({ setContent }: QuillEditorProps) => {
           ['bold', 'italic', 'underline'],
           [{ align: '' }, { align: 'center' }, { align: 'right' }],
           [{ list: 'bullet' }, { list: 'ordered' }],
-          [{ color: [] }],
-          ['image'],
+          [{ color: [] }, 'image'],
+          ['link'],
         ],
+        handlers: {
+          image: handleClickImage,
+        },
       },
     };
   }, []);
 
   const handleQuillChange = (value: string) => {
     setValue(value);
-    const textOnly = value.replace(/<[^>]*>/g, ''); // Remove HTML tags
+    const textOnly = value.replace(/(<([^>]+)>)/gi, '');
     const withSpaces = textOnly.length;
     const withoutSpaces = textOnly.replace(/\s/g, '').length;
     setContent(value, { withSpaces, withoutSpaces });

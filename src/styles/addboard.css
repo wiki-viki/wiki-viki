@@ -14,15 +14,43 @@
 }
 
 .quill > .ql-toolbar.ql-snow > .ql-formats {
-  margin-right: 10px;
+  button {
+    width: 18px;
+  }
+}
+
+.quill > .ql-toolbar.ql-snow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.quill > .ql-toolbar.ql-snow > .ql-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.quill > .ql-toolbar.ql-snow > .ql-formats:first-child {
+  margin-left: 6px;
+}
+
+.quill > .ql-toolbar.ql-snow > .ql-formats:last-child {
+  margin-left: auto;
 
   button {
-    width: 22px;
+    background-color: gainsboro;
+    border-radius: 50%;
+    padding-left: 3px;
+    width: 24px;
   }
 }
 
 .quill > .ql-container > .ql-editor {
   font-size: 16px;
+}
+
+.quill > .ql-container > .ql-editor strong {
+  font-weight: 900;
 }
 
 .quill > .ql-container > .ql-editor.ql-blank::before {
@@ -38,4 +66,30 @@ button:hover .ql-stroke,
 .ql-active .ql-stroke {
   fill: none;
   stroke: #4cbfa4 !important;
+}
+
+@media screen and (min-width: 481px) {
+  .quill > .ql-toolbar.ql-snow > .ql-formats {
+    button {
+      width: 20px;
+    }
+  }
+
+  .quill > .ql-toolbar.ql-snow > .ql-formats {
+    display: flex;
+    gap: 6px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .quill > .ql-toolbar.ql-snow > .ql-formats {
+    button {
+      width: 24px;
+    }
+  }
+
+  .quill > .ql-toolbar.ql-snow > .ql-formats {
+    display: flex;
+    gap: 8px;
+  }
 }
