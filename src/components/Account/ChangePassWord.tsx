@@ -6,29 +6,21 @@ import {
   PASSWORD_MIN_LENGTH_MESSAGE,
   PASSWORD_MISMATCH_MESSAGE,
 } from '@/constants/messages';
-import useAxiosFetch from '@/hooks/useAxiosFetch';
 import { Container, InputWithLabel } from '@/components/common/Form';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
+import { getChangePasswordData } from '@/lib/apis/Auth';
 import CommonButton from '../common/CommonButton';
 
 const ChangePassWord = () => {
+  const { isError, statusCode, axiosFetch } = getChangePasswordData();
   const {
     register,
     handleSubmit,
     getValues,
     formState: { errors, isValid },
   } = useForm({ mode: 'onBlur' });
-
-  const { isError, statusCode, axiosFetch } = useAxiosFetch({
-    skip: true,
-    options: {
-      method: 'patch',
-      url: 'users/me/password',
-    },
-    includeAuth: true,
-  });
 
   const onSubmit = handleSubmit(async (formData) => {
     const requestData = {
