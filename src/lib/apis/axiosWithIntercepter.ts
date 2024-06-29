@@ -43,33 +43,25 @@ axiosWithInterceptor.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      const refreshToken = document.cookie
+        .split('; ')
+        .find((row) => {
+          return row.startsWith('refreshToken=');
+        })
+        ?.split('=')[1];
 
-      try {
-        const refreshToken = document.cookie
-          .split('; ')
-          .find((row) => {
-            return row.startsWith('refreshToken=');
-          })
-          ?.split('=')[1];
+      const response = await axiosWithInterceptor.post('auth/refresh-token', { refreshToken });
 
-        if (refreshToken) {
-          const response = await axios.post(`${API_URL}/auth/refresh-token`, {
-            refreshToken: refreshToken,
-          });
-
-          const newToken = response.data.accessToken;
-          document.cookie = `accessToken=${newToken}`;
-
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return axiosWithInterceptor(originalRequest);
-        }
-      } catch (refreshError) {
-        console.error('토큰 재발급 요청 실패:', refreshError);
+      if (response.status === 200) {
+        const newAccessToken = response?.data?.accessToken;
+        document.cookie = `accessToken=${newAccessToken}`;
+        axiosWithInterceptor.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        return axiosWithInterceptor(originalRequest);
       }
     }
-
     return Promise.reject(error);
   },
 );
