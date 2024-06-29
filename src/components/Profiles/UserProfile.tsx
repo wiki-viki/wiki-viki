@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { UserProfileProps } from '@/types/UserProfileProps';
 import useIsMobile from '@/hooks/useIsMobile';
 import ExpandIcon from '../../../public/svg/profile_expand_icon.svg';
@@ -18,18 +19,48 @@ const UserProfile: React.FC<UserProfileProps> = ({
   bloodType,
   nationality,
   isEditing,
+  isMyPage,
+  onChange,
+  value,
 }) => {
   const profileFields = [
-    { label: '거주 도시', value: city },
-    { label: 'MBTI', value: mbti },
-    { label: '직업', value: job },
-    { label: 'SNS 계정', value: sns },
-    { label: '생일', value: birthday },
-    { label: '별명', value: nickname },
-    { label: '혈액형', value: bloodType },
-    { label: '국적', value: nationality },
+    { label: '거주 도시', value: city, id: 'city' },
+    { label: 'MBTI', value: mbti, id: 'mbti' },
+    { label: '직업', value: job, id: 'job' },
+    { label: 'SNS 계정', value: sns, id: 'sns' },
+    { label: '생일', value: birthday, id: 'birthday' },
+    { label: '별명', value: nickname, id: 'nickname' },
+    { label: '혈액형', value: bloodType, id: 'bloodType' },
+    { label: '국적', value: nationality, id: 'nationality' },
   ];
   const [isExpanded, setIsExpanded] = useState(false);
+  const [preview, setPreview] = useState<string | StaticImport | null>(image && image);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const nextImg = e.target.files?.[0];
+    if (nextImg) {
+      onChange('image', nextImg);
+    }
+  };
+
+  const handleClearClick = useCallback(() => {
+    setPreview(null);
+    onChange('image', null);
+  }, [onChange]);
+
+  useEffect(() => {
+    if (!value) {
+      return;
+    }
+    const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
+
+    const nextPreview = URL.createObjectURL(blob);
+    setPreview(nextPreview);
+
+    return () => {
+      URL.revokeObjectURL(nextPreview);
+    };
+  }, [value]);
 
   const handleProfileExpand = () => {
     setIsExpanded((prev) => {
@@ -43,18 +74,44 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow ${isEditing ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
+        className={`profile-shadow ${isEditing && isMyPage ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
       >
-        <div className={`flex w-full ${isEditing ? 'flex-col gap-5' : ''} xl:flex-col`}>
-          {isEditing ? (
+        <div
+          className={`flex w-full ${isEditing && isMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}
+        >
+          {isEditing && isMyPage ? (
             <>
               <label
                 htmlFor="fileInput"
-                className="center mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:hover:bg-grayscale-200/30 xl:size-[200px]"
+                className="group center relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
               >
-                <CameraIcon className="text-white" />
+                <CameraIcon className="z-10 text-white group-hover:brightness-50" />
+                {preview && (
+                  <Image
+                    className="rounded-full group-hover:brightness-50"
+                    alt="프로필 이미지 미리보기"
+                    src={preview}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  ></Image>
+                )}
               </label>
-              <input type="file" id="fileInput" className="hidden"></input>
+
+              {preview && isMyPage && (
+                <button
+                  className="absolute text-white sm:right-0 md:right-0 xl:left-[245px] xl:top-[-25px]"
+                  onClick={handleClearClick}
+                >
+                  <span className="rounded-full bg-primary-green-200 px-[6px] py-[2px]">X</span>
+                </button>
+              )}
+
+              <input
+                type="file"
+                id="fileInput"
+                className="hidden"
+                onChange={handleFileChange}
+              ></input>
             </>
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
@@ -77,16 +134,24 @@ const UserProfile: React.FC<UserProfileProps> = ({
             transition={{ duration: 0.15 }}
           >
             <div
-              className={`mb-5 ${isEditing ? 'flex flex-col gap-y-7 text-center lg:grid lg:grid-cols-2 lg:items-center xl:flex xl:flex-col xl:gap-[18px]' : 'flex flex-col gap-2'} overflow-hidden xl:gap-4 xl:py-2 ${isEditing ? 'h-fit py-3' : profileHeight} `}
+              className={`mb-5 ${isEditing && isMyPage ? 'flex flex-col gap-y-7 text-center lg:grid lg:grid-cols-2 lg:items-center xl:flex xl:flex-col xl:gap-[18px]' : 'flex flex-col gap-2'} overflow-hidden xl:gap-4 xl:py-2 ${isEditing && isMyPage ? 'h-fit py-3' : profileHeight} `}
             >
               {profileFields.map((field) => {
-                return <ProfileInfos isEditing={isEditing} key={field.label} {...field} />;
+                return (
+                  <ProfileInfos
+                    isMyPage={isMyPage}
+                    isEditing={isEditing}
+                    key={field.label}
+                    onChange={onChange}
+                    {...field}
+                  />
+                );
               })}
             </div>
           </motion.div>
         </div>
 
-        {isEditing || (
+        {(isEditing && isMyPage) || (
           <motion.div
             className="flex cursor-pointer justify-center xl:hidden"
             onClick={handleProfileExpand}
