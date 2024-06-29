@@ -2,8 +2,9 @@ import { ReactNode } from "react";
 import { UseFormRegister, FieldValues, FieldErrors, Path } from 'react-hook-form';
 
 export interface AuthContainerProps {
-  title: string;
+  title?: string;
   children: ReactNode;
+  className?: string;
 }
 
 export interface AuthSwitchPromptProps {
