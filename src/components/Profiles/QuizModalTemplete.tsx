@@ -2,19 +2,25 @@ import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
+import { postPing } from '@/lib/apis/profile/profileApi.api';
+import { CodeType } from '@/types/apiType';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
-import quizMockData from '../../../public/quizMockData.json';
 
 const modalFirstText = `text-md-regular text-grayscale-400`;
 const modalSecondText = `text-xs-regular text-grayscale-400`;
 
-type QuizModalProps = { onClose: (value: void) => void; setEditingMode: (value: void) => void };
+type QuizModalProps = {
+  question: string;
+  onClose: (value: void) => void;
+  setEditingMode: (value: void) => void;
+  code: CodeType;
+};
 
 type IForm = {
   securityAnswer: string;
 };
 
-const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
+const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModalProps) => {
   const {
     register,
     handleSubmit,
@@ -26,14 +32,15 @@ const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
   });
 
   const handleSubmitData: SubmitHandler<IForm> = async (data) => {
-    if (quizMockData.securityAnswer !== data.securityAnswer) {
+    try {
+      await postPing(code, data);
+      setEditingMode();
+      onClose();
+    } catch (e) {
       setError('securityAnswer', {
         type: 'required',
         message: '정답이 아닙니다. 다시 시도해 주세요.',
       });
-    } else {
-      setEditingMode();
-      onClose();
     }
   };
 
@@ -52,7 +59,7 @@ const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
       <Label
         htmlFor="quizInput"
         className="mb-3 text-2lg-semibold text-grayscale-500"
-        label={quizMockData.securityQuestion}
+        label={question}
       ></Label>
 
       <form onSubmit={handleSubmit(handleSubmitData)}>
