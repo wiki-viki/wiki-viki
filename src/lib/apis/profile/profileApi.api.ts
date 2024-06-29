@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import {
   ProfileListResponse,
   DetailProfileResponse,
@@ -112,8 +112,8 @@ export const postPing = async (code: CodeType, formData: PingFormData) => {
     );
     return res.data;
   } catch (e: unknown) {
-    if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+    if (e instanceof AxiosError) {
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
