@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
 import { postPing } from '@/lib/apis/profile/profileApi.api';
 import { CodeType } from '@/types/apiType';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
+import ToastSelect from '../common/ToastSelect';
 
 const modalFirstText = `text-md-regular text-grayscale-400`;
 const modalSecondText = `text-xs-regular text-grayscale-400`;
@@ -36,11 +38,18 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
       await postPing(code, data);
       setEditingMode();
       onClose();
-    } catch (e) {
-      setError('securityAnswer', {
-        type: 'required',
-        message: '정답이 아닙니다. 다시 시도해 주세요.',
-      });
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        ToastSelect({ type: 'error', message: e.response?.data.message });
+        onClose();
+      } else {
+        {
+          setError('securityAnswer', {
+            type: 'required',
+            message: '정답이 아닙니다. 다시 시도해 주세요.',
+          });
+        }
+      }
     }
   };
 
