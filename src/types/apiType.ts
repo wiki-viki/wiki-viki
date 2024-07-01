@@ -112,7 +112,7 @@ export interface NotificationListResponse {
 
 // Comment
 export interface CommentWriterResponse {
-  image: ImageType;
+  image: string;
   name: string;
   id: number;
 }
@@ -141,6 +141,8 @@ export interface ArticleResponse {
   image: ImageType;
   title: string;
   id: number;
+  isLiked: boolean;
+  content: string;
 }
 
 export interface ArticleListResponse {
