@@ -5,7 +5,7 @@ import axiosWithIntercepter from '../axiosWithIntercepter';
 
 export const getMyInfo = async () => {
   try {
-    const res: AxiosResponse<UserResponse> = await axiosWithIntercepter.get(`user/me`);
+    const res: AxiosResponse<UserResponse> = await axiosWithIntercepter.get(`users/me`);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
