@@ -50,6 +50,7 @@ const ImageAddModal = ({ isOpen, onClose, handleImageUrl }: ImageAddModalProps) 
         setImage(file);
       }
     }
+    e.target.value = '';
   };
 
   const handleClose = () => {

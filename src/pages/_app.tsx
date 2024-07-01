@@ -24,7 +24,7 @@ const App = ({ Component, pageProps, router }: AppProps) => {
           <Wrapper>
             <Component {...pageProps} />
           </Wrapper>
-          <StyledToastContainer limit={1} transition={Zoom} />
+          <StyledToastContainer transition={Zoom} />
         </>
       )}
     </>
