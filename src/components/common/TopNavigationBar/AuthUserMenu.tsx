@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/userAuthStore';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
@@ -11,7 +11,7 @@ interface UserMenuProps {
 }
 
 const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
-  const { logout } = useUserStore();
+  const { logout } = useAuthStore();
   const router = useRouter();
 
   const handleClickLogout = () => {

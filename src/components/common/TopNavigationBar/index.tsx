@@ -2,12 +2,13 @@ import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useBoolean from '@/hooks/useBoolean';
+import { useAuthStore } from '@/store/userAuthStore';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '@/../public/svg/notification.svg';
 import ProfileIcon from '@/../public/svg/profile.svg';
 import HamburgerIcon from '@/../public/svg/hamburger.svg';
 import useIsMobile from '@/hooks/useIsMobile';
-import { useUserStore } from '@/store/userStore';
+import { useStore } from '@/store/useStore';
 import UserMenu from './UserMenu';
 import AuthUserMenu from './AuthUserMenu';
 import NoticeMenu from './NoticeMenu';
@@ -17,7 +18,10 @@ const activeLinkClassNames = 'font-bold text-primary-green-300';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
-  const { isLogin, checkLogin } = useUserStore();
+  const { checkLogin } = useAuthStore();
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
   const isMobile = useIsMobile();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
