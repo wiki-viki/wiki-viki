@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
 import { postPing } from '@/lib/apis/profile/profileApi.api';
@@ -38,10 +38,10 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
       await postPing(code, data);
       setEditingMode();
       onClose();
-    } catch (e: unknown) {
-      if (e instanceof AxiosError) {
-        if (e.status === 400) {
-          ToastSelect({ type: 'error', message: e.response?.data.message });
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 403) {
+          ToastSelect({ type: 'error', message: error.response?.data.message });
           onClose();
         } else {
           setError('securityAnswer', {
