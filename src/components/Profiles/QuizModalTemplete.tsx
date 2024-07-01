@@ -40,13 +40,20 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
       onClose();
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
-        ToastSelect({ type: 'error', message: e.response?.data.message });
-        onClose();
+        if (e.status === 400) {
+          ToastSelect({ type: 'error', message: e.response?.data.message });
+          onClose();
+        } else {
+          setError('securityAnswer', {
+            type: 'required',
+            message: '정답이 아닙니다. 다시 시도해 주세요.',
+          });
+        }
       } else {
         {
           setError('securityAnswer', {
             type: 'required',
-            message: '정답이 아닙니다. 다시 시도해 주세요.',
+            message: '예상치 못한 오류가 발생하였습니다. ',
           });
         }
       }
