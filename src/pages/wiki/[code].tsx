@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { AxiosError } from 'axios';
 import UserProfile from '@/components/Profiles/UserProfile';
 import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
@@ -61,25 +62,24 @@ const UserWikiPage: React.FC = () => {
 
   const getUserProfileAndInfo = async (query: CodeType) => {
     try {
-      const [profileResult, userInfoResult] = await Promise.allSettled([
+      const [profileResult, userInfoResult] = await Promise.all([
         getDetailProfiles(query),
         getMyInfo(),
       ]);
 
-      if (profileResult.status === 'fulfilled') {
-        setUserProfile(profileResult.value);
-        setEditorInitialValue(profileResult.value.content);
-      } else {
-        console.error('에러 :', profileResult.reason);
+      if (profileResult || userInfoResult) {
+        setUserProfile(profileResult);
+        setUserInfo(userInfoResult);
+        setEditorInitialValue(profileResult.content);
       }
-
-      if (userInfoResult.status === 'fulfilled') {
-        setUserInfo(userInfoResult.value);
-      } else {
-        console.error('에러 :', userInfoResult.reason);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.status === 404) {
+          router.push('/404');
+        } else {
+          router.push('/500');
+        }
       }
-    } catch (e) {
-      alert(e);
     }
   };
 
@@ -110,55 +110,41 @@ const UserWikiPage: React.FC = () => {
   };
 
   const handleSaveClick = async () => {
-    const data = new FormData();
-    const imageData = new FormData();
     try {
+      const data = new FormData();
+
+      // 이미지 처리 함수
+      const processImage = async () => {
+        if (formData.image) {
+          const imageData = new FormData();
+          imageData.append('image', formData.image);
+          const res = await getImageUrl(imageData as ImageData);
+          return res?.url || '';
+        }
+        return 'null'; // 이미지가 없을 경우 'null' 문자열 전송
+      };
+
+      // 변경된 필드와 데이터 처리
       Object.keys(formData).forEach((key) => {
         const currentValue = formData[key as keyof ChangeProfilesFormData];
         const previousValue = FORM_DATA_INIT[key as keyof ChangeProfilesFormData];
 
         if (currentValue !== previousValue && key !== 'image') {
-          data.append(key, currentValue as string | Blob);
+          data.append(key, currentValue as string);
         }
       });
-      // formData.image가 존재하면 imageData에 추가하고 이미지 URL을 가져와 data에 추가
-      if (formData.image) {
-        imageData.append('image', formData.image);
-        const res = await getImageUrl(imageData as ImageData);
-        const url = res?.url;
-        if (url) {
-          data.append('image', url);
-          try {
-            const res = await changeProfile(
-              userProfile?.code,
-              data as unknown as ChangeProfilesFormData,
-            );
-            setUserProfile(res);
-            setIsEditing(false);
-            resetState();
-          } catch (e) {
-            alert(e);
-          }
-        }
-      } else {
-        // 이미지가 없을 경우 프로필 데이터만 전송
-        try {
-          if (formData.image === null) {
-            data.append('image', 'null');
-          }
-          const res = await changeProfile(
-            userProfile?.code,
-            data as unknown as ChangeProfilesFormData,
-          );
-          setUserProfile(res);
-          setIsEditing(false);
-          resetState();
-        } catch (e) {
-          alert(e);
-        }
-      }
-    } catch (e) {
-      alert(e);
+
+      // 이미지 처리 후 URL 추가
+      const imageUrl = await processImage();
+      data.append('image', imageUrl);
+
+      // 프로필 변경 요청
+      const res = await changeProfile(userProfile?.code, data as unknown as ChangeProfilesFormData);
+      setUserProfile(res);
+      setIsEditing(false);
+      resetState();
+    } catch (error) {
+      alert(error);
     }
   };
 
