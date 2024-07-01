@@ -51,28 +51,22 @@ const AddBoard = () => {
       boardData.image = firstImageSrc;
     }
 
-    ToastSelect({
-      type: 'check',
-      message: '게시물 작성에 성공했습니다!',
-    });
-    router.push(`/board/111`);
-
-    // try {
-    //   const response = await postArticle(boardData);
-    //   ToastSelect({
-    //     type: 'check',
-    //     message: '게시물 작성에 성공했습니다!',
-    //   });
-    //   router.push(`/board/${response.id}`);
-    // } catch (error: unknown) {
-    //   if (error instanceof AxiosError) {
-    //     ToastSelect({ type: 'error', message: error.response?.data.message });
-    //   } else {
-    //     ToastSelect({ type: 'error', message: OTHER_TYPE_ERROR_TEXT });
-    //   }
-    // } finally {
-    //   setIsLoading(false);
-    //}
+    try {
+      const response = await postArticle(boardData);
+      ToastSelect({
+        type: 'check',
+        message: '게시물 작성에 성공했습니다!',
+      });
+      router.push(`/board/${response.id}`);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        ToastSelect({ type: 'error', message: error.response?.data.message });
+      } else {
+        ToastSelect({ type: 'error', message: OTHER_TYPE_ERROR_TEXT });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputContent = (
