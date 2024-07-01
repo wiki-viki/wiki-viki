@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
+import { extractFirstImgSrc, roundAttributes } from '@/utils/quillHtmlHandler';
+import { type ArticleFormData } from '@/types/apiType';
+import { postArticle } from '@/lib/apis/article/articleApi.api';
+import ToastSelect from '@/components/common/ToastSelect';
+import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -17,13 +23,46 @@ const AddBoard = () => {
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
   const [isValid, setIsValid] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log('Title:', title);
-    console.log('Content:', content);
+  const refineHTMLContent = (initContext: string) => {
+    let newContent = '';
+
+    const firstImageSrc = extractFirstImgSrc(initContext);
+    newContent = initContext.replace(/cursor: (nesw|nwse)-resize;/g, '');
+    newContent = roundAttributes(newContent);
+
+    return { firstImageSrc, newContent };
   };
 
-  const handleSearchItem = (
+  const handleSubmit = async () => {
+    const { firstImageSrc, newContent } = refineHTMLContent(content);
+
+    const boardData: ArticleFormData = {
+      title,
+      content: newContent,
+    };
+
+    if (firstImageSrc) {
+      boardData.image = firstImageSrc;
+    }
+
+    try {
+      const response = await postArticle(boardData);
+      ToastSelect({
+        type: 'check',
+        message: '게시물 작성에 성공했습니다!',
+      });
+      router.push(`/board/${response.id}`);
+    } catch (e: unknown) {
+      ToastSelect({
+        type: 'error',
+        message: OTHER_TYPE_ERROR_TEXT,
+      });
+    }
+  };
+
+  const handleInputContent = (
     content: string,
     length: { withSpaces: number; withoutSpaces: number },
   ) => {
@@ -77,7 +116,7 @@ const AddBoard = () => {
           | 공백제외: 총
           <span className="text-primary-green-200"> {contentLength.withoutSpaces}</span>자
         </span>
-        <ReactQuillWrapper setContent={handleSearchItem} content={content} />
+        <ReactQuillWrapper setContent={handleInputContent} content={content} />
       </main>
       <CommonButton variant="secondary" className="my-8">
         목록으로

@@ -1,6 +1,5 @@
 import React, { useMemo, useRef } from 'react';
 import ReactQuill, { UnprivilegedEditor, Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { ImageActions } from '@xeger/quill-image-actions';
 import useBoolean from '@/hooks/useBoolean';
 import ImageAddModal from './ImageAddModal';
@@ -35,7 +34,6 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   };
 
   const handleInsertImage = (url: string) => {
-    console.log(url);
     const editor = QuillRef.current?.getEditor();
     if (editor) {
       const range = editor.getSelection(true);
