@@ -24,6 +24,7 @@ import { getMyInfo } from '@/lib/apis/user/userApi.api';
 import { FORM_DATA_INIT } from '@/constants/formDataInitialValue';
 import Loading from '@/components/Loading';
 import ToastSelect from '@/components/common/ToastSelect';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -52,6 +53,8 @@ const UserWikiPage: React.FC = () => {
   ${isEditing ? 'xl:top-[1px]' : ''}
   ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
 `.trim();
+
+  const isMobile = useIsMobile();
 
   const handleChange = (id: string, value?: string | File | null) => {
     setFormData((prev) => {
@@ -96,6 +99,9 @@ const UserWikiPage: React.FC = () => {
   const handleEditorChange = (value: string | undefined) => {
     setMD(value);
     handleChange('content', value);
+    if (!value) {
+      handleChange('content', 'null');
+    }
   };
 
   const setEditingMode = () => {
@@ -191,14 +197,21 @@ const UserWikiPage: React.FC = () => {
           </div>
         )}
         {isEditing ? (
-          <Editor preview="live" value={md} onChange={handleEditorChange} height={740} />
+          <Editor
+            preview="live"
+            value={md}
+            onChange={handleEditorChange}
+            height={740}
+            hideToolbar={isMobile && true}
+            autoFocus={true}
+          />
         ) : (
           <EditorMarkdown source={userProfile.content} />
         )}
       </div>
 
       {isEditing && (
-        <div className="ml-auto flex gap-3 sm:absolute sm:right-[45px] sm:top-[75px] md:absolute md:right-[75px] md:top-[75px] lg:right-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
+        <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
           <CommonButton variant="secondary" onClick={handleCancelClick}>
             취소
           </CommonButton>

@@ -76,7 +76,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow ${editMyPage ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
+        className={`profile-shadow ${editMyPage ? 'sm:mt-4 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? 'md:mt-[35px]' : 'bottom-[130px]'}`}
       >
         <div className={`flex w-full ${editMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}>
           {isEditing && isMyPage ? (
@@ -116,7 +116,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
-                src={image || image === 'null' ? image : '/images/basic_profile.png'}
+                src={image && image !== 'null' ? image : '/images/basic_profile.png'}
                 sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
                 fill
                 priority
