@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import { extractFirstImgSrc, roundAttributes } from '@/utils/quillHtmlHandler';
@@ -23,6 +24,7 @@ const AddBoard = () => {
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
   const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const refineHTMLContent = (initContext: string) => {
@@ -36,6 +38,7 @@ const AddBoard = () => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const { firstImageSrc, newContent } = refineHTMLContent(content);
 
     const boardData: ArticleFormData = {
@@ -59,6 +62,8 @@ const AddBoard = () => {
         type: 'error',
         message: OTHER_TYPE_ERROR_TEXT,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,12 +87,12 @@ const AddBoard = () => {
             게시물 등록하기
           </h2>
           <CommonButton
-            isActive={isValid}
-            disabled={!isValid}
+            isActive={isValid && !isLoading}
+            disabled={!isValid || isLoading}
             onClick={handleSubmit}
             variant="primary"
           >
-            등록하기
+            {isLoading ? '등록 중...' : '등록하기'}
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
@@ -118,9 +123,11 @@ const AddBoard = () => {
         </span>
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
       </main>
-      <CommonButton variant="secondary" className="my-8">
-        목록으로
-      </CommonButton>
+      <Link href="/boards" rel="preload">
+        <CommonButton variant="secondary" className="my-8">
+          목록으로
+        </CommonButton>
+      </Link>
     </div>
   );
 };
