@@ -48,7 +48,7 @@ export const getDetailProfiles = async (code: CodeType) => {
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }

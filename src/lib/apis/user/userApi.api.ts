@@ -9,7 +9,7 @@ export const getMyInfo = async () => {
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
@@ -25,7 +25,7 @@ export const changePassword = async (formData: PasswordFormData) => {
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
