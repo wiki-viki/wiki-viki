@@ -21,7 +21,7 @@ const ProfileInfos = memo(
 
     return (
       <div
-        className={`flex h-7 w-full items-center ${editMyPage ? 'justify-center' : ''} gap-[10px] ${editMyPage ? 'md:mx-auto xl:mb-1' : ''}`}
+        className={`flex h-7 w-full items-center ${editMyPage ? 'justify-center md:mx-auto xl:mb-1' : ''} gap-[10px]`}
       >
         {editMyPage ? (
           <>
