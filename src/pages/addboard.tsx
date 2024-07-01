@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { AxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import { extractFirstImgSrc, roundAttributes } from '@/utils/quillHtmlHandler';
@@ -57,11 +58,12 @@ const AddBoard = () => {
         message: '게시물 작성에 성공했습니다!',
       });
       router.push(`/board/${response.id}`);
-    } catch (e: unknown) {
-      ToastSelect({
-        type: 'error',
-        message: OTHER_TYPE_ERROR_TEXT,
-      });
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        ToastSelect({ type: 'error', message: error.response?.data.message });
+      } else {
+        ToastSelect({ type: 'error', message: OTHER_TYPE_ERROR_TEXT });
+      }
     } finally {
       setIsLoading(false);
     }

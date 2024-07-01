@@ -1,6 +1,7 @@
 import { ChangeEvent, useState, useEffect } from 'react';
 import { Zoom } from 'react-toastify';
 import Image from 'next/image';
+import { AxiosError } from 'axios';
 import CameraIcon from '@/../public/svg/camera_icon.svg';
 import getImageUrl from '@/lib/apis/image/imageApi.api';
 import { type ImageData } from '@/lib/apis/image/imageApi.api';
@@ -72,11 +73,12 @@ const ImageAddModal = ({ isOpen, onClose, handleImageUrl }: ImageAddModalProps) 
           handleImageUrl(response.url);
         }
       }
-    } catch (e: unknown) {
-      ToastSelect({
-        type: 'error',
-        message: OTHER_TYPE_ERROR_TEXT,
-      });
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        ToastSelect({ type: 'error', message: error.response?.data.message });
+      } else {
+        ToastSelect({ type: 'error', message: OTHER_TYPE_ERROR_TEXT });
+      }
     } finally {
       setImage(null);
       setImagePreview(null);
