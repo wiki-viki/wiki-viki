@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 import UserProfile from '@/components/Profiles/UserProfile';
 import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
@@ -23,6 +23,7 @@ import getImageUrl, { ImageData } from '@/lib/apis/image/imageApi.api';
 import { getMyInfo } from '@/lib/apis/user/userApi.api';
 import { FORM_DATA_INIT } from '@/constants/formDataInitialValue';
 import Loading from '@/components/Loading';
+import ToastSelect from '@/components/common/ToastSelect';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -40,6 +41,7 @@ const UserWikiPage: React.FC = () => {
   const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
+  const [prevFormData, setPrevFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
 
   const [md, setMD] = useState<string | undefined>(undefined);
 
@@ -107,44 +109,43 @@ const UserWikiPage: React.FC = () => {
 
   const resetState = () => {
     setFormData(FORM_DATA_INIT);
+    setPrevFormData(FORM_DATA_INIT);
   };
 
   const handleSaveClick = async () => {
+    const updatedFormData = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      const currentValue = formData[key as keyof ChangeProfilesFormData];
+      const previousValue = prevFormData[key as keyof ChangeProfilesFormData];
+
+      if (currentValue !== previousValue && key !== 'image') {
+        updatedFormData.append(key, formData[key as keyof ChangeProfilesFormData]);
+      }
+    });
+
     try {
-      const data = new FormData();
+      if (formData.image !== 'null') {
+        const imageData = new FormData();
+        imageData.append('image', formData.image);
+        const res = await getImageUrl(imageData as ImageData);
+        updatedFormData.append('image', res?.url || '');
+      } else {
+        updatedFormData.append('image', 'null');
+      }
 
-      // 이미지 처리 함수
-      const processImage = async () => {
-        if (formData.image) {
-          const imageData = new FormData();
-          imageData.append('image', formData.image);
-          const res = await getImageUrl(imageData as ImageData);
-          return res?.url || '';
-        }
-        return 'null'; // 이미지가 없을 경우 'null' 문자열 전송
-      };
+      const res = await changeProfile(
+        userProfile?.code,
+        updatedFormData as unknown as ChangeProfilesFormData,
+      );
 
-      // 변경된 필드와 데이터 처리
-      Object.keys(formData).forEach((key) => {
-        const currentValue = formData[key as keyof ChangeProfilesFormData];
-        const previousValue = FORM_DATA_INIT[key as keyof ChangeProfilesFormData];
-
-        if (currentValue !== previousValue && key !== 'image') {
-          data.append(key, currentValue as string);
-        }
-      });
-
-      // 이미지 처리 후 URL 추가
-      const imageUrl = await processImage();
-      data.append('image', imageUrl);
-
-      // 프로필 변경 요청
-      const res = await changeProfile(userProfile?.code, data as unknown as ChangeProfilesFormData);
       setUserProfile(res);
       setIsEditing(false);
       resetState();
-    } catch (error) {
-      alert(error);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        ToastSelect({ type: 'error', message: error?.response?.data.message });
+      }
     }
   };
 
