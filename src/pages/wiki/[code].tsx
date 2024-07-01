@@ -34,7 +34,9 @@ const UserWikiPage: React.FC = () => {
   const { value, handleOff, handleOn } = useBoolean();
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>(undefined);
+
   const isMyPage = code === (userInfo && userInfo?.profile.code);
+  const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
 
@@ -165,7 +167,7 @@ const UserWikiPage: React.FC = () => {
   }
 
   return (
-    <div className="center m-auto max-w-[1350px] flex-col px-6 py-14 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
+    <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
       <StyledToastContainer limit={1} />
       {isEditing || (
         <BasicWikiSection
@@ -180,6 +182,7 @@ const UserWikiPage: React.FC = () => {
         {...userProfile}
         isEditing={isEditing}
         isMyPage={isMyPage}
+        editMyPage={editMyPage}
         onChange={handleChange}
         value={formData.image}
       />

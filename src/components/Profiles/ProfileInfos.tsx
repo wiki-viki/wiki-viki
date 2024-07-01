@@ -5,28 +5,25 @@ const ProfileInfos = memo(
     label,
     value,
     id,
-    isEditing,
-    isMyPage,
     onChange,
+    editMyPage,
   }: {
     label: string;
     value: string;
     id: string;
-    isEditing: boolean;
-    isMyPage: boolean;
     onChange: (name: string, value: string | File | null) => void;
+    editMyPage: boolean;
   }) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      const { id } = e.target;
+      const { id, value } = e.target;
       onChange(id, value);
     };
 
     return (
       <div
-        className={`flex h-7 w-full items-center ${isEditing && isMyPage ? 'justify-center' : ''} gap-[10px] ${isEditing && isMyPage ? 'md:mx-auto xl:mb-1' : ''}`}
+        className={`flex h-7 w-full items-center ${editMyPage ? 'justify-center' : ''} gap-[10px] ${editMyPage ? 'md:mx-auto xl:mb-1' : ''}`}
       >
-        {isEditing && isMyPage ? (
+        {editMyPage ? (
           <>
             <label
               htmlFor={id}

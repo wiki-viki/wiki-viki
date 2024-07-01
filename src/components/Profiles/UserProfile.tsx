@@ -20,6 +20,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   nationality,
   isEditing,
   isMyPage,
+  editMyPage,
   onChange,
   value,
 }) => {
@@ -74,11 +75,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow ${isEditing && isMyPage ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
+        className={`profile-shadow ${editMyPage ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
       >
-        <div
-          className={`flex w-full ${isEditing && isMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}
-        >
+        <div className={`flex w-full ${editMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}>
           {isEditing && isMyPage ? (
             <>
               <label
@@ -134,13 +133,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
             transition={{ duration: 0.15 }}
           >
             <div
-              className={`mb-5 ${isEditing && isMyPage ? 'flex flex-col gap-y-7 text-center lg:grid lg:grid-cols-2 lg:items-center xl:flex xl:flex-col xl:gap-[18px]' : 'flex flex-col gap-2'} overflow-hidden xl:gap-4 xl:py-2 ${isEditing && isMyPage ? 'h-fit py-3' : profileHeight} `}
+              className={`mb-5 ${editMyPage ? 'flex flex-col gap-y-7 text-center lg:grid lg:grid-cols-2 lg:items-center xl:flex xl:flex-col xl:gap-[18px]' : 'flex flex-col gap-2'} overflow-hidden xl:gap-4 xl:py-2 ${editMyPage ? 'h-fit py-3' : profileHeight} `}
             >
               {profileFields.map((field) => {
                 return (
                   <ProfileInfos
-                    isMyPage={isMyPage}
-                    isEditing={isEditing}
+                    editMyPage={editMyPage}
                     key={field.label}
                     onChange={onChange}
                     {...field}
@@ -151,7 +149,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           </motion.div>
         </div>
 
-        {(isEditing && isMyPage) || (
+        {editMyPage || (
           <motion.div
             className="flex cursor-pointer justify-center xl:hidden"
             onClick={handleProfileExpand}
