@@ -22,7 +22,7 @@ const UserCard = ({ cardList }: CardListProps) => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15 }}
           >
-            <Link href={`/wiki/${card.name}`} rel="preload">
+            <Link href={`/wiki/${card.code}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className=" relative size-[85px] rounded-full ">

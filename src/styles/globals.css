@@ -109,4 +109,17 @@
   .checkPassword {
     @apply absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer;
   }
+
+  .spinner {
+    animation: spin 20s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(7200deg);
+    }
+  }
 }
