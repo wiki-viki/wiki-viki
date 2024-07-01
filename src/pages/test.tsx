@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
 import Modal from '@/components/common/Modal';
 import useBoolean from '@/hooks/useBoolean';
+import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 
 const EditorComponent = dynamic(
   () => {
@@ -22,9 +24,12 @@ const text1 =
 
 const Test = () => {
   const { value, handleOn, handleOff } = useBoolean();
-
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
   return (
     <div>
+      <p>{user?.name}</p>
       <EditorComponent value={text} theme="bubble" readOnly={true} modules={{ toolbar: null }} />
       <div className="my-6 border" />
       <EditorComponent value={text1} theme="snow" readOnly={true} modules={{ toolbar: false }} />

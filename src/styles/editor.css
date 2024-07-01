@@ -49,3 +49,9 @@
     display: none;
   }
 }
+
+@media screen and (min-width: 1200px) {
+  .wmde-markdown.wmde-markdown-color {
+    padding-bottom: 50px;
+  }
+}

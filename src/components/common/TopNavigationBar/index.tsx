@@ -2,12 +2,13 @@ import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useBoolean from '@/hooks/useBoolean';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/userAuthStore';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
 import NotifyIcon from '@/../public/svg/notification.svg';
 import ProfileIcon from '@/../public/svg/profile.svg';
 import HamburgerIcon from '@/../public/svg/hamburger.svg';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useStore } from '@/store/useStore';
 import UserMenu from './UserMenu';
 import AuthUserMenu from './AuthUserMenu';
 import NoticeMenu from './NoticeMenu';
@@ -17,15 +18,16 @@ const activeLinkClassNames = 'font-bold text-primary-green-300';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
-  const { isLogin, checkLogin } = useUserStore();
+  const { checkLogin } = useAuthStore();
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
   const isMobile = useIsMobile();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const { value: isMenuOpen, handleOff: menuClose, handleToggle: menuToggle } = useBoolean();
 
   const noticeRef = useRef<HTMLDivElement | null>(null);
-  const noticeContainerRef = useRef<HTMLDivElement | null>(null);
   const { value: isNoticeOpen, handleOff: noticeClose, handleToggle: noticeToggle } = useBoolean();
 
   useEffect(() => {
@@ -34,20 +36,10 @@ const TopNavigationBar = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target as Node) &&
-        menuContainerRef.current &&
-        !menuContainerRef.current.contains(e.target as Node)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         menuClose();
       }
-      if (
-        noticeRef.current &&
-        !noticeRef.current.contains(e.target as Node) &&
-        noticeContainerRef.current &&
-        !noticeContainerRef.current.contains(e.target as Node)
-      ) {
+      if (noticeRef.current && !noticeRef.current.contains(e.target as Node)) {
         noticeClose();
       }
     };
@@ -58,7 +50,7 @@ const TopNavigationBar = () => {
   }, [menuClose, noticeClose]);
 
   return (
-    <header className="fixed z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
+    <header className="sticky top-0 z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
       <div className="flex items-center gap-5">
         <Link href="/" rel="preload">
           <Logo width={107} height={30} />
@@ -82,33 +74,33 @@ const TopNavigationBar = () => {
       </div>
       <div>
         {isLogin ? (
-          <>
-            <div className="flex gap-6">
-              <div ref={noticeRef} onClick={noticeToggle}>
-                <NotifyIcon width={24} height={24} className="cursor-pointer" />
-              </div>
-              <div ref={menuRef} onClick={menuToggle}>
-                <ProfileIcon width={24} height={24} className="cursor-pointer"></ProfileIcon>
-              </div>
-            </div>
-            <div ref={menuContainerRef}>
-              <AuthUserMenu isMobile={isMobile} isOpen={isMenuOpen} handleClose={menuClose} />
-            </div>
-            <div ref={noticeContainerRef}>
+          <div className="flex gap-6">
+            <div ref={noticeRef}>
+              <NotifyIcon
+                onClick={noticeToggle}
+                width={24}
+                height={24}
+                className="cursor-pointer"
+              />
               <NoticeMenu handleClose={noticeClose} isOpen={isNoticeOpen} />
             </div>
-          </>
+            <div ref={menuRef}>
+              <ProfileIcon
+                onClick={menuToggle}
+                width={24}
+                height={24}
+                className="cursor-pointer"
+              ></ProfileIcon>
+              <AuthUserMenu isMobile={isMobile} isOpen={isMenuOpen} handleClose={menuClose} />
+            </div>
+          </div>
         ) : (
           <>
             {isMobile ? (
-              <>
-                <div ref={menuRef} onClick={menuToggle} className="cursor-pointer">
-                  <HamburgerIcon />
-                </div>
-                <div ref={menuContainerRef}>
-                  <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
-                </div>
-              </>
+              <div ref={menuRef} className="cursor-pointer">
+                <HamburgerIcon onClick={menuToggle} />
+                <UserMenu isOpen={isMenuOpen} handleClose={menuClose} />
+              </div>
             ) : (
               <Link
                 rel="preload"

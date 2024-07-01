@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import {
   ProfileListResponse,
   DetailProfileResponse,
@@ -6,6 +6,7 @@ import {
   PingResponse,
   ChangeProfilesFormData,
   PingFormData,
+  CodeType,
 } from '@/types/apiType';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import axiosWithIntercepter from '../axiosWithIntercepter';
@@ -41,13 +42,13 @@ export const getProfiles = async ({
 };
 
 // 위키 프로필 상세정보 GET 요청
-export const getDetailProfiles = async (code: string) => {
+export const getDetailProfiles = async (code: CodeType) => {
   try {
     const res: AxiosResponse<DetailProfileResponse> = await axiosDefault.get(`profiles/${code}`);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
@@ -55,7 +56,7 @@ export const getDetailProfiles = async (code: string) => {
 };
 
 // 위키 프로필 상세정보 핑 GET 요청
-export const getPing = async (code: string) => {
+export const getPing = async (code: CodeType) => {
   try {
     const res: AxiosResponse<PingResponse> = await axiosDefault.get(`profiles/${code}/ping`);
     return res.data;
@@ -69,7 +70,7 @@ export const getPing = async (code: string) => {
 };
 
 // 위키 프로필 상세정보 POST 요청
-export const changeProfile = async (code: string, formData: ChangeProfilesFormData) => {
+export const changeProfile = async (code: CodeType, formData: ChangeProfilesFormData) => {
   try {
     const res: AxiosResponse<DetailProfileResponse> = await axiosWithIntercepter.patch(
       `profiles/${code}`,
@@ -103,16 +104,16 @@ export const createProfile = async (formData: CreateProfileFormData) => {
 };
 
 // 위키 프로필 수정 핑 POST 요청
-export const postPing = async (code: string, formData: PingFormData) => {
+export const postPing = async (code: CodeType, formData: PingFormData) => {
   try {
     const res: AxiosResponse<DetailProfileResponse> = await axiosWithIntercepter.post(
-      `profiles/${code}`,
+      `profiles/${code}/ping`,
       formData,
     );
     return res.data;
   } catch (e: unknown) {
-    if (axios.isAxiosError(e)) {
-      throw e.response?.data.message;
+    if (e instanceof AxiosError) {
+      throw e;
     } else {
       throw new Error(OTHER_TYPE_ERROR_TEXT);
     }
