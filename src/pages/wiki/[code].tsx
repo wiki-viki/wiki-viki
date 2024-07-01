@@ -45,8 +45,8 @@ const UserWikiPage: React.FC = () => {
   const contentClassName = `
   w-full xl:absolute
   md:mt-5 xl:right-[440px] xl:w-[856px]
-  ${userProfile && userProfile.content ? 'xl:top-[200px]' : 'xl:bottom-[500px]'}
-  ${isEditing ? 'xl:top-[37px]' : ''}
+  ${userProfile && userProfile.content ? 'xl:top-[150px]' : 'xl:bottom-[500px]'}
+  ${isEditing ? 'xl:top-[1px]' : ''}
   ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
 `.trim();
 
@@ -102,6 +102,11 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    resetState();
+  };
+
+  const resetState = () => {
+    setFormData(FORM_DATA_INIT);
   };
 
   const handleSaveClick = async () => {
@@ -130,6 +135,7 @@ const UserWikiPage: React.FC = () => {
             );
             setUserProfile(res);
             setIsEditing(false);
+            resetState();
           } catch (e) {
             alert(e);
           }
@@ -146,7 +152,7 @@ const UserWikiPage: React.FC = () => {
           );
           setUserProfile(res);
           setIsEditing(false);
-          setFormData(FORM_DATA_INIT);
+          resetState();
         } catch (e) {
           alert(e);
         }
@@ -198,7 +204,7 @@ const UserWikiPage: React.FC = () => {
           </div>
         )}
         {isEditing ? (
-          <Editor preview="live" value={md} onChange={handleEditorChange} height={700} />
+          <Editor preview="live" value={md} onChange={handleEditorChange} height={740} />
         ) : (
           <EditorMarkdown source={userProfile.content} />
         )}
