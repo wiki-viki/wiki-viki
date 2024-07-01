@@ -35,7 +35,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     { label: '국적', value: nationality, id: 'nationality' },
   ];
   const [isExpanded, setIsExpanded] = useState(false);
-  const [preview, setPreview] = useState<string | StaticImport | null>(image && image);
+  const [preview, setPreview] = useState<string | StaticImport | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextImg = e.target.files?.[0];
@@ -51,6 +51,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   useEffect(() => {
     if (!value) {
+      setPreview(image);
       return;
     }
     const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
@@ -89,7 +90,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   <Image
                     className="rounded-full group-hover:brightness-50"
                     alt="프로필 이미지 미리보기"
-                    src={preview}
+                    src={preview === null ? '/images/basic_profile.png' : preview}
                     fill
                     style={{ objectFit: 'cover' }}
                   ></Image>
