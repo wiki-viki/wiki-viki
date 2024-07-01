@@ -46,7 +46,7 @@ const TopNavigationBar = () => {
   }, [menuClose, noticeClose]);
 
   return (
-    <header className="fixed z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
+    <header className="sticky top-0 z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
       <div className="flex items-center gap-5">
         <Link href="/" rel="preload">
           <Logo width={107} height={30} />
