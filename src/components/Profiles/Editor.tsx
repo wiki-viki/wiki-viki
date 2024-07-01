@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { MDEditorProps } from '@uiw/react-md-editor';
 import dynamic from 'next/dynamic';
 
@@ -22,10 +23,14 @@ const Markdown = dynamic(
 
 export type EditorProps = MDEditorProps;
 
-export const Editor = ({ ...rest }: MDEditorProps) => {
+export const Editor = memo(({ ...rest }: MDEditorProps) => {
   return <MDEditor {...rest} />;
-};
+});
 
-export const EditorMarkdown = ({ source }: { source: string }) => {
+Editor.displayName = 'Editor';
+
+export const EditorMarkdown = memo(({ source }: { source: string }) => {
   return <Markdown source={source} />;
-};
+});
+
+EditorMarkdown.displayName = 'EditorMarkdown';
