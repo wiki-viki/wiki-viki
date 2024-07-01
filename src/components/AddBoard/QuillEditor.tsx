@@ -35,6 +35,7 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   };
 
   const handleInsertImage = (url: string) => {
+    console.log(url);
     const editor = QuillRef.current?.getEditor();
     if (editor) {
       const range = editor.getSelection(true);
