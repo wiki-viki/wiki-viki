@@ -2,7 +2,7 @@ import { ToastOptions } from 'react-toastify';
 
 export const toastOptions: ToastOptions = {
   position: 'top-center',
-  autoClose: 2000,
+  autoClose: 1500,
   hideProgressBar: true,
   closeOnClick: true,
   pauseOnHover: true,
@@ -13,7 +13,7 @@ export const toastOptions: ToastOptions = {
 
 export interface ToastProps {
   type: ToastType;
-  message?: string;
+  message?: string | null | undefined;
   onClose?: () => void;
 }
 
