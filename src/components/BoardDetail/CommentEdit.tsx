@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CommentResponse } from '@/types/apiType';
 import { changeComment } from '@/lib/apis/comment/commentApi.api';
 import CommonButton from '../common/CommonButton';
+import ToastSelect from '../common/ToastSelect';
 
 interface CommentEditProps {
   comment: CommentResponse;
@@ -9,6 +10,8 @@ interface CommentEditProps {
 }
 
 const CommentEdit = ({ comment, onCommentUpdated }: CommentEditProps) => {
+  const MAX_CHARACTERS = 500;
+
   const [editedContent, setEditedContent] = useState(comment.content);
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -20,24 +23,33 @@ const CommentEdit = ({ comment, onCommentUpdated }: CommentEditProps) => {
       const updatedComment = await changeComment(comment.id, { content: editedContent });
       onCommentUpdated(updatedComment);
     } catch (error) {
-      console.error('댓글 수정 에러:', error);
+      ToastSelect({ type: 'error', message: '댓글을 작성해주세요.' });
     }
   };
 
   return (
-    <div className="rounded-md bg-white p-4 shadow-md">
-      <h3 className=" mb-2 font-bold">댓글 수정</h3>
-      <textarea
-        className="mb-4 w-full rounded-md border border-grayscale-100 p-2"
-        value={editedContent}
-        onChange={handleContentChange}
-      />
-      <div className="flex justify-end">
-        <CommonButton variant="secondary" onClick={handleSaveComment}>
-          저장
-        </CommonButton>
+    <>
+      <div className="my-4 min-w-[320px] rounded-md bg-grayscale-50 p-4 shadow-md">
+        <h3 className="text-md-semibold text-grayscale-500 lg:text-lg-semibold">댓글 수정</h3>
+        <textarea
+          value={editedContent}
+          onChange={handleContentChange}
+          className="textarea-none h-[55%] w-full overflow-hidden bg-grayscale-50 pt-2 text-grayscale-500"
+          placeholder="댓글을 수정하세요."
+          maxLength={MAX_CHARACTERS}
+        />
+        <div className="flex justify-end">
+          <CommonButton
+            variant="primary"
+            // disabled={editedContent.trim() === ''}
+            //비활성화보다 toasterror가 나을 것 같아 일단 toast로 처리했습니당
+            onClick={handleSaveComment}
+          >
+            수정
+          </CommonButton>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
