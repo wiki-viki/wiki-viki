@@ -129,4 +129,17 @@ body,
       transform: rotate(7200deg);
     }
   }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-100vh);
+    }
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+
+  .animate-fall {
+    animation: fall 10s linear infinite;
+  }
 }
