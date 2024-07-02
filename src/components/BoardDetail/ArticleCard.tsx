@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import dateToString from '@/utils/dateToString';
 import {
   deleteArticleLike,
@@ -13,6 +15,10 @@ import { IdType } from '@/types/boardDetail';
 import ToastSelect from '@/components/common/ToastSelect';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
+import DeleteIcon from '@/../public/svg/delete.svg';
+import EditIcon from '@/../public/svg/edit.svg';
+import CommonButton from '../common/CommonButton';
+import Loading from '../Loading';
 
 interface ArticleCardProps {
   id: IdType;
@@ -75,29 +81,88 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
     }
   };
 
+  const handleEdit = () => {
+    console.log('handleEdit');
+  };
+
   return (
     <>
       <StyledToastContainer limit={1} transition={Zoom} />
       {articleData ? (
         <>
-          <div>{articleData.title}</div>
-          <div>{articleData.writer.name}</div>
-          <div>{dateToString(articleData.updatedAt)}</div>
-          <div onClick={handleLike}>
-            <div className="flex items-center">
-              {isLiked ? (
-                <span className="mr-[2px] text-primary-green-200">❤︎</span>
-              ) : (
-                <span className="mr-[2px] text-grayscale-400">❤︎</span>
-              )}
-              <span>{likeCount}</span>
+          <div className="min-w-[320px] rounded-10 p-5 shadow-md lg:p-8">
+            <div className="flex justify-between">
+              <div className="flex-wrap break-words text-2xl-semibold text-grayscale-500 lg:text-3xl-bold">
+                {articleData.title}
+              </div>
+              <div className="flex gap-3 lg:hidden">
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={handleEdit}
+                >
+                  <EditIcon />
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={handleDelete}
+                >
+                  <DeleteIcon />
+                </motion.div>
+              </div>
+              <div className="hidden gap-3 lg:flex">
+                <CommonButton
+                  variant="primary"
+                  className="min-w-[120px] px-[32px]"
+                  onClick={handleEdit}
+                >
+                  수정하기
+                </CommonButton>
+                <CommonButton
+                  variant="primary"
+                  className="min-w-[120px] px-[32px]"
+                  onClick={handleDelete}
+                >
+                  삭제하기
+                </CommonButton>
+              </div>
+            </div>
+            <div className="mt-3 flex justify-between border-b border-b-grayscale-200 pb-3 text-xs-regular text-grayscale-400 lg:text-md-regular">
+              <div className="pr-3">
+                {articleData.writer.name}
+                <span className="ml-3">{dateToString(articleData.updatedAt)}</span>
+              </div>
+              <div></div>
+              <div onClick={handleLike}>
+                <div className="flex items-center">
+                  {isLiked ? (
+                    <motion.span
+                      className="mr-1.5 text-primary-green-200"
+                      animate={{ scale: [1, 1.5, 1] }}
+                      transition={{ duration: 0.3, ease: 'easeInOut', repeat: 0.15 }}
+                    >
+                      ❤︎
+                    </motion.span>
+                  ) : (
+                    <span className="mr-1.5 text-grayscale-400">❤︎</span>
+                  )}
+                  <span>{likeCount}</span>
+                </div>
+              </div>
+            </div>
+            {articleData.image && (
+              <div className=" relative mt-3 lg:mb-5 lg:mt-8">
+                <Image src={articleData.image} alt="게시글 이미지" width={500} height={300} />
+              </div>
+            )}
+            <div className="mt-3 text-md-regular text-grayscale-500 lg:text-lg-regular">
+              {articleData.content}
             </div>
           </div>
-          <div>{articleData.content}</div>
-          <button onClick={handleDelete}>삭제</button>
         </>
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
     </>
   );
