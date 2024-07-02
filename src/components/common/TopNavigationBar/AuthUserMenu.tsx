@@ -11,8 +11,9 @@ interface UserMenuProps {
 }
 
 const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
-  const { logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const router = useRouter();
+  const code = user?.profile?.code;
 
   const handleClickLogout = () => {
     logout();
@@ -48,7 +49,7 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
       <MenuItem
         onClick={handleClose}
         title="내 위키"
-        href="/wiki/test"
+        href={`/wiki/${code}`}
         className="text-grayscale-600"
       />
       <MenuItem onClick={handleClickLogout} title="로그아웃" className="text-grayscale-400" />
