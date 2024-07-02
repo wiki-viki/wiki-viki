@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Modal from '@/components/common/Modal';
 import useBoolean from '@/hooks/useBoolean';
-import 'react-quill/dist/quill.snow.css';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 

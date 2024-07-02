@@ -11,7 +11,7 @@ import InfoIcon from '@/../public/svg/info.svg';
 import CheckLottie from '@/../public/lottie/check.json';
 import ErrorLottie from '@/../public/lottie/error.json';
 
-const ToastSelect = ({ type, message }: ToastProps) => {
+const ToastSelect = ({ type, message, onClose }: ToastProps) => {
   const defaultMessages = {
     check: CopyLinkMessage,
     error: UneditableMessage,
@@ -25,18 +25,21 @@ const ToastSelect = ({ type, message }: ToastProps) => {
       toast.success(finalMessage, {
         ...toastOptions,
         icon: <Lottie animationData={CheckLottie} />,
+        onClose,
       });
       break;
     case 'error':
       toast.error(finalMessage, {
         ...toastOptions,
         icon: <Lottie animationData={ErrorLottie} />,
+        onClose,
       });
       break;
     case 'notification':
       toast.info(finalMessage, {
         ...toastOptions,
         icon: <InfoIcon />,
+        onClose,
       });
       break;
   }
