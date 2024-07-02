@@ -159,6 +159,19 @@ const UserWikiPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
+  if (isEditing) {
+    setTimeout(
+      () => {
+        setIsEditing(false);
+        ToastSelect({
+          type: 'notification',
+          message: '수정 가능 시간 5분을 초과하였습니다.',
+        });
+      },
+      5 * 6 * 10000,
+    );
+  }
+
   if (!userProfile) {
     return <Loading />;
   }
