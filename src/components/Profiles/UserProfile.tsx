@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
+import React, { useState, useCallback, useEffect, ChangeEvent, memo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
@@ -166,4 +166,4 @@ const UserProfile: React.FC<UserProfileProps> = ({
   );
 };
 
-export default UserProfile;
+export default memo(UserProfile);
