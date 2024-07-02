@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AxiosError, isAxiosError } from 'axios';
 import UserProfile from '@/components/Profiles/UserProfile';
@@ -12,19 +12,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Editor, EditorMarkdown } from '@/components/Profiles/Editor';
 import { EDITOR_TEXT } from '@/constants/editorBasicText';
 import BasicWikiSection from '@/components/Profiles/BasicWikiSection';
-import {
-  DetailProfileResponse,
-  CodeType,
-  ChangeProfilesFormData,
-  UserResponse,
-} from '@/types/apiType';
-import { getDetailProfiles, changeProfile } from '@/lib/apis/profile/profileApi.api';
+import { DetailProfileResponse, CodeType, ChangeProfilesFormData } from '@/types/apiType';
+import { getDetailProfiles, updateProfile } from '@/lib/apis/profile/profileApi.api';
 import getImageUrl, { ImageData } from '@/lib/apis/image/imageApi.api';
-import { getMyInfo } from '@/lib/apis/user/userApi.api';
 import { FORM_DATA_INIT } from '@/constants/formDataInitialValue';
 import Loading from '@/components/Loading';
 import ToastSelect from '@/components/common/ToastSelect';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useAuthStore } from '@/store/userAuthStore';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -32,13 +27,14 @@ const UserWikiPage: React.FC = () => {
   const router = useRouter();
   const { code } = router.query;
   const URL = `${WIKI_BASE_URL}${code}`;
+  const { user } = useAuthStore();
+
   const [isEditing, setIsEditing] = useState(false);
 
   const { value, handleOff, handleOn } = useBoolean();
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
-  const [userInfo, setUserInfo] = useState<UserResponse | undefined>(undefined);
 
-  const isMyPage = code === (userInfo && userInfo?.profile.code);
+  const isMyPage = code === user?.profile?.code;
   const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
@@ -56,27 +52,20 @@ const UserWikiPage: React.FC = () => {
 
   const isMobile = useIsMobile();
 
-  const handleChange = (id: string, value?: string | File | null) => {
+  const handleChange = useCallback((id: string, value?: string | File | null) => {
     setFormData((prev) => {
       return {
         ...prev,
         [id]: value,
       };
     });
-  };
+  }, []);
 
-  const getUserProfileAndInfo = async (query: CodeType) => {
+  const getUserProfile = async (query: CodeType) => {
     try {
-      const [profileResult, userInfoResult] = await Promise.all([
-        getDetailProfiles(query),
-        getMyInfo(),
-      ]);
-
-      if (profileResult || userInfoResult) {
-        setUserProfile(profileResult);
-        setUserInfo(userInfoResult);
-        setEditorInitialValue(profileResult.content);
-      }
+      const res = await getDetailProfiles(query);
+      setUserProfile(res);
+      setEditorInitialValue(res.content);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.status === 404) {
@@ -88,21 +77,24 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  const setEditorInitialValue = (value: string | null) => {
+  const setEditorInitialValue = useCallback((value: string | null) => {
     setMD(value ? value : EDITOR_TEXT);
-  };
+  }, []);
 
   const handleWikiButtonClick = () => {
     handleOn();
   };
 
-  const handleEditorChange = (value: string | undefined) => {
-    setMD(value);
-    handleChange('content', value);
-    if (!value) {
-      handleChange('content', 'null');
-    }
-  };
+  const handleEditorChange = useCallback(
+    (value: string | undefined) => {
+      setMD(value);
+      handleChange('content', value);
+      if (!value) {
+        handleChange('content', 'null');
+      }
+    },
+    [handleChange],
+  );
 
   const setEditingMode = () => {
     setIsEditing(true);
@@ -137,10 +129,15 @@ const UserWikiPage: React.FC = () => {
         const res = await getImageUrl(imageData as ImageData);
         updatedFormData.append('image', res?.url || '');
       } else {
-        updatedFormData.append('image', 'null');
+        if (userProfile?.image === 'null') {
+          updatedFormData.append('image', 'null');
+        }
+        if (formData.image === 'null') {
+          updatedFormData.append('image', 'null');
+        }
       }
 
-      const res = await changeProfile(
+      const res = await updateProfile(
         userProfile?.code,
         updatedFormData as unknown as ChangeProfilesFormData,
       );
@@ -157,8 +154,9 @@ const UserWikiPage: React.FC = () => {
 
   useEffect(() => {
     if (code) {
-      getUserProfileAndInfo(code);
+      getUserProfile(code);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
   if (!userProfile) {
