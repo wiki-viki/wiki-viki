@@ -83,7 +83,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
             <>
               <label
                 htmlFor="fileInput"
-                className="group center relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
+                // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+                className="center group relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
               >
                 <CameraIcon className="z-10 text-white group-hover:brightness-50" />
                 {preview && (
