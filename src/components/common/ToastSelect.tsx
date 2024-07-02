@@ -25,23 +25,21 @@ const ToastSelect = ({ type, message, onClose }: ToastProps) => {
       toast.success(finalMessage, {
         ...toastOptions,
         icon: <Lottie animationData={CheckLottie} />,
-        onClose: () => {
-          if (onClose) {
-            onClose();
-          }
-        },
+        onClose,
       });
       break;
     case 'error':
       toast.error(finalMessage, {
         ...toastOptions,
         icon: <Lottie animationData={ErrorLottie} />,
+        onClose,
       });
       break;
     case 'notification':
       toast.info(finalMessage, {
         ...toastOptions,
         icon: <InfoIcon />,
+        onClose,
       });
       break;
   }
