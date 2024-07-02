@@ -45,7 +45,7 @@ const UserWikiPage: React.FC = () => {
   const contentClassName = `
   w-full xl:absolute
   md:mt-5 xl:right-[440px] xl:w-[856px]
-  ${userProfile && userProfile.content ? 'xl:top-[150px]' : 'xl:bottom-[420px]'}
+  ${userProfile && userProfile.content ? 'xl:top-[150px]' : 'xl:top-[150px]'}
   ${isEditing ? 'xl:top-[1px]' : ''}
   ${userProfile && userProfile.content && isEditing ? 'xl:top-[40px]' : ''}
 `.trim();
