@@ -10,10 +10,10 @@ const BoardDetail = () => {
 
   return (
     <>
-      <main className="mx-auto max-w-[1060px] flex-col lg:m-8">
+      <main className="mx-auto mt-[30px] max-w-[1060px] flex-col ">
         <ArticleCard id={boardId} />
 
-        <div className="centerOfScreen mt-10 min-w-[320px]">
+        <div className="centerOfScreen mt-10 min-w-[320px] flex-col">
           <Link href="/boards" className="">
             <CommonButton variant="secondary" className="px-[38px]">
               목록으로
