@@ -5,10 +5,16 @@ import axiosWithIntercepter from '../axiosWithIntercepter';
 import axiosDefault from '../axiosDefault';
 
 // 게시글 상세 페이지 댓글 GET 요청
-export const getComment = async (articleId: number, limit: number) => {
+export const getComment = async (articleId: number, limit: number, cursor?: number | null) => {
   try {
     const res: AxiosResponse<CommentListResponse> = await axiosDefault.get(
-      `articles/${articleId}/comments?limit=${limit}`,
+      `articles/${articleId}/comments`,
+      {
+        params: {
+          limit,
+          cursor,
+        },
+      },
     );
     return res.data;
   } catch (e: unknown) {
