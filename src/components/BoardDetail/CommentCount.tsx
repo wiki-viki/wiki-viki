@@ -1,5 +1,5 @@
 interface CommentCountProps {
-  count: number;
+  count: number | undefined;
 }
 
 const CommentCount = ({ count }: CommentCountProps) => {

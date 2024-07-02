@@ -19,7 +19,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
   const [commentsData, setCommentsData] = useState<CommentResponse[]>([]);
   const [nextCursor, setNextCursor] = useState<number | null>();
   const [userId, setUserId] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
+  const [commentCount, setCommentCount] = useState<number>();
 
   const { ref, inView } = useInView();
 
@@ -48,6 +48,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
     try {
       const res = await getComment(Number(id), 9999);
       setCommentCount(res.list.length);
+      console.log(res.list.length);
     } catch (error) {
       console.error('error', error);
     }
@@ -81,6 +82,10 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
   };
 
   useEffect(() => {
+    getCommentsCount();
+  }, [handleDeleteComment, handleCommentSubmit]);
+
+  useEffect(() => {
     fetchUserInfo();
   }, []);
 
@@ -90,15 +95,16 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
     }
   }, [inView]);
 
-  useEffect(() => {
-    getCommentsCount();
-  }, [handleDeleteComment, handleCommentSubmit]);
-
   return (
     <>
       <CommentCount count={commentCount} />
       <CommentForm onSubmit={handleCommentSubmit} />
-      {commentsData.length > 0 ? (
+      {commentCount === 0 ? (
+        <div className="centerOfScreen mt-20 min-w-[320px] flex-col text-grayscale-400">
+          <Lottie animationData={EmptyCommentLottie} style={{ width: '220px', height: '220px' }} />
+          댓글이 없습니다.
+        </div>
+      ) : (
         commentsData.map((comment: CommentResponse) => {
           return (
             <CommentCard
@@ -110,16 +116,6 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
             />
           );
         })
-      ) : (
-        <>
-          <div className="centerOfScreen mt-20 min-w-[320px] flex-col text-grayscale-400">
-            <Lottie
-              animationData={EmptyCommentLottie}
-              style={{ width: '220px', height: '220px' }}
-            />
-            댓글이 없습니다.
-          </div>
-        </>
       )}
       <div ref={ref} className="h-10" />
     </>
