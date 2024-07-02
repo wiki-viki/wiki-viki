@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { isAxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
-import { postPing } from '@/lib/apis/profile/profileApi.api';
+import { createPing } from '@/lib/apis/profile/profileApi.api';
 import { CodeType } from '@/types/apiType';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
 import ToastSelect from '../common/ToastSelect';
@@ -35,7 +35,7 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
 
   const handleSubmitData: SubmitHandler<IForm> = async (data) => {
     try {
-      await postPing(code, data);
+      await createPing(code, data);
       setEditingMode();
       onClose();
     } catch (error: unknown) {
