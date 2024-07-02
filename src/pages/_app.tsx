@@ -5,6 +5,8 @@ import TopNavigationBar from '@/components/common/TopNavigationBar';
 import '@/lib/axiosInterceptor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
+import 'react-quill/dist/quill.snow.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps, router }: AppProps) => {
   const noNavBarPages = ['/404', '/500'];

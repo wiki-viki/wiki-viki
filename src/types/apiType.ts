@@ -40,7 +40,7 @@ export type CommentFormData = {
 };
 
 export type ArticleFormData = {
-  image: ImageType;
+  image?: ImageType;
   content: string;
   title: string;
 };
