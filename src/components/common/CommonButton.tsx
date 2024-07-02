@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import { motion, MotionProps } from 'framer-motion';
 
 interface CommonButtonProps extends ComponentProps<'button'> {
   variant: 'primary' | 'secondary';
@@ -30,9 +31,14 @@ const CommonButton = ({
   }
 
   return (
-    <button className={`${baseClassName} ${className} ${variantClassName}`} {...props}>
+    <motion.button
+      className={`${baseClassName} ${className} ${variantClassName}`}
+      initial={{ scale: 1 }}
+      whileTap={{ scale: 0.9 }}
+      {...(props as MotionProps)}
+    >
       {children}
-    </button>
+    </motion.button>
   );
 };
 

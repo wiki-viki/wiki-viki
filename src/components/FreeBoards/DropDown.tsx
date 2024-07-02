@@ -23,7 +23,9 @@ const DropDown = ({ options, handleClickItem }: DropdownProps) => {
 
   return (
     <div className="relative">
-      <button
+      <motion.button
+        initial={{ scale: 1 }}
+        whileTap={{ scale: 0.9 }}
         onClick={() => {
           setIsVisible(!isVisible);
         }}
@@ -37,7 +39,7 @@ const DropDown = ({ options, handleClickItem }: DropdownProps) => {
         >
           ▾
         </motion.span>
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {isVisible && (
