@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Zoom } from 'react-toastify';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import { type ArticleFormData } from '@/types/apiType';
 import { postArticle } from '@/lib/apis/article/articleApi.api';
 import ToastSelect from '@/components/common/ToastSelect';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
+import { StyledToastContainer } from '@/styles/ToastStyle';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -27,6 +29,9 @@ const AddBoard = () => {
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const isButtonActive = isValid && !isLoading;
+  const isButtonDisabled = !isValid || isLoading;
 
   const refineHTMLContent = (initContext: string) => {
     let newContent = '';
@@ -55,16 +60,17 @@ const AddBoard = () => {
       const response = await postArticle(boardData);
       ToastSelect({
         type: 'check',
-        message: '게시물 작성에 성공했습니다!',
+        message: '게시물이 작성되었습니다 🍀',
+        onClose: () => {
+          router.push(`/board/${response.id}`);
+        },
       });
-      router.push(`/board/${response.id}`);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         ToastSelect({ type: 'error', message: error.response?.data.message });
       } else {
         ToastSelect({ type: 'error', message: OTHER_TYPE_ERROR_TEXT });
       }
-    } finally {
       setIsLoading(false);
     }
   };
@@ -89,8 +95,8 @@ const AddBoard = () => {
             게시물 등록하기
           </h2>
           <CommonButton
-            isActive={isValid && !isLoading}
-            disabled={!isValid || isLoading}
+            isActive={isButtonActive}
+            disabled={isButtonDisabled}
             onClick={handleSubmit}
             variant="primary"
           >
@@ -130,6 +136,7 @@ const AddBoard = () => {
           목록으로
         </CommonButton>
       </Link>
+      <StyledToastContainer transition={Zoom} />
     </div>
   );
 };
