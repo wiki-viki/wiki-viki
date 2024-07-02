@@ -1,6 +1,7 @@
 // 자주 사용되는 타입 정의
 export type DateType = Date | string;
 export type ImageType = string | null;
+export type CodeType = string | string[] | undefined;
 
 // post, patch 요청 시 FormData 정의
 export type PasswordFormData = {
@@ -30,7 +31,7 @@ export type ChangeProfilesFormData = {
   job: string;
   mbti: string;
   city: string;
-  image: ImageType;
+  image: string | File | null;
   content: string;
 };
 

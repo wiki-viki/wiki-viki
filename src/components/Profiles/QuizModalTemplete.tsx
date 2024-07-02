@@ -1,20 +1,28 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { isAxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
+import { postPing } from '@/lib/apis/profile/profileApi.api';
+import { CodeType } from '@/types/apiType';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
-import quizMockData from '../../../public/quizMockData.json';
+import ToastSelect from '../common/ToastSelect';
 
 const modalFirstText = `text-md-regular text-grayscale-400`;
 const modalSecondText = `text-xs-regular text-grayscale-400`;
 
-type QuizModalProps = { onClose: (value: void) => void; setEditingMode: (value: void) => void };
+type QuizModalProps = {
+  question: string;
+  onClose: (value: void) => void;
+  setEditingMode: (value: void) => void;
+  code: CodeType;
+};
 
 type IForm = {
   securityAnswer: string;
 };
 
-const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
+const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModalProps) => {
   const {
     register,
     handleSubmit,
@@ -26,14 +34,29 @@ const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
   });
 
   const handleSubmitData: SubmitHandler<IForm> = async (data) => {
-    if (quizMockData.securityAnswer !== data.securityAnswer) {
-      setError('securityAnswer', {
-        type: 'required',
-        message: '정답이 아닙니다. 다시 시도해 주세요.',
-      });
-    } else {
+    try {
+      await postPing(code, data);
       setEditingMode();
       onClose();
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 403) {
+          ToastSelect({ type: 'error', message: error.response?.data.message });
+          onClose();
+        } else {
+          setError('securityAnswer', {
+            type: 'required',
+            message: '정답이 아닙니다. 다시 시도해 주세요.',
+          });
+        }
+      } else {
+        {
+          setError('securityAnswer', {
+            type: 'required',
+            message: '예상치 못한 오류가 발생하였습니다. ',
+          });
+        }
+      }
     }
   };
 
@@ -52,7 +75,7 @@ const QuizModalTemplete = ({ onClose, setEditingMode }: QuizModalProps) => {
       <Label
         htmlFor="quizInput"
         className="mb-3 text-2lg-semibold text-grayscale-500"
-        label={quizMockData.securityQuestion}
+        label={question}
       ></Label>
 
       <form onSubmit={handleSubmit(handleSubmitData)}>
