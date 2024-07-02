@@ -1,37 +1,27 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ArticleCard from '@/components/BoardDetail/ArticleCard';
-import { CommentFormData } from '@/types/apiType';
-import { postComment } from '@/lib/apis/comment/commentApi.api';
-import { CommentForm, CommentCount } from '@/components/BoardDetail';
+import { ArticleComments } from '@/components/BoardDetail';
+import CommonButton from '@/components/common/CommonButton';
 
 const BoardDetail = () => {
   const router = useRouter();
   const { boardId } = router.query;
-  const [isCommentSubmitted, setIsCommentSubmitted] = useState(false);
-
-  const handleCommentSubmit = async (formData: CommentFormData) => {
-    try {
-      await postComment(Number(boardId), formData);
-      setIsCommentSubmitted(true); // 댓글 작성 완료 상태 변경
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   return (
     <>
-      <ArticleCard id={boardId} />
-      <CommentForm onSubmit={handleCommentSubmit} />
-      <div>
-        <Link href="/boards">목록으로 돌아가기</Link>
-      </div>
-      <CommentCount
-        id={boardId}
-        isCommentSubmitted={isCommentSubmitted}
-        setIsCommentSubmitted={setIsCommentSubmitted}
-      />
+      <main className="mx-auto max-w-[1060px] flex-col lg:m-8">
+        <ArticleCard id={boardId} />
+
+        <div className="centerOfScreen mt-10 min-w-[320px]">
+          <Link href="/boards" className="">
+            <CommonButton variant="secondary" className="px-[38px]">
+              목록으로
+            </CommonButton>
+          </Link>
+        </div>
+        <ArticleComments id={boardId} />
+      </main>
     </>
   );
 };
