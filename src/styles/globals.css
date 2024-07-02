@@ -117,6 +117,10 @@ body,
     @apply absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer;
   }
 
+  .loading {
+    height: calc(100vh - 150px);
+  }
+
   .spinner {
     animation: spin 20s linear infinite;
   }
