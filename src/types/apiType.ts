@@ -29,7 +29,7 @@ export type ChangeProfilesFormData = {
   job: string;
   mbti: string;
   city: string;
-  image: string | File;
+  image: string | File | ImageType;
   content: string;
 };
 
