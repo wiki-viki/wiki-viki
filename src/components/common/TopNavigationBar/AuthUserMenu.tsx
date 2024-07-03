@@ -1,8 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAuthStore } from '@/store/userAuthStore';
-import { StyledToastContainer } from '@/styles/ToastStyle';
-import ToastSelect from '../ToastSelect';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
@@ -17,11 +15,11 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
   const router = useRouter();
   const profile = user?.profile;
 
-  const handleCustomClose = () => {
+  const handleCloseWithToast = () => {
     if (!profile) {
-      ToastSelect({ type: 'error', message: '위키를 먼저 생성해주세요.' });
+      alert('내 위키를 먼저 생성해주세요!');
+      handleClose();
     }
-    handleClose();
   };
 
   const handleClickLogout = () => {
@@ -32,7 +30,6 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
 
   return (
     <>
-      <StyledToastContainer limit={1} />
       <MenuContainer isOpen={isOpen}>
         {isMobile && (
           <>
@@ -58,9 +55,9 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
           className="text-grayscale-600"
         />
         <MenuItem
-          onClick={handleCustomClose}
+          onClick={handleCloseWithToast}
           title="내 위키"
-          href={profile ? `/wiki/${profile?.code}` : `/`}
+          href={profile ? `/wiki/${profile?.code}` : `/mypage`}
           className="text-grayscale-600"
         />
         <MenuItem onClick={handleClickLogout} title="로그아웃" className="text-grayscale-400" />
