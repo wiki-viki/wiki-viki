@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Zoom } from 'react-toastify';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { AxiosError } from 'axios';
 import { parse } from 'cookie';
 import { IncomingMessage } from 'http';
+import { StyledToastContainer } from '@/styles/ToastStyle';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
@@ -58,18 +60,6 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   },
 });
 
-const StyledToastContainer = dynamic(
-  import('@/styles/ToastStyle').then((mod) => {
-    return mod.StyledToastContainer;
-  }),
-  {
-    ssr: false,
-    loading: () => {
-      return <p>Loading...</p>;
-    },
-  },
-);
-
 interface EditBoardProps {
   initTitle: string;
   initContent: string;
@@ -98,7 +88,9 @@ const EditBoard = ({ initTitle, initContent, initCreateAt, boardId }: EditBoardP
     const boardData: ArticleFormData = {
       title,
       content: newContent,
-      image: firstImageSrc ? firstImageSrc : undefined,
+      image: firstImageSrc
+        ? firstImageSrc
+        : 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720006227876/empty-image.png',
     };
 
     try {
@@ -136,7 +128,7 @@ const EditBoard = ({ initTitle, initContent, initCreateAt, boardId }: EditBoardP
 
   return (
     <div className="center mt-4 flex-col">
-      <StyledToastContainer transition={Zoom} />
+      {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
       <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
         <div className="flex items-center justify-between">
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
