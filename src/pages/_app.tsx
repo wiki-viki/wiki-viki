@@ -1,4 +1,4 @@
-import '@/styles/globals.css';
+import { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Wrapper from '@/components/common/Container';
 import TopNavigationBar from '@/components/common/TopNavigationBar';
@@ -7,23 +7,48 @@ import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import 'react-quill/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
+import SplashScreen from '@/components/Landing/SplashScreen';
+import '@/styles/globals.css';
 
 const App = ({ Component, pageProps, router }: AppProps) => {
+  const [showSplash, setShowSplash] = useState(true);
   const noNavBarPages = ['/404', '/500'];
   const isNoNavBarPage = noNavBarPages.includes(router.pathname);
+  const isLandingPage = router.pathname === '/';
+  
+  useEffect(() => {
+    if (router.pathname !== '/') {
+      setShowSplash(false);
+    }
+  }, [router.pathname]);
+  
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+  };
+
+  if (showSplash && isLandingPage) {
+    return <SplashScreen onFinish={handleSplashFinish} />;
+  }
+
+  if (isNoNavBarPage) {
+    return <Component {...pageProps} />;
+  }
+
+  if (isLandingPage) {
+    return (
+      <>
+        <TopNavigationBar />
+        <Component {...pageProps} />
+      </>
+    );
+  }
 
   return (
     <>
-      {isNoNavBarPage ? (
+      <TopNavigationBar />
+      <Wrapper>
         <Component {...pageProps} />
-      ) : (
-        <>
-          <TopNavigationBar />
-          <Wrapper>
-            <Component {...pageProps} />
-          </Wrapper>
-        </>
-      )}
+      </Wrapper>
     </>
   );
 };

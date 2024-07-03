@@ -5,6 +5,7 @@ import { getCookie, deleteCookie } from '@/utils/cookieUtil';
 export type userInfo = {
   id: number;
   name: string;
+  code: string;
 };
 
 interface AuthProps {

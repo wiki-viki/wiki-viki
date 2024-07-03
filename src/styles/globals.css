@@ -51,6 +51,15 @@ body,
     @apply transition-all duration-300;
   }
 
+  /* Landing Page */
+  .sectionTitle {
+    @apply text-[10px] font-normal leading-[11.5px] text-primary-green-200
+  }
+  
+  .sectionDescription {
+    @apply mb-1 text-lg-regular leading-[18.4px] text-white;
+  }
+
   /* Form */
   .formContainer {
     @apply relative;
