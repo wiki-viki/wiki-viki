@@ -22,13 +22,14 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
 
 const TITLE_MAX_LEN = 30;
 
-const AddBoard = () => {
+const EditBoard = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { boardId } = router.query;
 
   const isButtonActive = isValid && !isLoading;
   const isButtonDisabled = !isValid || isLoading;
@@ -92,7 +93,7 @@ const AddBoard = () => {
       <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
         <div className="flex items-center justify-between">
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
-            게시물 등록하기
+            게시물 수정하기
           </h2>
           <CommonButton
             isActive={isButtonActive}
@@ -100,7 +101,7 @@ const AddBoard = () => {
             onClick={handleSubmit}
             variant="primary"
           >
-            {isLoading ? '등록 중...' : '등록하기'}
+            {isLoading ? '수정 중...' : '수정하기'}
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
@@ -131,9 +132,9 @@ const AddBoard = () => {
         </span>
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
       </main>
-      <Link href="/boards" rel="preload">
+      <Link href={`/board/${boardId}`} rel="preload">
         <CommonButton variant="secondary" className="my-8">
-          목록으로
+          원본으로
         </CommonButton>
       </Link>
       <StyledToastContainer transition={Zoom} />
@@ -141,4 +142,4 @@ const AddBoard = () => {
   );
 };
 
-export default AddBoard;
+export default EditBoard;
