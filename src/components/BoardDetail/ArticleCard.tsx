@@ -22,6 +22,7 @@ import { useStore } from '@/store/useStore';
 import { useAuthStore } from '@/store/userAuthStore';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface ArticleCardProps {
   id: IdType;
@@ -32,6 +33,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [writerId, setWriterId] = useState<number>(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const router = useRouter();
 
@@ -90,6 +92,19 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
     console.log('handleEdit');
   };
 
+  const handleDeleteModalOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    handleDelete();
+    handleDeleteModalClose();
+  };
+
   return (
     <>
       <StyledToastContainer limit={1} transition={Zoom} />
@@ -105,7 +120,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                   <motion.div className="hoverScale" onClick={handleEdit}>
                     <EditIcon />
                   </motion.div>
-                  <motion.div className="hoverScale" onClick={handleDelete}>
+                  <motion.div className="hoverScale" onClick={handleDeleteModalOpen}>
                     <DeleteIcon />
                   </motion.div>
                 </div>
@@ -122,7 +137,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                   <CommonButton
                     variant="primary"
                     className="min-w-[120px] px-[32px]"
-                    onClick={handleDelete}
+                    onClick={handleDeleteModalOpen}
                   >
                     삭제하기
                   </CommonButton>
@@ -163,6 +178,17 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         </>
       ) : (
         <Loading />
+      )}
+      {isDeleteModalOpen && (
+        <ConfirmModal
+          isOpen={isDeleteModalOpen}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteModalClose}
+          title="게시글 삭제"
+          message="게시글을 삭제하시겠습니까?"
+          cancel="아니오"
+          confirm="예"
+        />
       )}
     </>
   );
