@@ -41,7 +41,6 @@ const UserWikiPage: React.FC = () => {
   const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
-  const [prevFormData, setPrevFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
 
   const [md, setMD] = useState<string | undefined>(undefined);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -94,7 +93,7 @@ const UserWikiPage: React.FC = () => {
       setMD(value);
       handleChange('content', value);
       if (!value) {
-        handleChange('content', 'null');
+        handleChange('content', null);
       }
     },
     [handleChange],
@@ -106,53 +105,75 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    resetState();
-  };
-
-  const resetState = () => {
-    setFormData(FORM_DATA_INIT);
-    setPrevFormData(FORM_DATA_INIT);
   };
 
   const handleSaveClick = async () => {
-    const updatedFormData = new FormData();
-
-    Object.keys(formData).forEach((key) => {
-      const currentValue = formData[key as keyof ChangeProfilesFormData];
-      const previousValue = prevFormData[key as keyof ChangeProfilesFormData];
-
-      if (currentValue !== previousValue && key !== 'image') {
-        updatedFormData.append(key, formData[key as keyof ChangeProfilesFormData]);
-      }
-    });
-
     try {
-      if (formData.image !== 'null' && formData.image !== 'imageNull') {
+      let updatedFormData = { ...formData };
+
+      if (formData.image instanceof File) {
         const imageData = new FormData();
         imageData.append('image', formData.image);
+
         const res = await getImageUrl(imageData as ImageData);
-        updatedFormData.append('image', res?.url || '');
-      } else {
-        if (formData.image === 'imageNull') {
-          updatedFormData.append('image', 'null');
+        if (res?.url) {
+          updatedFormData = {
+            ...formData,
+            image: res.url,
+          };
+          setFormData(updatedFormData);
         }
       }
 
-      const res = await updateProfile(
+      const profileUpdateResponse = await updateProfile(
         userProfile?.code,
-        updatedFormData as unknown as ChangeProfilesFormData,
+        updatedFormData as ChangeProfilesFormData,
       );
-
-      setUserProfile(res);
+      setUserProfile(profileUpdateResponse);
       setIsEditing(false);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         ToastSelect({ type: 'error', message: error?.response?.data.message });
+      } else {
+        ToastSelect({ type: 'error', message: '예상치 못한 에러가 발생했습니다.' });
       }
-    } finally {
-      resetState();
     }
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      const {
+        nationality,
+        family,
+        bloodType,
+        nickname,
+        birthday,
+        sns,
+        job,
+        mbti,
+        city,
+        image,
+        content,
+      } = userProfile;
+
+      // Create the new object with only the necessary keys
+      const newFormData: ChangeProfilesFormData = {
+        nationality,
+        family,
+        bloodType,
+        nickname,
+        birthday,
+        sns,
+        job,
+        mbti,
+        city,
+        image,
+        content,
+      };
+
+      setFormData(newFormData);
+    }
+  }, [userProfile]);
 
   useEffect(() => {
     if (code) {
