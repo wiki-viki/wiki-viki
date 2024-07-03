@@ -11,7 +11,6 @@ import { ProfileListResponse } from '@/types/apiType';
 import ToastSelect from '@/components/common/ToastSelect';
 import { ToastProps } from '@/types/toast';
 
-
 const PAGE_SIZE = 3;
 
 export const getServerSideProps = async () => {
@@ -47,7 +46,6 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
     try {
       const res = await getProfiles({ pageSize: PAGE_SIZE, page, name });
       setProfileListData(res);
-      console.log('fetchdata:', profileListData, name);
     } catch (error) {
       console.error('error');
     } finally {
@@ -81,7 +79,6 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
     fetchProfilesData(page, name);
   }, [page, name]);
 
-
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
       <StyledToastContainer limit={1} transition={Zoom} />
@@ -91,7 +88,6 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
       <section>
         {profileListData.totalCount !== 0 ? (
           <>
-
             {!isLoading && <SearchLabel name={name} totalCount={profileListData.totalCount} />}
 
             <UserCard cardList={profileListData.list} />
@@ -104,7 +100,6 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
                   setPage(value);
 
                   fetchProfilesData(value, name);
-
                 }}
               />
             </div>

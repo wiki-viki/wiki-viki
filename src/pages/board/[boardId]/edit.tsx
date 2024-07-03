@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AxiosError } from 'axios';
+import { parse } from 'cookie';
+import { IncomingMessage } from 'http';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
@@ -13,6 +15,41 @@ import { changeDetailArticle, getDetailArticle } from '@/lib/apis/article/articl
 import ToastSelect from '@/components/common/ToastSelect';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import 'react-toastify/dist/ReactToastify.css';
+
+type ContextProps = {
+  params: { [x: string]: string };
+  req: IncomingMessage;
+};
+
+export const getServerSideProps = async (context: ContextProps) => {
+  const boardId = context.params?.boardId;
+  const cookies = parse(context.req.headers.cookie || '');
+  const userId = cookies.userId;
+
+  try {
+    const response = await getDetailArticle(Number(boardId));
+
+    // 유효하지 않은 회원 접근 제한
+    if (Number(userId) !== response?.writer.id) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        initTitle: response?.title,
+        initContent: response?.content,
+        initCreateAt: response?.createdAt,
+        boardId,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+};
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -33,16 +70,22 @@ const StyledToastContainer = dynamic(
   },
 );
 
-const EditBoard = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+interface EditBoardProps {
+  initTitle: string;
+  initContent: string;
+  initCreateAt: DateType;
+  boardId: number;
+  alertMessage?: string;
+}
+
+const EditBoard = ({ initTitle, initContent, initCreateAt, boardId }: EditBoardProps) => {
+  const [title, setTitle] = useState(initTitle);
+  const [content, setContent] = useState(initContent);
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
-  const [createAt, setCreateAt] = useState<DateType>(new Date());
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const { boardId } = router.query;
 
   const isButtonActive = isValid && !isLoading;
   const isButtonDisabled = !isValid || isLoading;
@@ -91,29 +134,6 @@ const EditBoard = () => {
     setIsValid(title.trim().length > 0 && content.trim().length > 0);
   }, [title, content]);
 
-  // 수정할 게시물 가져오기
-  useEffect(() => {
-    const fetchBoardData = async () => {
-      try {
-        const response = await getDetailArticle(Number(boardId));
-        setTitle(response.title);
-        setContent(response.content);
-        setCreateAt(response.createdAt);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.status === 404) {
-            router.push('/404');
-          } else {
-            router.push('/500');
-          }
-        }
-      }
-    };
-    if (boardId) {
-      fetchBoardData();
-    }
-  }, [boardId, router]);
-
   return (
     <div className="center mt-4 flex-col">
       <StyledToastContainer transition={Zoom} />
@@ -132,7 +152,7 @@ const EditBoard = () => {
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
-          등록일 {dateToString(createAt)}
+          등록일 {dateToString(initCreateAt)}
         </span>
         <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
