@@ -14,11 +14,11 @@ const BoardList = ({ boardList, className }: BoardListProps) => {
     <table className={`mt-10 w-full text-center ${className}`}>
       <thead>
         <tr className="border-y border-grayscale-200 bg-grayscale-100 text-lg-regular text-grayscale-400">
-          <th className="py-3">번호</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>좋아요</th>
-          <th>날짜</th>
+          <th className="w-1/12 py-3">번호</th>
+          <th className="w-1/3">제목</th>
+          <th className="w-1/6">작성자</th>
+          <th className="w-1/12 min-w-[40px]">좋아요</th>
+          <th className="w-1/6">작성일</th>
         </tr>
       </thead>
       <tbody>
@@ -28,20 +28,22 @@ const BoardList = ({ boardList, className }: BoardListProps) => {
               key={board.id}
               className="border-y border-grayscale-200 text-lg-regular text-grayscale-600 hover:bg-primary-green-100"
             >
-              <td className="py-3">{board.id}</td>
-              <td className="max-w-[140px] px-1">
+              <td className="w-1/12 py-3">{board.id}</td>
+              <td className="w-1/3 max-w-[140px] px-1">
                 <Link href={`/board/${board.id}`} rel="preload">
                   <motion.h3
                     whileHover={{ scale: 1.1 }}
-                    className="inline-block max-w-full truncate hover:text-primary-green-200 hover:underline"
+                    className="mt-2 inline-block max-w-full truncate hover:text-primary-green-200 hover:underline"
                   >
                     {board.title}
                   </motion.h3>
                 </Link>
               </td>
-              <td className="max-w-[35px] truncate px-1">{board.writer.name}</td>
-              <td>{board.likeCount}</td>
-              <td>{dateToString(board.createdAt)}</td>
+              <td className="w-1/6 max-w-[50px] px-1">
+                <span className="block truncate">{board.writer.name}</span>
+              </td>
+              <td className="w-1/12">{board.likeCount}</td>
+              <td className="w-1/6 min-w-[100px]">{dateToString(board.createdAt)}</td>
             </tr>
           );
         })}
