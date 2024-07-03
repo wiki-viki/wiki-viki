@@ -20,6 +20,7 @@ import Loading from '@/components/Loading';
 import ToastSelect from '@/components/common/ToastSelect';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -27,7 +28,9 @@ const UserWikiPage: React.FC = () => {
   const router = useRouter();
   const { code } = router.query;
   const URL = `${WIKI_BASE_URL}${code}`;
-  const { user } = useAuthStore();
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
 
   const [isEditing, setIsEditing] = useState(false);
 
