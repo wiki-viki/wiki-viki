@@ -32,7 +32,7 @@ const CommentForm = ({ onSubmit }: CommentFormProps) => {
       className="mt-3 h-[140px] min-w-[320px] rounded-10 bg-grayscale-100 p-5"
     >
       <textarea
-        className="textarea-none h-[55%] w-full overflow-hidden bg-grayscale-100 text-grayscale-500"
+        className="textareaNone h-[55%] w-full overflow-hidden bg-grayscale-100 text-grayscale-500"
         value={content}
         onChange={handleContentChange}
         placeholder="댓글을 입력하세요."

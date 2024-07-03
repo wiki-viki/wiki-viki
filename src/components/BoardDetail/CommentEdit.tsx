@@ -34,7 +34,7 @@ const CommentEdit = ({ comment, onCommentUpdated }: CommentEditProps) => {
         <textarea
           value={editedContent}
           onChange={handleContentChange}
-          className="textarea-none h-[55%] w-full overflow-hidden bg-grayscale-50 pt-2 text-grayscale-500"
+          className="textareaNone h-[55%] w-full overflow-hidden bg-grayscale-50 pt-2 text-grayscale-500"
           placeholder="댓글을 수정하세요."
           maxLength={MAX_CHARACTERS}
         />

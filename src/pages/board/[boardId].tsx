@@ -13,9 +13,9 @@ const BoardDetail = () => {
       <main className="mx-auto mt-[30px] max-w-[1060px] flex-col ">
         <ArticleCard id={boardId} />
 
-        <div className="centerOfScreen mt-10 min-w-[320px] flex-col">
-          <Link href="/boards" className="">
-            <CommonButton variant="secondary" className="px-[38px]">
+        <div className="centerOfScreen mt-20 min-w-[320px] flex-col">
+          <Link href="/boards" rel="preload">
+            <CommonButton variant="secondary" className="my-8 px-10">
               목록으로
             </CommonButton>
           </Link>
