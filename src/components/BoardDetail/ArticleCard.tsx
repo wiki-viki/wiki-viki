@@ -17,15 +17,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
+import { DeleteSuccess, UnableDelete } from '@/constants/toast';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
 
 interface ArticleCardProps {
   id: IdType;
 }
-
-const DeleteSuccess = '게시글 삭제가 완료되었습니다.';
-const UnableDelete = '게시글 작성자만 삭제할 수 있습니다.';
 
 const ArticleCard = ({ id }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);

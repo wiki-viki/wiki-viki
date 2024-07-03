@@ -1,21 +1,16 @@
 import { toast } from 'react-toastify';
 import Lottie from 'lottie-react';
-import {
-  CopyLinkMessage,
-  NotificationMessage,
-  ToastProps,
-  UneditableMessage,
-  toastOptions,
-} from '@/types/toast';
+import { ToastProps, toastOptions } from '@/types/toast';
 import InfoIcon from '@/../public/svg/info.svg';
 import CheckLottie from '@/../public/lottie/check.json';
 import ErrorLottie from '@/../public/lottie/error.json';
+import { CopyLink, Uneditable, Notification } from '@/constants/toast';
 
 const ToastSelect = ({ type, message, onClose }: ToastProps) => {
   const defaultMessages = {
-    check: CopyLinkMessage,
-    error: UneditableMessage,
-    notification: NotificationMessage,
+    check: CopyLink,
+    error: Uneditable,
+    notification: Notification,
   };
 
   const finalMessage = message || defaultMessages[type];
