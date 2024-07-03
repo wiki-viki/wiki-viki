@@ -24,6 +24,21 @@ body,
   overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4cbfa4;
+  border-radius: 10px;
+  border: 5px solid #f7f7fa;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #f7f7fa;
+}
+
 @layer components {
   .center {
     display: flex;
