@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface PaginationProps {
   totalCount: number;
@@ -69,7 +70,9 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
       </button>
       {twoDimensionalPageArr[pageGroup].map((pageNum) => {
         return (
-          <button
+          <motion.button
+            initial={{ scale: 1 }}
+            whileTap={{ scale: 0.8 }}
             className={`center active:page-btn-active size-11 rounded-10 drop-shadow-md hover:drop-shadow-xl sm:size-10 ${page === pageNum ? `page-btn-active bg-primary-green-200 text-white` : `bg-white`}`}
             key={pageNum}
             onClick={() => {
@@ -77,7 +80,7 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
             }}
           >
             {pageNum}
-          </button>
+          </motion.button>
         );
       })}
       <button

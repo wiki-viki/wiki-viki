@@ -1,15 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { getCookie, deleteCookie } from '@/utils/cookieUtil';
-
-export type userInfo = {
-  id: number;
-  name: string;
-};
+import { UserResponse } from '@/types/apiType';
 
 interface AuthProps {
-  user: userInfo | null; // 유저 정보
-  saveUser: (user: userInfo) => void; // 유저 정보 저장
+  user: UserResponse | null; // 유저 정보
+  saveUser: (user: UserResponse) => void; // 유저 정보 저장
   isLogin: boolean; // 로그인 여부
   checkLogin: () => void; // 로그인 여부 확인 함수
   logout: () => void; // 로그아웃
