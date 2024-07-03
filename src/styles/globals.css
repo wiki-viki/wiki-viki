@@ -161,6 +161,10 @@ body,
     animation: spin 20s linear infinite;
   }
 
+  .hoverScale {
+    @apply cursor-pointer transition-all duration-200 hover:scale-110;
+  }
+
   @keyframes spin {
     from {
       transform: rotate(0deg);

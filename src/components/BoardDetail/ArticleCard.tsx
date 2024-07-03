@@ -92,18 +92,10 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                 {articleData.title}
               </div>
               <div className="flex gap-3 lg:hidden">
-                <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={handleEdit}
-                >
+                <motion.div className="hoverScale" onClick={handleEdit}>
                   <EditIcon />
                 </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={handleDelete}
-                >
+                <motion.div className="hoverScale" onClick={handleDelete}>
                   <DeleteIcon />
                 </motion.div>
               </div>

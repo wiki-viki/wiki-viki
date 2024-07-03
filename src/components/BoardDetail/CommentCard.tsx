@@ -68,18 +68,10 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
           <div className=" absolute right-5 top-4 flex justify-end gap-2">
             {id === comment.writer.id && (
               <>
-                <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={handleEditComment}
-                >
+                <motion.div className="hoverScale" onClick={handleEditComment}>
                   <EditIcon />
                 </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={handleDeleteComment}
-                >
+                <motion.div className="hoverScale" onClick={handleDeleteComment}>
                   <DeleteIcon />
                 </motion.div>
               </>

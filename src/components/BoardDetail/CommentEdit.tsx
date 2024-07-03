@@ -39,12 +39,7 @@ const CommentEdit = ({ comment, onCommentUpdated }: CommentEditProps) => {
           maxLength={MAX_CHARACTERS}
         />
         <div className="flex justify-end">
-          <CommonButton
-            variant="primary"
-            // disabled={editedContent.trim() === ''}
-            //비활성화보다 toasterror가 나을 것 같아 일단 toast로 처리했습니당
-            onClick={handleSaveComment}
-          >
+          <CommonButton variant="primary" onClick={handleSaveComment}>
             수정
           </CommonButton>
         </div>

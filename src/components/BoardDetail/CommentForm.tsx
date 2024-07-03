@@ -43,12 +43,7 @@ const CommentForm = ({ onSubmit }: CommentFormProps) => {
           {characterCount}/{MAX_CHARACTERS}
         </div>
         <div>
-          <CommonButton
-            variant="primary"
-            disabled={characterCount > MAX_CHARACTERS}
-            type="submit"
-            className=""
-          >
+          <CommonButton variant="primary" disabled={characterCount > MAX_CHARACTERS} type="submit">
             댓글 작성
           </CommonButton>
         </div>
