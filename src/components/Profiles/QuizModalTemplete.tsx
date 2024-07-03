@@ -16,13 +16,20 @@ type QuizModalProps = {
   onClose: (value: void) => void;
   setEditingMode: (value: void) => void;
   code: CodeType;
+  setAnswer: (value: string) => void;
 };
 
 type IForm = {
   securityAnswer: string;
 };
 
-const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModalProps) => {
+const QuizModalTemplete = ({
+  question,
+  onClose,
+  setEditingMode,
+  code,
+  setAnswer,
+}: QuizModalProps) => {
   const {
     register,
     handleSubmit,
@@ -37,6 +44,7 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
     try {
       await createPing(code, data);
       setEditingMode();
+      setAnswer(data.securityAnswer);
       onClose();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
