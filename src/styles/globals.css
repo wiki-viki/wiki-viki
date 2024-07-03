@@ -43,6 +43,14 @@ body,
   background-color: #f7f7fa;
 }
 
+.group:hover .group-hover {
+  color: #00bfa5;
+}
+
+.group:hover .group-hover {
+  text-decoration: underline;
+}
+
 @layer components {
   .center {
     display: flex;
