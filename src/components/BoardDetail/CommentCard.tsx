@@ -12,7 +12,7 @@ import ToastSelect from '@/components/common/ToastSelect';
 import CommentEditModal from './CommentEdit';
 
 interface CommentItemProps {
-  id: number;
+  id: number | undefined;
   comment: CommentResponse;
   onDeleteComment: (commentId: number) => void;
   onCommentUpdated: (updatedComment: CommentResponse) => void;

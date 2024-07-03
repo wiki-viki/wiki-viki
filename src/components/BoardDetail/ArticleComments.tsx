@@ -5,8 +5,9 @@ import router from 'next/router';
 import { CommentResponse, CommentFormData } from '@/types/apiType';
 import { getComment, postComment } from '@/lib/apis/comment/commentApi.api';
 import { IdType } from '@/types/boardDetail';
-import { getMyInfo } from '@/lib/apis/user/userApi.api';
 import EmptyCommentLottie from '@/../public/lottie/emptycomment.json';
+import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 import ToastSelect from '../common/ToastSelect';
 import { CommentCard, CommentCount, CommentForm } from './index';
 
@@ -19,19 +20,13 @@ const LIMIT = 10;
 const ArticleComments = ({ id }: ArticleCommentsProps) => {
   const [commentsData, setCommentsData] = useState<CommentResponse[]>([]);
   const [nextCursor, setNextCursor] = useState<number | null>();
-  const [userId, setUserId] = useState(0);
   const [commentCount, setCommentCount] = useState<number>();
 
   const { ref, inView } = useInView();
 
-  const fetchUserInfo = async () => {
-    try {
-      const userInfo = await getMyInfo();
-      setUserId(userInfo.id);
-    } catch (error) {
-      router.push('/500');
-    }
-  };
+  const userId = useStore(useAuthStore, (state) => {
+    return state.user?.id;
+  });
 
   const fetchComments = async () => {
     try {
@@ -85,10 +80,6 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
   useEffect(() => {
     getCommentsCount();
   }, [handleDeleteComment, handleCommentSubmit]);
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
 
   useEffect(() => {
     if (inView && nextCursor !== null) {
