@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Lottie from 'lottie-react';
+import router from 'next/router';
 import { CommentResponse, CommentFormData } from '@/types/apiType';
 import { getComment, postComment } from '@/lib/apis/comment/commentApi.api';
 import { IdType } from '@/types/boardDetail';
@@ -28,7 +29,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
       const userInfo = await getMyInfo();
       setUserId(userInfo.id);
     } catch (error) {
-      console.error('Error fetching user info:', error);
+      router.push('/500');
     }
   };
 
@@ -40,7 +41,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
       });
       setNextCursor(res.nextCursor);
     } catch (error) {
-      console.error('error', error);
+      router.push('/500');
     }
   };
 
@@ -50,7 +51,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
       setCommentCount(res.list.length);
       console.log(res.list.length);
     } catch (error) {
-      console.error('error', error);
+      router.push('/500');
     }
   };
 

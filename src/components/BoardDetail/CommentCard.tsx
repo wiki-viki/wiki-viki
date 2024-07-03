@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import router from 'next/router';
 import { CommentResponse } from '@/types/apiType';
 import dateToString from '@/utils/dateToString';
 import { deleteComment } from '@/lib/apis/comment/commentApi.api';
@@ -27,7 +28,7 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
       onDeleteComment(comment.id);
       ToastSelect({ type: 'check', message: '댓글이 삭제되었습니다.' });
     } catch (error) {
-      console.error('Delete error:', error);
+      router.push('/500');
     }
   };
 

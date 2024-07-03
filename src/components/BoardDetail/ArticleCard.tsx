@@ -39,8 +39,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         setLikeCount(res.likeCount);
         setIsLiked(res.isLiked);
       } catch (error) {
-        console.error('error', error);
-        //에러 처리를 toast로 할까요? 아니면 따로 할까요?
+        router.push('/500');
       }
     };
 
@@ -59,7 +58,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         setIsLiked(true);
       }
     } catch (error) {
-      console.error('error', error);
+      router.push('/500');
     }
   };
 
@@ -72,7 +71,6 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         onClose: () => {
           router.push('/boards');
         },
-        //onClose를 추가했습니다! 토스트 종료 후 원하는 함수를 지정하시면 됩니다~~~
       });
     } catch (error) {
       ToastSelect({ type: 'error', message: UnableDelete });
@@ -131,7 +129,6 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                 {articleData.writer.name}
                 <span className="ml-3">{dateToString(articleData.updatedAt)}</span>
               </div>
-              <div></div>
               <div onClick={handleLike}>
                 <div className="flex items-center">
                   {isLiked ? (
