@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AxiosError, isAxiosError } from 'axios';
 import UserProfile from '@/components/Profiles/UserProfile';
@@ -41,6 +41,7 @@ const UserWikiPage: React.FC = () => {
   const [prevFormData, setPrevFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
 
   const [md, setMD] = useState<string | undefined>(undefined);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const contentClassName = `
   w-full xl:absolute
@@ -159,18 +160,29 @@ const UserWikiPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
-  if (isEditing) {
-    setTimeout(
-      () => {
-        setIsEditing(false);
-        ToastSelect({
-          type: 'notification',
-          message: '수정 가능 시간 5분을 초과하였습니다.',
-        });
-      },
-      5 * 6 * 10000,
-    );
-  }
+  useEffect(() => {
+    if (isEditing) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(
+        () => {
+          setIsEditing(false);
+          ToastSelect({
+            type: 'notification',
+            message: '수정 가능 시간 5분을 초과하였습니다.',
+          });
+        },
+        5 * 6 * 10000,
+      );
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }
+  }, [isEditing]);
 
   if (!userProfile) {
     return <Loading />;
