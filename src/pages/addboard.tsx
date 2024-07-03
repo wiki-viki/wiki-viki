@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AxiosError } from 'axios';
-import { StyledToastContainer } from '@/styles/ToastStyle';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import { refineHTMLContent } from '@/utils/quillHtmlHandler';
@@ -24,6 +23,18 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
     return <p>Loading...</p>;
   },
 });
+
+const StyledToastContainer = dynamic(
+  import('@/styles/ToastStyle').then((mod) => {
+    return mod.StyledToastContainer;
+  }),
+  {
+    ssr: false,
+    loading: () => {
+      return <p>Loading...</p>;
+    },
+  },
+);
 
 const AddBoard = () => {
   const user = useStore(useAuthStore, (state) => {

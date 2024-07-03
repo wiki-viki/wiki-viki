@@ -1,8 +1,6 @@
 import '@/styles/globals.css';
-import { Zoom } from 'react-toastify';
 import type { AppProps } from 'next/app';
 import { AnimatePresence, motion } from 'framer-motion'; // motion import 추가
-import { StyledToastContainer } from '@/styles/ToastStyle';
 import Wrapper from '@/components/common/Container';
 import TopNavigationBar from '@/components/common/TopNavigationBar';
 import '@/lib/axiosInterceptor';
@@ -37,7 +35,6 @@ const App = ({ Component, pageProps, router }: AppProps) => {
               </Wrapper>
             </motion.div>
           </AnimatePresence>
-          <StyledToastContainer transition={Zoom} />
         </>
       )}
     </>

@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { AxiosError } from 'axios';
 import { parse } from 'cookie';
 import { IncomingMessage } from 'http';
-import { StyledToastContainer } from '@/styles/ToastStyle';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
@@ -65,6 +64,18 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
     return <p>Loading...</p>;
   },
 });
+
+const StyledToastContainer = dynamic(
+  import('@/styles/ToastStyle').then((mod) => {
+    return mod.StyledToastContainer;
+  }),
+  {
+    ssr: false,
+    loading: () => {
+      return <p>Loading...</p>;
+    },
+  },
+);
 
 interface EditBoardProps {
   initTitle: string;
