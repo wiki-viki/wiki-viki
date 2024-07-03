@@ -12,6 +12,7 @@ import { postArticle } from '@/lib/apis/article/articleApi.api';
 import ToastSelect from '@/components/common/ToastSelect';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import { StyledToastContainer } from '@/styles/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,

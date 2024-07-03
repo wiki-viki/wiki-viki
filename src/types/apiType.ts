@@ -142,6 +142,8 @@ export interface ArticleResponse {
   image: ImageType;
   title: string;
   id: number;
+  isLiked: boolean;
+  content: string;
 }
 
 export interface ArticleListResponse {

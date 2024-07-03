@@ -8,10 +8,10 @@ import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
 import { extractFirstImgSrc, roundAttributes } from '@/utils/quillHtmlHandler';
 import { type ArticleFormData } from '@/types/apiType';
-import { postArticle } from '@/lib/apis/article/articleApi.api';
+import { changeDetailArticle, getDetailArticle } from '@/lib/apis/article/articleApi.api';
 import ToastSelect from '@/components/common/ToastSelect';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
-import { StyledToastContainer } from '@/styles/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -19,6 +19,18 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
     return <p>Loading...</p>;
   },
 });
+
+const StyledToastContainer = dynamic(
+  import('@/styles/ToastStyle').then((mod) => {
+    return mod.StyledToastContainer;
+  }),
+  {
+    ssr: false,
+    loading: () => {
+      return <p>Loading...</p>;
+    },
+  },
+);
 
 const TITLE_MAX_LEN = 30;
 
@@ -28,6 +40,7 @@ const EditBoard = () => {
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const { boardId } = router.query;
 
@@ -58,7 +71,7 @@ const EditBoard = () => {
     }
 
     try {
-      const response = await postArticle(boardData);
+      const response = await changeDetailArticle(Number(boardId), boardData);
       ToastSelect({
         type: 'check',
         message: '게시물이 수정되었습니다',
@@ -88,8 +101,30 @@ const EditBoard = () => {
     setIsValid(title.trim().length > 0 && content.trim().length > 0);
   }, [title, content]);
 
+  useEffect(() => {
+    const fetchBoardData = async () => {
+      if (boardId) {
+        try {
+          const response = await getDetailArticle(Number(boardId));
+          setTitle(response.title);
+          setContent(response.content);
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            if (error.status === 404) {
+              router.push('/404');
+            } else {
+              router.push('/500');
+            }
+          }
+        }
+      }
+    };
+    fetchBoardData();
+  }, [boardId, router]);
+
   return (
     <div className="center mt-4 flex-col">
+      <StyledToastContainer transition={Zoom} />
       <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
         <div className="flex items-center justify-between">
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
@@ -137,7 +172,6 @@ const EditBoard = () => {
           원본으로
         </CommonButton>
       </Link>
-      <StyledToastContainer transition={Zoom} />
     </div>
   );
 };
