@@ -34,7 +34,10 @@ export const getServerSideProps = async (context: ContextProps) => {
     // 유효하지 않은 회원 접근 제한
     if (Number(userId) !== response?.writer.id) {
       return {
-        notFound: true,
+        redirect: {
+          destination: '/400',
+          permanent: false,
+        },
       };
     }
 
@@ -48,7 +51,10 @@ export const getServerSideProps = async (context: ContextProps) => {
     };
   } catch (error) {
     return {
-      notFound: true,
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
     };
   }
 };
