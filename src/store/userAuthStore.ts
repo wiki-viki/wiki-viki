@@ -30,6 +30,7 @@ export const useAuthStore = create(
         },
         logout: () => {
           deleteCookie('accessToken');
+          deleteCookie('userId');
           set({ user: null, isLogin: false });
         },
       };
