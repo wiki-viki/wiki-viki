@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAuthStore } from '@/store/userAuthStore';
+import ToastSelect from '../ToastSelect';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
@@ -17,7 +18,10 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
 
   const handleCloseWithToast = () => {
     if (!profile) {
-      alert('내 위키를 먼저 생성해주세요!');
+      setTimeout(() => {
+        ToastSelect({ type: 'error', message: '내 위키를 먼저 생성해주세요!' });
+      }, 50);
+
       handleClose();
     } else {
       handleClose();
