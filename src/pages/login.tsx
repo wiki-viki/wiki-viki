@@ -40,7 +40,7 @@ const LoginPage = () => {
     };
     const response = await axiosFetch(requestData);
     if (response?.data?.accessToken) {
-      saveUser({ id: response?.data?.user?.id, name: response?.data?.user?.name });
+      saveUser(response?.data?.user);
       router.push('/');
     }
   });
@@ -73,7 +73,7 @@ const LoginPage = () => {
             name="email"
             label="이메일"
             type="text"
-            placeholder="이메일"
+            placeholder="이메일을 입력해 주세요."
             register={register}
             rules={{
               required: REQUIRED_MESSAGE,
