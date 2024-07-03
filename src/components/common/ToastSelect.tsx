@@ -6,7 +6,12 @@ import CheckLottie from '@/../public/lottie/check.json';
 import ErrorLottie from '@/../public/lottie/error.json';
 import { CopyLink, Uneditable, Notification } from '@/constants/toast';
 
-const ToastSelect = ({ type, message, onClose }: ToastProps) => {
+const ToastSelect = ({
+  type,
+  message,
+  onClose,
+  autoClose = toastOptions.autoClose,
+}: ToastProps) => {
   const defaultMessages = {
     check: CopyLink,
     error: Uneditable,
@@ -19,6 +24,7 @@ const ToastSelect = ({ type, message, onClose }: ToastProps) => {
     case 'check':
       toast.success(finalMessage, {
         ...toastOptions,
+        autoClose,
         icon: <Lottie animationData={CheckLottie} />,
         onClose,
       });
@@ -26,6 +32,7 @@ const ToastSelect = ({ type, message, onClose }: ToastProps) => {
     case 'error':
       toast.error(finalMessage, {
         ...toastOptions,
+        autoClose,
         icon: <Lottie animationData={ErrorLottie} />,
         onClose,
       });
@@ -33,6 +40,7 @@ const ToastSelect = ({ type, message, onClose }: ToastProps) => {
     case 'notification':
       toast.info(finalMessage, {
         ...toastOptions,
+        autoClose,
         icon: <InfoIcon />,
         onClose,
       });

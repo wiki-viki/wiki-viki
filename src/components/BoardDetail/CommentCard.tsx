@@ -26,7 +26,7 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
     try {
       await deleteComment(comment.id);
       onDeleteComment(comment.id);
-      ToastSelect({ type: 'check', message: '댓글이 삭제되었습니다.' });
+      ToastSelect({ type: 'check', message: '댓글이 삭제되었습니다.', autoClose: 1500 });
     } catch (error) {
       router.push('/500');
     }
