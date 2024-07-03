@@ -56,6 +56,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
         return comment.id !== commentId;
       });
     });
+    getCommentsCount();
   };
 
   const handleCommentUpdated = (updatedComment: CommentResponse) => {
@@ -72,6 +73,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
       setCommentsData((prevData) => {
         return [newComment, ...prevData];
       });
+      getCommentsCount();
     } catch (e) {
       ToastSelect({ type: 'error', message: '댓글을 작성해주세요.' });
     }
@@ -79,7 +81,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
 
   useEffect(() => {
     getCommentsCount();
-  }, [handleDeleteComment, handleCommentSubmit]);
+  }, []);
 
   useEffect(() => {
     if (inView && nextCursor !== null) {
