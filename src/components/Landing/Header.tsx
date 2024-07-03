@@ -15,8 +15,8 @@ const Header = () => {
   });
 
   const handleButton = () => {
-    if (isLogin && user?.code) {
-      router.push(`/wiki/${user.code}`);
+    if (isLogin && user?.profile?.code) {
+      router.push(`/wiki/${user?.profile?.code}`);
     } else {
       router.push('/login');
     }

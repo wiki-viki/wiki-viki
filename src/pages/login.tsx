@@ -40,7 +40,7 @@ const LoginPage = () => {
     };
     const response = await axiosFetch(requestData);
     if (response?.data?.accessToken) {
-      saveUser({ id: response?.data?.user?.id, name: response?.data?.user?.name, code: response?.data?.user?.profile?.code });
+      saveUser(response?.data?.user);
       router.push('/');
     }
   });
