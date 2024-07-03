@@ -46,23 +46,25 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   const handleClearClick = useCallback(() => {
     setPreview(null);
-    onChange('image', 'imageNull');
+    onChange('image', null);
   }, [onChange]);
 
   useEffect(() => {
-    if (!value || value === 'imageNull') {
+    if (!value && value?.includes('http')) {
       return;
     } else {
-      const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
+      if (value) {
+        const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
 
-      const nextPreview = URL.createObjectURL(blob);
-      setPreview(nextPreview);
+        const nextPreview = URL.createObjectURL(blob);
+        setPreview(nextPreview);
 
-      return () => {
-        URL.revokeObjectURL(nextPreview);
-      };
+        return () => {
+          URL.revokeObjectURL(nextPreview);
+        };
+      }
     }
-  }, [value, image]);
+  }, [value]);
 
   const handleProfileExpand = () => {
     setIsExpanded((prev) => {
@@ -91,7 +93,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   <Image
                     className="rounded-full group-hover:brightness-50"
                     alt="프로필 이미지 미리보기"
-                    src={value === 'null' && image ? image : preview}
+                    src={image ? image : preview}
                     fill
                     style={{ objectFit: 'cover' }}
                   ></Image>
@@ -117,7 +119,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
-                src={image && image !== 'null' ? image : '/images/basic_profile.png'}
+                src={image ? image : '/images/basic_profile.png'}
                 sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
                 fill
                 priority
