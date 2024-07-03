@@ -19,6 +19,8 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
     if (!profile) {
       alert('내 위키를 먼저 생성해주세요!');
       handleClose();
+    } else {
+      handleClose();
     }
   };
 
