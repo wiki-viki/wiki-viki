@@ -1,9 +1,26 @@
-import React, { useMemo, useRef } from 'react';
-import ReactQuill, { UnprivilegedEditor, Quill } from 'react-quill';
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMemo, useRef, ForwardedRef } from 'react';
+import ReactQuill, { Quill, UnprivilegedEditor } from 'react-quill';
+import dynamic from 'next/dynamic';
 import { ImageActions } from '@xeger/quill-image-actions';
 import useBoolean from '@/hooks/useBoolean';
 import ImageAddModal from './ImageAddModal';
 
+interface ReactQuillProps {
+  forwardedRef?: ForwardedRef<any>; // 적절한 타입으로 변경 가능
+  [key: string]: any;
+}
+
+const ReactQuillDynamic = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill');
+    return (props: ReactQuillProps) => {
+      return <RQ ref={props.forwardedRef} {...props} />;
+    };
+  },
+  { ssr: false },
+);
 Quill.register('modules/imageActions', ImageActions);
 
 const formats = [
@@ -26,7 +43,7 @@ interface QuillEditorProps {
 }
 
 const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
-  const QuillRef = useRef<ReactQuill>(null);
+  const quillRef = useRef<ReactQuill>(null);
   const { value, handleOn, handleOff } = useBoolean();
 
   const handleClickImage = () => {
@@ -34,7 +51,7 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   };
 
   const handleInsertImage = (url: string) => {
-    const editor = QuillRef.current?.getEditor();
+    const editor = quillRef.current?.getEditor();
     if (editor) {
       const range = editor.getSelection(true);
       editor.insertEmbed(range.index, 'image', url);
@@ -81,8 +98,8 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
 
   return (
     <>
-      <ReactQuill
-        ref={QuillRef}
+      <ReactQuillDynamic
+        forwardedRef={quillRef}
         placeholder="본문을 입력해주세요"
         theme="snow"
         modules={modules}
