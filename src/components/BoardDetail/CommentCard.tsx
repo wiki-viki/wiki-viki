@@ -9,6 +9,7 @@ import BasicProfileImage from '@/../public/images/basic_profile.png';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
 import ToastSelect from '@/components/common/ToastSelect';
+import ConfirmModal from '../common/ConfirmModal';
 import CommentEditModal from './CommentEdit';
 
 interface CommentItemProps {
@@ -21,6 +22,7 @@ interface CommentItemProps {
 const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: CommentItemProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleDeleteComment = async () => {
     try {
@@ -41,6 +43,19 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
     setIsEditModalOpen(false);
     setIsEditing(false);
     onCommentUpdated(updatedComment);
+  };
+
+  const handleDeleteModalOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    handleDeleteComment();
+    handleDeleteModalClose();
   };
 
   return (
@@ -71,7 +86,7 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
                 <motion.div className="hoverScale" onClick={handleEditComment}>
                   <EditIcon />
                 </motion.div>
-                <motion.div className="hoverScale" onClick={handleDeleteComment}>
+                <motion.div className="hoverScale" onClick={handleDeleteModalOpen}>
                   <DeleteIcon />
                 </motion.div>
               </>
@@ -82,6 +97,18 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
 
       {isEditModalOpen && (
         <CommentEditModal comment={comment} onCommentUpdated={handleCommentUpdated} />
+      )}
+
+      {isDeleteModalOpen && (
+        <ConfirmModal
+          isOpen={isDeleteModalOpen}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteModalClose}
+          title="댓글 삭제"
+          message="이 댓글을 삭제하시겠습니까?"
+          cancel="아니오"
+          confirm="예"
+        />
       )}
     </>
   );
