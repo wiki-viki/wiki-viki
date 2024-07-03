@@ -12,6 +12,8 @@ import { type ArticleFormData } from '@/types/apiType';
 import { postArticle } from '@/lib/apis/article/articleApi.api';
 import ToastSelect from '@/components/common/ToastSelect';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
+import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,6 +25,9 @@ const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
 });
 
 const AddBoard = () => {
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
@@ -98,7 +103,7 @@ const AddBoard = () => {
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
-          등록일 {dateToString(new Date())}
+          {user?.name} {dateToString(new Date())}
         </span>
         <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
