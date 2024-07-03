@@ -36,7 +36,7 @@ export const updateClovers = () => {
     cloverElement.style.opacity = clover.opacity;
     cloversContainer.appendChild(cloverElement);
 
-    clover.top += 1 + Math.random();
+    clover.top += 0.8 + Math.random() * 0.5;
   });
 
   clovers = clovers.filter((clover) => {
