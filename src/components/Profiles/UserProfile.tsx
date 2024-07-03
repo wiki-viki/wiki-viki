@@ -46,23 +46,23 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   const handleClearClick = useCallback(() => {
     setPreview(null);
-    onChange('image', 'null');
+    onChange('image', 'imageNull');
   }, [onChange]);
 
   useEffect(() => {
-    if (!value || value === 'null') {
+    if (!value || value === 'imageNull') {
       return;
+    } else {
+      const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
+
+      const nextPreview = URL.createObjectURL(blob);
+      setPreview(nextPreview);
+
+      return () => {
+        URL.revokeObjectURL(nextPreview);
+      };
     }
-
-    const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
-
-    const nextPreview = URL.createObjectURL(blob);
-    setPreview(nextPreview);
-
-    return () => {
-      URL.revokeObjectURL(nextPreview);
-    };
-  }, [value]);
+  }, [value, image]);
 
   const handleProfileExpand = () => {
     setIsExpanded((prev) => {

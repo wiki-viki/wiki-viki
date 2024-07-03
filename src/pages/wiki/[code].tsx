@@ -127,16 +127,13 @@ const UserWikiPage: React.FC = () => {
     });
 
     try {
-      if (formData.image !== 'null') {
+      if (formData.image !== 'null' && formData.image !== 'imageNull') {
         const imageData = new FormData();
         imageData.append('image', formData.image);
         const res = await getImageUrl(imageData as ImageData);
         updatedFormData.append('image', res?.url || '');
       } else {
-        if (userProfile?.image === 'null') {
-          updatedFormData.append('image', 'null');
-        }
-        if (formData.image === 'null') {
+        if (formData.image === 'imageNull') {
           updatedFormData.append('image', 'null');
         }
       }
@@ -148,11 +145,12 @@ const UserWikiPage: React.FC = () => {
 
       setUserProfile(res);
       setIsEditing(false);
-      resetState();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         ToastSelect({ type: 'error', message: error?.response?.data.message });
       }
+    } finally {
+      resetState();
     }
   };
 
