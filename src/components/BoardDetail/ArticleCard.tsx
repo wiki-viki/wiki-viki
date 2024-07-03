@@ -18,6 +18,8 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
 import { DeleteSuccess, UnableDelete } from '@/constants/toast';
+import { useStore } from '@/store/useStore';
+import { useAuthStore } from '@/store/userAuthStore';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
 
@@ -29,7 +31,13 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [writerId, setWriterId] = useState<number>(0);
+
   const router = useRouter();
+
+  const userId = useStore(useAuthStore, (state) => {
+    return state.user?.id;
+  });
 
   useEffect(() => {
     const fetchBoardDetailData = async () => {
@@ -38,6 +46,7 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         setArticleData(res);
         setLikeCount(res.likeCount);
         setIsLiked(res.isLiked);
+        setWriterId(res.writer.id);
       } catch (error) {
         router.push('/500');
       }
@@ -91,30 +100,34 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
               <div className="flex-wrap break-words text-2xl-semibold text-grayscale-500 lg:text-3xl-bold">
                 {articleData.title}
               </div>
-              <div className="flex gap-3 lg:hidden">
-                <motion.div className="hoverScale" onClick={handleEdit}>
-                  <EditIcon />
-                </motion.div>
-                <motion.div className="hoverScale" onClick={handleDelete}>
-                  <DeleteIcon />
-                </motion.div>
-              </div>
-              <div className="hidden gap-3 lg:flex">
-                <CommonButton
-                  variant="primary"
-                  className="min-w-[120px] px-[32px]"
-                  onClick={handleEdit}
-                >
-                  수정하기
-                </CommonButton>
-                <CommonButton
-                  variant="primary"
-                  className="min-w-[120px] px-[32px]"
-                  onClick={handleDelete}
-                >
-                  삭제하기
-                </CommonButton>
-              </div>
+              {userId === writerId && (
+                <div className="flex gap-3 lg:hidden">
+                  <motion.div className="hoverScale" onClick={handleEdit}>
+                    <EditIcon />
+                  </motion.div>
+                  <motion.div className="hoverScale" onClick={handleDelete}>
+                    <DeleteIcon />
+                  </motion.div>
+                </div>
+              )}
+              {userId === writerId && (
+                <div className="hidden gap-3 lg:flex">
+                  <CommonButton
+                    variant="primary"
+                    className="min-w-[120px] px-[32px]"
+                    onClick={handleEdit}
+                  >
+                    수정하기
+                  </CommonButton>
+                  <CommonButton
+                    variant="primary"
+                    className="min-w-[120px] px-[32px]"
+                    onClick={handleDelete}
+                  >
+                    삭제하기
+                  </CommonButton>
+                </div>
+              )}
             </div>
             <div className="mt-3 flex justify-between border-b border-b-grayscale-200 pb-3 text-xs-regular text-grayscale-400 lg:text-md-regular">
               <div className="pr-3">
