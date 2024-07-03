@@ -21,9 +21,8 @@ const CommentForm = ({ onSubmit }: CommentFormProps) => {
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = e.target.value;
-    setContent(newContent);
-    setCharacterCount(newContent.length);
+    setContent(e.target.value);
+    setCharacterCount(e.target.value.length);
   };
 
   return (
