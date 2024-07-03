@@ -22,10 +22,15 @@ const useQuery = <T>({ options, deps = [], includeAuth = false }: RequestConfig)
 
       try {
         const response = await axiosRequester({ ...options }, includeAuth);
-        const accessToken = response?.data?.accessToken;
 
-        if (includeAuth && accessToken) {
-          document.cookie = `accessToken=${accessToken}`;
+        if (includeAuth) {
+          const accessToken = response?.data?.accessToken;
+          const refreshToken = response?.data?.refreshToken;
+  
+          if (accessToken && refreshToken) {
+            document.cookie = `accessToken=${accessToken}`;
+            document.cookie = `refreshToken=${refreshToken}`;
+          }
         }
 
         setData(response);

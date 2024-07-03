@@ -1,9 +1,23 @@
-const Home = () => {
+import {
+  Header,
+  WriteSection,
+  ShareSection,
+  ViewSection,
+  CreateWikiSection,
+  Footer,
+} from "@/components/Landing";
+
+const LandingPage = () => {
   return (
-    <main>
-      <p>프로젝트 초기 세팅</p>
-    </main>
+    <>
+      <Header />
+      <WriteSection />
+      <ShareSection />
+      <ViewSection />
+      <CreateWikiSection />
+      <Footer />
+    </>
   );
 };
 
-export default Home;
+export default LandingPage;
