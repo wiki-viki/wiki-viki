@@ -70,7 +70,7 @@ const Test3 = () => {
         <button
           className="m-5"
           onClick={() => {
-            handleToastChange('check'), setMessage('예시문구한번넣어볼게요!');
+            handleToastChange('check'), setMessage('프로필이 수정중입니다.');
           }}
         >
           예시문구한번넣어볼게요!

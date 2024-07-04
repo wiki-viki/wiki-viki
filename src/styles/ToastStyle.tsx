@@ -7,6 +7,17 @@ interface ToastStyleProps {
 
 export const StyledToastContainer = styled(ToastContainer)<ToastStyleProps>`
   margin-top: 60px;
+  .Toastify__toast-container {
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: 480px) {
+      width: 100% !important;
+    }
+  }
   .Toastify__toast {
     border-radius: 10px;
     padding: 8px 12px;
@@ -17,7 +28,6 @@ export const StyledToastContainer = styled(ToastContainer)<ToastStyleProps>`
   .Toastify__toast--info {
     background-color: #f7f7fa;
     border: 1px solid #474d66;
-    min-width: 350px;
   }
   .Toastify__toast--success {
     background-color: #eef9f6;
@@ -30,6 +40,5 @@ export const StyledToastContainer = styled(ToastContainer)<ToastStyleProps>`
     border: 1px solid #d14343;
     font-weight: bold;
     color: #d14343;
-    min-width: 384px;
   }
 `;

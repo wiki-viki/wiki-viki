@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Modal from '@/components/common/Modal';
 import useBoolean from '@/hooks/useBoolean';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
+import ConfirmModal from '@/components/common/ConfirmModal';
 
 const EditorComponent = dynamic(
   () => {
@@ -23,10 +25,24 @@ const text1 =
   '<p><strong><em><u>안녕하세요</u></em></strong><img src="https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/114/1719367563327/imagetest.jpeg" width="248" height="139.1541994750656" style=""></p><p class="ql-align-center">안녕</p><ul><li class="ql-align-right">리스트</li></ul><ol><li class="ql-align-right">리스트</li></ol><p class="ql-align-center"><span style="color: rgb(153, 51, 255);">보라색</span></p><p class="ql-align-center"><a href="https://www.naver.com/" rel="noopener noreferrer" target="_blank">링크</a></p>';
 
 const Test = () => {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const { value, handleOn, handleOff } = useBoolean();
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
+
+  const handleConfirm = () => {
+    // 확인 버튼 클릭 시 실행할 로직
+    console.log('Confirmed!');
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    // 취소 버튼 클릭 시 실행할 로직
+    console.log('Cancelled!');
+    setIsConfirmModalOpen(false);
+  };
+
   return (
     <div>
       <p>{user?.name}</p>
@@ -41,6 +57,21 @@ const Test = () => {
           <p>안에 내용이 길어지거나 짧아지면 height도 자동 조정</p>
         </div>
       </Modal>
+
+      <div>
+        <button
+          onClick={() => {
+            return setIsConfirmModalOpen(true);
+          }}
+        >
+          Show Confirm Modal
+        </button>
+        <ConfirmModal
+          isOpen={isConfirmModalOpen}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      </div>
     </div>
   );
 };

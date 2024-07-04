@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import LinkIcon from '@/../public/svg/link.svg';
 import { urlVaildation } from '@/utils/urlVaildation';
 import ErrorLottie from '@/../public/lottie/error.json';
-import { CopyLinkMessage } from '@/types/toast';
+import { CopyLink } from '@/constants/toast';
 import ToastSelect from './ToastSelect';
 
 interface CopyLinkButtonProps {
@@ -17,7 +17,7 @@ const LinkText = 'text-md-regular sm:text-xs-regular text-primary-green-200';
 const CopyLinkButton = ({ url }: CopyLinkButtonProps) => {
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(url);
-    ToastSelect({ type: 'check', message: CopyLinkMessage });
+    ToastSelect({ type: 'check', message: CopyLink });
   };
 
   if (!urlVaildation(url)) {
