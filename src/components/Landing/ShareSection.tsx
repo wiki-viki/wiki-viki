@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import MegaPhone from '@/../public/image/LandingPage/Section3/megaphone-image.png';
-import WImage from '@/../public/image/LandingPage/Section3/w-image.png';
+import MegaPhoneImage from '@/../public/image/LandingPage/Section3/megaphone-image.png';
+import CloverImage from '@/../public/image/LandingPage/Section3/clover-image.png';
 import SpeechBubbleImage from '@/../public/image/LandingPage/Section3/speech-bubble-image.png';
 import PhoneImage from '@/../public/image/LandingPage/Section3/phone-image.png';
 import { RisingMotion } from '@/components/common/Motion'
 
 const images = [
-  { src: MegaPhone, alt: 'mega phone image' },
-  { src: WImage, alt: 'alphabet w image' },
+  { src: MegaPhoneImage, alt: 'mega phone image' },
+  { src: CloverImage, alt: 'colver image' },
   { src: SpeechBubbleImage, alt: 'speech bubble image' },
   { src: PhoneImage, alt: 'phone image' },
 ];

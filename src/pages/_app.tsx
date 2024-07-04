@@ -13,7 +13,7 @@ import '@/styles/globals.css';
 
 const App = ({ Component, pageProps, router }: AppProps) => {
   const [showSplash, setShowSplash] = useState(true);
-  const noNavBarPages = ['/404', '/500'];
+  const noNavBarPages = ['/', '/404', '/500'];
   const isNoNavBarPage = noNavBarPages.includes(router.pathname);
   const isLandingPage = router.pathname === '/';
   
@@ -33,15 +33,6 @@ const App = ({ Component, pageProps, router }: AppProps) => {
 
   if (isNoNavBarPage) {
     return <Component {...pageProps} />;
-  }
-
-  if (isLandingPage) {
-    return (
-      <>
-        <TopNavigationBar />
-        <Component {...pageProps} />
-      </>
-    );
   }
 
   return (
