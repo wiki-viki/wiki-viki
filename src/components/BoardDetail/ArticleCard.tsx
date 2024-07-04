@@ -3,6 +3,7 @@ import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import dateToString from '@/utils/dateToString';
 import {
   deleteArticleLike,
@@ -27,6 +28,18 @@ import ConfirmModal from '../common/ConfirmModal';
 interface ArticleCardProps {
   id: IdType;
 }
+
+const EditorComponent = dynamic(
+  () => {
+    return import('react-quill');
+  },
+  {
+    loading: () => {
+      return <div>...loading</div>;
+    },
+    ssr: false,
+  },
+);
 
 const ArticleCard = ({ id }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
@@ -182,13 +195,13 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                 </div>
               </div>
             </div>
-            {articleData.image && (
-              <div className=" relative mt-3 lg:mb-5 lg:mt-8">
-                <Image src={articleData.image} alt="게시글 이미지" width={500} height={300} />
-              </div>
-            )}
             <div className="mt-3 text-md-regular text-grayscale-500 lg:text-lg-regular">
-              {articleData.content}
+              <EditorComponent
+                value={articleData.content}
+                theme="bubble"
+                readOnly={true}
+                modules={{ toolbar: null }}
+              />
             </div>
           </div>
         </>
