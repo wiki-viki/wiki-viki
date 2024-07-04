@@ -102,9 +102,6 @@ const ImageAddModal = ({ isOpen, onClose, handleImageUrl }: ImageAddModalProps) 
       <h3 className="center text-lg-semibold md:text-2lg-semibold">이미지</h3>
       <input
         onChange={handleImage}
-        onFocus={(e) => {
-          e.target.blur();
-        }}
         className="hidden"
         id="image"
         name="image"
