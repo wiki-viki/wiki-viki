@@ -36,7 +36,7 @@ const UserWikiPage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>(undefined);
 
-  const isMyPage = code === (userInfo && userInfo?.profile.code);
+  const isMyPage = code === (userInfo && userInfo?.profile?.code);
   const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
