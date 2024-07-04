@@ -27,12 +27,10 @@ const useMutation = <T>({ options, includeAuth = false }: RequestConfig) => {
       if (includeAuth) {
         const accessToken = response?.data?.accessToken;
         const refreshToken = response?.data?.refreshToken;
-        const userId = response?.data?.user.id;
 
         if (accessToken && refreshToken) {
           document.cookie = `accessToken=${accessToken}`;
           document.cookie = `refreshToken=${refreshToken}`;
-          document.cookie = `userId=${userId}`;
         }
       }
 

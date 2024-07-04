@@ -17,7 +17,6 @@
     "@xeger/quill-image-actions": "^0.7.2",
     "@xeger/quill-image-formats": "^0.7.2",
     "axios": "^1.7.2",
-    "cookie": "^0.6.0",
     "framer-motion": "^11.2.11",
     "lottie-react": "^2.4.0",
     "next": "14.2.4",
@@ -34,7 +33,6 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@types/cookie": "^0.6.0",
     "@types/node": "^20",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18",
