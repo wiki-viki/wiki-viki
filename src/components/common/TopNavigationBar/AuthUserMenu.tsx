@@ -41,7 +41,7 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
       )}
       <MenuItem
         onClick={handleClose}
-        title="계정 설정"
+        title="위키 생성하기"
         href="/mypage"
         className="text-grayscale-600"
       />
@@ -49,6 +49,12 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
         onClick={handleClose}
         title="내 위키"
         href="/wiki/test"
+        className="text-grayscale-600"
+      />
+      <MenuItem
+        onClick={handleClose}
+        title="비밀번호 재설정"
+        href="/reset-password"
         className="text-grayscale-600"
       />
       <MenuItem onClick={handleClickLogout} title="로그아웃" className="text-grayscale-400" />
