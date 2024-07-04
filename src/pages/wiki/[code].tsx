@@ -94,9 +94,7 @@ const UserWikiPage: React.FC = () => {
     });
     if (answer) {
       const pingFormData = new FormData();
-      if (answer) {
-        pingFormData.append('securityAnswer', answer);
-      }
+      pingFormData.append('securityAnswer', answer);
       await createPing(code, pingFormData as unknown as PingFormData);
     }
   };
@@ -113,19 +111,16 @@ const UserWikiPage: React.FC = () => {
     handleOn();
   };
 
-  const throttlePing = throttle(updateEditTime, 5 * 6 * 9000);
+  const throttlePing = throttle(updateEditTime, 6 * 10000);
 
-  const handleEditorChange = useCallback(
-    (value: string | undefined) => {
-      setMD(value);
-      throttlePing();
-      handleChange('content', value);
-      if (!value) {
-        handleChange('content', null);
-      }
-    },
-    [handleChange],
-  );
+  const handleEditorChange = useCallback((value: string | undefined) => {
+    setMD(value);
+    throttlePing();
+    handleChange('content', value);
+    if (!value) {
+      handleChange('content', null);
+    }
+  }, []);
 
   const setEditingMode = () => {
     setIsEditing(true);
