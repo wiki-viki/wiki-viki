@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
+import React, { useState, useCallback, useEffect, ChangeEvent, memo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
@@ -35,7 +35,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     { label: '국적', value: nationality, id: 'nationality' },
   ];
   const [isExpanded, setIsExpanded] = useState(false);
-  const [preview, setPreview] = useState<string | StaticImport | null>(null);
+  const [preview, setPreview] = useState<string | StaticImport | null>(image);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextImg = e.target.files?.[0];
@@ -50,18 +50,20 @@ const UserProfile: React.FC<UserProfileProps> = ({
   }, [onChange]);
 
   useEffect(() => {
-    if (!value) {
-      setPreview(image);
+    if (!value && value?.includes('http')) {
       return;
+    } else {
+      if (value) {
+        const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
+
+        const nextPreview = URL.createObjectURL(blob);
+        setPreview(nextPreview);
+
+        return () => {
+          URL.revokeObjectURL(nextPreview);
+        };
+      }
     }
-    const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
-
-    const nextPreview = URL.createObjectURL(blob);
-    setPreview(nextPreview);
-
-    return () => {
-      URL.revokeObjectURL(nextPreview);
-    };
   }, [value]);
 
   const handleProfileExpand = () => {
@@ -76,21 +78,22 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <AnimatePresence>
       <section
-        className={`profile-shadow ${editMyPage ? 'sm:mt-5 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? '' : 'bottom-[130px]'}`}
+        className={`profile-shadow ${editMyPage ? 'sm:mt-4 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? 'md:mt-[35px]' : 'bottom-[130px]'}`}
       >
         <div className={`flex w-full ${editMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}>
           {isEditing && isMyPage ? (
             <>
               <label
                 htmlFor="fileInput"
-                className="group center relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
+                // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+                className="center group relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
               >
                 <CameraIcon className="z-10 text-white group-hover:brightness-50" />
                 {preview && (
                   <Image
                     className="rounded-full group-hover:brightness-50"
                     alt="프로필 이미지 미리보기"
-                    src={preview === null ? '/images/basic_profile.png' : preview}
+                    src={image ? image : preview}
                     fill
                     style={{ objectFit: 'cover' }}
                   ></Image>
@@ -116,7 +119,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
-                src={image || image === 'null' ? image : '/images/basic_profile.png'}
+                src={image ? image : '/images/basic_profile.png'}
                 sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
                 fill
                 priority
@@ -165,4 +168,4 @@ const UserProfile: React.FC<UserProfileProps> = ({
   );
 };
 
-export default UserProfile;
+export default memo(UserProfile);

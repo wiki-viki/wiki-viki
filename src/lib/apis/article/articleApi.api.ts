@@ -42,6 +42,7 @@ export const getDetailArticle = async (articleId: number) => {
     const res: AxiosResponse<ArticleResponse> = await axiosWithIntercepter.get(
       `articles/${articleId}`,
     );
+    console.log(res.data);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
@@ -106,7 +107,7 @@ export const deleteDetailArticle = async (articleId: number) => {
 export const postArticleLike = async (articleId: number) => {
   try {
     const res: AxiosResponse<ArticleResponse> = await axiosWithIntercepter.post(
-      `articles/${articleId}`,
+      `articles/${articleId}/like`,
     );
     return res.data;
   } catch (e: unknown) {
@@ -122,7 +123,7 @@ export const postArticleLike = async (articleId: number) => {
 export const deleteArticleLike = async (articleId: number) => {
   try {
     const res: AxiosResponse<ArticleResponse> = await axiosWithIntercepter.delete(
-      `articles/${articleId}`,
+      `articles/${articleId}/like`,
     );
     return res.data;
   } catch (e: unknown) {

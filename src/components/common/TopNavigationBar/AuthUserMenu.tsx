@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAuthStore } from '@/store/userAuthStore';
+import ToastSelect from '../ToastSelect';
 import MenuItem from './MenuItem';
 import MenuContainer from './MenuContainer';
 
@@ -11,8 +12,21 @@ interface UserMenuProps {
 }
 
 const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
-  const { logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const router = useRouter();
+  const profile = user?.profile;
+
+  const handleCloseWithToast = () => {
+    if (!profile) {
+      setTimeout(() => {
+        ToastSelect({ type: 'error', message: '내 위키를 먼저 생성해주세요!' });
+      }, 50);
+
+      handleClose();
+    } else {
+      handleClose();
+    }
+  };
 
   const handleClickLogout = () => {
     logout();
@@ -48,7 +62,7 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
       <MenuItem
         onClick={handleClose}
         title="내 위키"
-        href="/wiki/test"
+        href={profile ? `/wiki/${profile?.code}` : `/mypage`}
         className="text-grayscale-600"
       />
       <MenuItem

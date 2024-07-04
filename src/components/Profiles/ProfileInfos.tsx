@@ -34,6 +34,7 @@ const ProfileInfos = memo(
             <input
               name="profileInput"
               id={id}
+              maxLength={13}
               className="flex-none rounded-10 bg-grayscale-100 py-2 pl-3 text-xs-regular text-grayscale-400 outline-none focus:border-2 focus:border-primary-green-200 sm:w-[70%] md:ml-2 md:w-[70%] md:text-md-regular lg:ml-0 lg:w-3/4 xl:w-[68%] xl:min-w-16"
               placeholder={value}
               onChange={handleChange}

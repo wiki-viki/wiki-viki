@@ -36,6 +36,7 @@ export const useAuthStore = create(
         },
         logout: () => {
           deleteCookie('accessToken');
+          deleteCookie('refreshToken');
           set({ user: null, isLogin: false });
           set({ userProfile: null, isLogin: false });
         },

@@ -20,8 +20,6 @@ export type PingFormData = {
 };
 
 export type ChangeProfilesFormData = {
-  securityAnswer: string;
-  securityQuestion: string;
   nationality: string;
   family: string;
   bloodType: string;
@@ -31,7 +29,7 @@ export type ChangeProfilesFormData = {
   job: string;
   mbti: string;
   city: string;
-  image: string | File | null;
+  image: string | File | ImageType;
   content: string;
 };
 
@@ -113,7 +111,7 @@ export interface NotificationListResponse {
 
 // Comment
 export interface CommentWriterResponse {
-  image: ImageType;
+  image: string;
   name: string;
   id: number;
 }
@@ -142,6 +140,8 @@ export interface ArticleResponse {
   image: ImageType;
   title: string;
   id: number;
+  isLiked: boolean;
+  content: string;
 }
 
 export interface ArticleListResponse {
