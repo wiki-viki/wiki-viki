@@ -1,6 +1,7 @@
-import React, { KeyboardEvent, useState, useEffect } from 'react';
+import React, { KeyboardEvent, useState, useEffect, useRef } from 'react';
+import { Zoom } from 'react-toastify';
 import Link from 'next/link';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import {
   BoardList,
   MobileBoardList,
@@ -12,7 +13,11 @@ import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
 import { EmptySearch } from '@/components/WikiList';
+import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 
 const PAGE_SIZE = 10;
 
@@ -30,16 +35,12 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error(error);
     return {
-      props: { error },
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
     };
-    // return {
-    //   redirect: {
-    //     destination: '/500',
-    //     permanent: false,
-    //   },
-    // };
   }
 };
 
@@ -49,13 +50,16 @@ interface BoardsProps {
 }
 
 const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
-  // const router = useRouter();
-  // const isInitialRender = useRef(true);
+  const router = useRouter();
+  const isInitialRender = useRef(true);
   const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
   const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -77,26 +81,44 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
       const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
       setBoardListData(res);
     } catch (error) {
-      console.error(error);
-      // router.push('/500');
+      router.push('/500');
     }
   };
 
+  const handleGuestRedirect = () => {
+    ToastSelect({
+      type: 'notification',
+      message: '로그인 후 이용해주세요.',
+      autoClose: 1000,
+      onClose: () => {
+        return router.push('/login');
+      },
+    });
+  };
+
   useEffect(() => {
-    // if (isInitialRender.current) {
-    //   isInitialRender.current = false;
-    //   return;
-    // }
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     fetchArticleData(page, orderBy, keyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, orderBy, keyword]);
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
+      <StyledToastContainer transition={Zoom} />
       <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
         <h2 className="text-2xl-bold">베스트 게시글</h2>
-        <Link href="/addboard" rel="preload">
-          <CommonButton variant="primary">게시물 등록하기</CommonButton>
-        </Link>
+        {isLogin ? (
+          <Link href="/addboard" rel="preload">
+            <CommonButton variant="primary">게시물 등록하기</CommonButton>
+          </Link>
+        ) : (
+          <CommonButton onClick={handleGuestRedirect} variant="primary">
+            게시물 등록하기
+          </CommonButton>
+        )}
       </div>
       <BestBoardContainer boardList={bestBoardList} />
       <section>
