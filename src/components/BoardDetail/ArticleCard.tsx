@@ -3,6 +3,7 @@ import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Lottie from 'lottie-react';
 import dateToString from '@/utils/dateToString';
 import {
   deleteArticleLike,
@@ -18,6 +19,7 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
 import { DeleteSuccess, UnableDelete } from '@/constants/toast';
+import HeartLottie from '@/../public/lottie/heart.json';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
 import ConfirmModal from '../common/ConfirmModal';
@@ -137,10 +139,10 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
               </div>
               {userId === writerId && (
                 <div className="flex gap-3 lg:hidden">
-                  <motion.div className="hoverScale" onClick={handleEdit}>
+                  <motion.div className="hoverScale cursor-pointer" onClick={handleEdit}>
                     <EditIcon />
                   </motion.div>
-                  <motion.div className="hoverScale" onClick={handleDeleteModalOpen}>
+                  <motion.div className="hoverScale cursor-pointer" onClick={handleDeleteModalOpen}>
                     <DeleteIcon />
                   </motion.div>
                 </div>
@@ -169,18 +171,23 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
                 {articleData.writer.name}
                 <span className="ml-3">{dateToString(articleData.updatedAt)}</span>
               </div>
-              <div onClick={handleLike}>
-                <div className="flex items-center">
+              <div onClick={handleLike} className=" cursor-pointer">
+                <div className="relative flex items-center">
                   {isLiked ? (
-                    <motion.span
-                      className="mr-1.5 text-primary-green-200"
-                      animate={{ scale: [1, 1.5, 1] }}
-                      transition={{ duration: 0.3, ease: 'easeInOut', repeat: 0.15 }}
-                    >
-                      ❤︎
-                    </motion.span>
+                    <Lottie
+                      animationData={HeartLottie}
+                      style={{
+                        position: 'absolute',
+                        width: '40px',
+                        height: '40px',
+                        right: '4px',
+                        zIndex: '-99',
+                      }}
+                      autoplay={true}
+                      loop={false}
+                    />
                   ) : (
-                    <span className="mr-1.5 text-grayscale-400">❤︎</span>
+                    <span className="mr-3.5 text-grayscale-400">❤︎</span>
                   )}
                   <span>{likeCount}</span>
                 </div>
