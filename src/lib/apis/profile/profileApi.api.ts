@@ -70,7 +70,7 @@ export const getPing = async (code: CodeType) => {
 };
 
 // 위키 프로필 상세정보 POST 요청
-export const changeProfile = async (code: CodeType, formData: ChangeProfilesFormData) => {
+export const updateProfile = async (code: CodeType, formData: ChangeProfilesFormData) => {
   try {
     const res: AxiosResponse<DetailProfileResponse> = await axiosWithIntercepter.patch(
       `profiles/${code}`,
@@ -104,7 +104,7 @@ export const createProfile = async (formData: CreateProfileFormData) => {
 };
 
 // 위키 프로필 수정 핑 POST 요청
-export const postPing = async (code: CodeType, formData: PingFormData) => {
+export const createPing = async (code: CodeType, formData: PingFormData) => {
   try {
     const res: AxiosResponse<DetailProfileResponse> = await axiosWithIntercepter.post(
       `profiles/${code}/ping`,

@@ -2,6 +2,7 @@
 .w-md-editor.w-md-editor-show-preview,
 .w-md-editor.w-md-editor-show-live {
   box-shadow: none;
+  font-size: 12px;
 }
 
 .w-md-editor .w-md-editor-toolbar {
@@ -15,6 +16,10 @@
 .w-md-editor .w-md-editor-toolbar ul {
   display: flex;
   gap: 10px;
+}
+
+.w-md-editor .w-md-editor-toolbar ul li button:hover {
+  color: #4cbfa4;
 }
 
 .w-md-editor .w-md-editor-content {

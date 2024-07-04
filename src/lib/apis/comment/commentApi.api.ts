@@ -21,7 +21,7 @@ export const getComment = async (articleId: number) => {
 };
 
 // 게시글 상세 페이지 댓글 POST 요청
-export const postComment = async (articleId: number, formData: CommentFormData) => {
+export const createComment = async (articleId: number, formData: CommentFormData) => {
   try {
     const res: AxiosResponse<CommentResponse> = await axiosWithIntercepter.post(
       `articles/${articleId}/comments`,
@@ -38,7 +38,7 @@ export const postComment = async (articleId: number, formData: CommentFormData) 
 };
 
 // 게시글 상세 페이지 댓글 PATCH 요청
-export const changeComment = async (commentId: number, formData: CommentFormData) => {
+export const updateComment = async (commentId: number, formData: CommentFormData) => {
   try {
     const res: AxiosResponse<CommentResponse> = await axiosWithIntercepter.patch(
       `comments/${commentId}`,
