@@ -1,14 +1,81 @@
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useStore } from 'zustand';
 import CloseIcon from '@/../public/svg/close.svg';
-import testData from '@/../public/data/notification.json';
+import { useAuthStore } from '@/store/userAuthStore';
+import { getNotification } from '@/lib/apis/notification/notificationApi.api';
+import { NotificationResponse } from '@/types/apiType';
+import ToastSelect from '../ToastSelect';
 import NoticeItem from './NoticeItem';
 
 interface NoticeMenuProps {
   isOpen: boolean;
   handleClose: () => void;
+  code: string | undefined;
+  handleCount: (value: number) => void;
 }
 
-const NoticeMenu = ({ isOpen, handleClose }: NoticeMenuProps) => {
+const PAGE = 1;
+const PAGE_SIZE = 20;
+
+const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps) => {
+  const [noticeList, setNoticeList] = useState<NotificationResponse[]>([]);
+  const [noticeTotalCount, setNoticeTotalCount] = useState<number>(0);
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
+
+  const hasProfile = user?.profile;
+
+  const getNoticeList = async (page: number, pageSize: number) => {
+    try {
+      const res = await getNotification({ page, pageSize });
+      setNoticeList(res.list);
+      setNoticeTotalCount(res.totalCount);
+    } catch (e) {
+      ToastSelect({ type: 'error', message: '에러가 발생하여 페이지를 새로고침합니다.' });
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
+    }
+  };
+
+  const filteredNoticeListAndCount = (id: number) => {
+    const filteredList = noticeList.filter((notice) => {
+      return id !== notice.id;
+    });
+    setUpdatedDataToNoticeList(filteredList);
+    if (noticeTotalCount) {
+      setNoticeTotalCount((prev) => {
+        return prev - 1;
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (noticeTotalCount) {
+      handleCount(noticeTotalCount);
+    }
+  }, [handleCount, noticeTotalCount]);
+
+  const setUpdatedDataToNoticeList = (value: NotificationResponse[]) => {
+    setNoticeList(value);
+  };
+
+  useEffect(() => {
+    if (code) {
+      getNoticeList(PAGE, PAGE_SIZE);
+
+      const intervalId = setInterval(() => {
+        getNoticeList(PAGE, PAGE_SIZE);
+      }, 60000);
+
+      return () => {
+        return clearInterval(intervalId);
+      };
+    }
+  }, []);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -18,15 +85,39 @@ const NoticeMenu = ({ isOpen, handleClose }: NoticeMenuProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="mb-3 flex items-center justify-between md:mb-4">
-            <h4 className=" text-2lg-bold md:text-xl-bold">알림 {testData.totalCount}개</h4>
-            <CloseIcon onClick={handleClose} className="cursor-pointer" />
-          </div>
-          <section className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px] ">
-            {testData.list.map((item) => {
-              return <NoticeItem item={item} key={item.id} />;
-            })}
-          </section>
+          {!hasProfile ? (
+            <>
+              <div className="mb-3 flex items-center justify-between md:mb-4">
+                <h4 className=" text-2lg-bold md:text-xl-bold">알림창</h4>
+                <CloseIcon onClick={handleClose} className="ml-auto cursor-pointer" />
+              </div>
+              <section className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px] ">
+                <p className="rounded-md bg-white p-3 text-center sm:text-md-regular">
+                  알림을 받아보려면 위키를 생성하세요!
+                </p>
+              </section>
+            </>
+          ) : (
+            <>
+              <div className="mb-3 flex items-center justify-between md:mb-4">
+                <h4 className=" text-2lg-bold md:text-xl-bold">알림 {noticeTotalCount}개</h4>
+                <CloseIcon onClick={handleClose} className="cursor-pointer" />
+              </div>
+              <div className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px]">
+                {noticeList.map((item) => {
+                  return (
+                    <NoticeItem
+                      item={item}
+                      key={item.id}
+                      id={item.id}
+                      code={code}
+                      handleDelete={filteredNoticeListAndCount}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
