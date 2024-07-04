@@ -5,10 +5,16 @@ import axiosWithIntercepter from '../axiosWithIntercepter';
 import axiosDefault from '../axiosDefault';
 
 // 게시글 상세 페이지 댓글 GET 요청
-export const getComment = async (articleId: number) => {
+export const getComment = async (articleId: number, limit: number, cursor?: number | null) => {
   try {
     const res: AxiosResponse<CommentListResponse> = await axiosDefault.get(
       `articles/${articleId}/comments`,
+      {
+        params: {
+          limit,
+          cursor,
+        },
+      },
     );
     return res.data;
   } catch (e: unknown) {
@@ -21,7 +27,7 @@ export const getComment = async (articleId: number) => {
 };
 
 // 게시글 상세 페이지 댓글 POST 요청
-export const postComment = async (articleId: number, formData: CommentFormData) => {
+export const createComment = async (articleId: number, formData: CommentFormData) => {
   try {
     const res: AxiosResponse<CommentResponse> = await axiosWithIntercepter.post(
       `articles/${articleId}/comments`,
@@ -38,7 +44,7 @@ export const postComment = async (articleId: number, formData: CommentFormData) 
 };
 
 // 게시글 상세 페이지 댓글 PATCH 요청
-export const changeComment = async (commentId: number, formData: CommentFormData) => {
+export const updateComment = async (commentId: number, formData: CommentFormData) => {
   try {
     const res: AxiosResponse<CommentResponse> = await axiosWithIntercepter.patch(
       `comments/${commentId}`,

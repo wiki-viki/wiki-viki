@@ -1,6 +1,4 @@
 export const FORM_DATA_INIT = {
-  securityAnswer: '',
-  securityQuestion: '',
   nationality: '',
   family: '',
   bloodType: '',
@@ -10,6 +8,6 @@ export const FORM_DATA_INIT = {
   job: '',
   mbti: '',
   city: '',
-  image: null,
+  image: 'null',
   content: '',
 };
