@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { isAxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import { Input, Label } from '@/components/common/Form';
-import { postPing } from '@/lib/apis/profile/profileApi.api';
+import { createPing } from '@/lib/apis/profile/profileApi.api';
 import { CodeType } from '@/types/apiType';
 import LockerIcon from '../../../public/svg/locker_Icon.svg';
 import ToastSelect from '../common/ToastSelect';
@@ -16,13 +16,20 @@ type QuizModalProps = {
   onClose: (value: void) => void;
   setEditingMode: (value: void) => void;
   code: CodeType;
+  setAnswer: (value: string) => void;
 };
 
 type IForm = {
   securityAnswer: string;
 };
 
-const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModalProps) => {
+const QuizModalTemplete = ({
+  question,
+  onClose,
+  setEditingMode,
+  code,
+  setAnswer,
+}: QuizModalProps) => {
   const {
     register,
     handleSubmit,
@@ -35,8 +42,9 @@ const QuizModalTemplete = ({ question, onClose, setEditingMode, code }: QuizModa
 
   const handleSubmitData: SubmitHandler<IForm> = async (data) => {
     try {
-      await postPing(code, data);
+      await createPing(code, data);
       setEditingMode();
+      setAnswer(data.securityAnswer);
       onClose();
     } catch (error: unknown) {
       if (isAxiosError(error)) {

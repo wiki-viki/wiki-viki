@@ -153,8 +153,13 @@ body,
     @apply absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer;
   }
 
+
   .textareaNone {
     @apply border-none overflow-auto outline-none shadow-none resize-none;
+  }
+
+  .loading {
+    height: calc(100vh - 150px);
   }
 
   .spinner {
