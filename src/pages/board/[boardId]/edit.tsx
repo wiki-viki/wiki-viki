@@ -108,9 +108,11 @@ const EditBoard = () => {
         setContent(response.content);
         setCreateAt(response.createdAt);
 
-        if (response.writer.id !== user?.id) {
-          router.push('/404');
-          return;
+        if (user) {
+          if (Number(response.writer.id) !== Number(user.id)) {
+            router.push('/404');
+            return;
+          }
         }
       } catch (error) {
         if (error instanceof AxiosError) {
