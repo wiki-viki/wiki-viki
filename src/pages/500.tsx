@@ -1,4 +1,4 @@
-import CustomError from '@/components/FreeBoards/error';
+import CustomError from '@/components/common/error';
 
 const Custom500Error = () => {
   return (
