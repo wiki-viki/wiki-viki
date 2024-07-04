@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useBoolean from '@/hooks/useBoolean';
@@ -18,7 +18,7 @@ const activeLinkClassNames = 'font-bold text-primary-green-300';
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
-  const { checkLogin } = useAuthStore();
+  const { user, checkLogin } = useAuthStore();
   const isLogin = useStore(useAuthStore, (state) => {
     return state.isLogin;
   });
@@ -29,6 +29,12 @@ const TopNavigationBar = () => {
 
   const noticeRef = useRef<HTMLDivElement | null>(null);
   const { value: isNoticeOpen, handleOff: noticeClose, handleToggle: noticeToggle } = useBoolean();
+
+  const [noticeCount, setNoticeCount] = useState<number>(0);
+
+  const handleCount = (value: number) => {
+    setNoticeCount(value);
+  };
 
   useEffect(() => {
     checkLogin();
@@ -76,13 +82,26 @@ const TopNavigationBar = () => {
         {isLogin ? (
           <div className="flex gap-6">
             <div ref={noticeRef}>
+              {noticeCount > 0 && (
+                <span
+                  className="center absolute size-4 cursor-pointer rounded-full bg-red-500 text-[9px] text-white md:right-[78px] lg:right-[138px]"
+                  onClick={noticeToggle}
+                >
+                  {noticeCount}
+                </span>
+              )}
               <NotifyIcon
                 onClick={noticeToggle}
                 width={24}
                 height={24}
                 className="cursor-pointer"
               />
-              <NoticeMenu handleClose={noticeClose} isOpen={isNoticeOpen} />
+              <NoticeMenu
+                handleClose={noticeClose}
+                isOpen={isNoticeOpen}
+                code={user?.profile?.code}
+                handleCount={handleCount}
+              />
             </div>
             <div ref={menuRef}>
               <ProfileIcon
