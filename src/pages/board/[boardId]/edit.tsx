@@ -114,6 +114,10 @@ const EditBoard = () => {
             return;
           }
         }
+        if (user === null) {
+          router.push('/404');
+          return;
+        }
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.status === 404) {
@@ -147,7 +151,7 @@ const EditBoard = () => {
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
-          등록일 {dateToString(createAt)}
+          {user?.name} {dateToString(createAt)}
         </span>
         <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
