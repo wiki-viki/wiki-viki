@@ -39,11 +39,13 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   const [page, setPage] = useState(1);
   const [name, setName] = useState('');
   const [profileListData, setProfileListData] = useState<ProfileListResponse>(profileList);
+  const [showSearchLabel, setShowSearchLabel] = useState(false);
 
   const fetchProfilesData = async (page: number, name: string) => {
     try {
       const res = await getProfiles({ pageSize: PAGE_SIZE, page, name });
       setProfileListData(res);
+      setShowSearchLabel(res.totalCount > 0);
     } catch (error) {
       router.push('/500');
     }
@@ -73,6 +75,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
       return;
     }
     fetchProfilesData(page, name);
+    setShowSearchLabel(false);
   }, [page, name]);
 
   return (
@@ -82,9 +85,13 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
       </div>
       <section>
-        {profileListData.totalCount !== 0 ? (
+        {showSearchLabel ? (
+          <SearchLabel name={name} totalCount={profileListData.totalCount} />
+        ) : (
+          <div className="h-10"></div>
+        )}
+        {profileListData.totalCount > 0 ? (
           <>
-            <SearchLabel name={name} totalCount={profileListData.totalCount} />
             <UserCard cardList={profileListData.list} />
             <div className="center my-[60px]">
               <Pagination
