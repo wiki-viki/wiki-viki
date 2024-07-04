@@ -47,15 +47,17 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
     setUpdatedDataToNoticeList(filteredList);
     if (noticeTotalCount) {
       setNoticeTotalCount((prev) => {
-        return prev - 1;
+        if (prev === 1) {
+          return 0;
+        } else {
+          return prev - 1;
+        }
       });
     }
   };
 
   useEffect(() => {
-    if (noticeTotalCount) {
-      handleCount(noticeTotalCount);
-    }
+    handleCount(noticeTotalCount);
   }, [handleCount, noticeTotalCount]);
 
   const setUpdatedDataToNoticeList = (value: NotificationResponse[]) => {
