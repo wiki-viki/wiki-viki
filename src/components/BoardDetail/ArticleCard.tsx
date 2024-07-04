@@ -53,9 +53,10 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
         router.push('/500');
       }
     };
-
-    fetchBoardDetailData();
-  }, [id]);
+    if (id) {
+      fetchBoardDetailData();
+    }
+  }, [id, router]);
 
   const handleLike = async () => {
     try {
