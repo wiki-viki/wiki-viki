@@ -1,22 +1,17 @@
 import { useState } from 'react';
 import router from 'next/router';
 import { CommentFormData } from '@/types/apiType';
-import { useAuthStore } from '@/store/userAuthStore';
-import { useStore } from '@/store/useStore';
 import CommonButton from '../common/CommonButton';
 import ToastSelect from '../common/ToastSelect';
 
 interface CommentFormProps {
+  isLogin: boolean | undefined;
   onSubmit: (formData: CommentFormData) => Promise<void>;
 }
 
-const CommentForm = ({ onSubmit }: CommentFormProps) => {
+const CommentForm = ({ isLogin, onSubmit }: CommentFormProps) => {
   const [content, setContent] = useState('');
   const [characterCount, setCharacterCount] = useState(0);
-
-  const isLogin = useStore(useAuthStore, (state) => {
-    return state.isLogin;
-  });
 
   const MAX_CHARACTERS = 500;
 

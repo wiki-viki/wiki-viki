@@ -18,14 +18,14 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
 import { DeleteSuccess, UnableDelete } from '@/constants/toast';
-import { useStore } from '@/store/useStore';
-import { useAuthStore } from '@/store/userAuthStore';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
 import ConfirmModal from '../common/ConfirmModal';
 
 interface ArticleCardProps {
   id: IdType;
+  userId: number | undefined;
+  isLogin: boolean | undefined;
 }
 
 const EditorComponent = dynamic(
@@ -40,7 +40,7 @@ const EditorComponent = dynamic(
   },
 );
 
-const ArticleCard = ({ id }: ArticleCardProps) => {
+const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -48,14 +48,6 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const router = useRouter();
-
-  const userId = useStore(useAuthStore, (state) => {
-    return state.user?.id;
-  });
-
-  const isLogin = useStore(useAuthStore, (state) => {
-    return state.isLogin;
-  });
 
   useEffect(() => {
     const fetchBoardDetailData = async () => {
