@@ -30,15 +30,21 @@ const QuillEditor = ({ content, setContent }: QuillEditorProps) => {
   const { value, handleOn, handleOff } = useBoolean();
 
   const handleClickImage = () => {
+    const editor = QuillRef.current?.getEditor();
+    if (editor) {
+      editor.blur();
+    }
     handleOn();
   };
 
   const handleInsertImage = (url: string) => {
     const editor = QuillRef.current?.getEditor();
     if (editor) {
+      editor.focus();
       const range = editor.getSelection(true);
       editor.insertEmbed(range.index, 'image', url);
-      editor.setSelection(range.index + 1, 0);
+      editor.insertText(range.index + 1, '\n');
+      editor.setSelection(range.index + 2, 0);
       handleOff();
     }
   };

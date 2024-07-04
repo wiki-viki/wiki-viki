@@ -15,7 +15,6 @@
     "@types/styled-components": "^5.1.34",
     "@uiw/react-md-editor": "^3.6.0",
     "@xeger/quill-image-actions": "^0.7.2",
-    "@xeger/quill-image-formats": "^0.7.2",
     "axios": "^1.7.2",
     "framer-motion": "^11.2.11",
     "lottie-react": "^2.4.0",
