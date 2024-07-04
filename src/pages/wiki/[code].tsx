@@ -111,7 +111,7 @@ const UserWikiPage: React.FC = () => {
     handleOn();
   };
 
-  const throttlePing = throttle(updateEditTime, 6 * 10000);
+  const throttlePing = throttle(updateEditTime, 60000);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setMD(value);
@@ -120,6 +120,7 @@ const UserWikiPage: React.FC = () => {
     if (!value) {
       handleChange('content', null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setEditingMode = () => {
@@ -228,6 +229,7 @@ const UserWikiPage: React.FC = () => {
         }
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renewalTime]);
 
   if (!userProfile) {
