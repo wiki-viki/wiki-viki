@@ -28,6 +28,10 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
     return state.user?.id;
   });
 
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
+
   const fetchComments = async () => {
     try {
       const res = await getComment(Number(id), LIMIT, nextCursor);
@@ -69,11 +73,15 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
 
   const handleCommentSubmit = async (formData: CommentFormData) => {
     try {
-      const newComment = await createComment(Number(id), formData);
-      setCommentsData((prevData) => {
-        return [newComment, ...prevData];
-      });
-      getCommentsCount();
+      if (isLogin) {
+        const newComment = await createComment(Number(id), formData);
+        setCommentsData((prevData) => {
+          return [newComment, ...prevData];
+        });
+        getCommentsCount();
+      } else {
+        ToastSelect({ type: 'error', message: '로그인이 필요합니다.' });
+      }
     } catch (e) {
       ToastSelect({ type: 'error', message: '댓글을 작성해주세요.' });
     }
