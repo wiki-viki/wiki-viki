@@ -41,7 +41,6 @@ const ImageAddModal = ({ isOpen, onClose, handleImageUrl }: ImageAddModalProps) 
       }
 
       if (errorMessage) {
-        console.log(errorMessage);
         ToastSelect({
           type: 'error',
           message: errorMessage,
