@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import Lottie from 'lottie-react';
 import dateToString from '@/utils/dateToString';
 import {
   deleteArticleLike,
@@ -18,17 +19,30 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import DeleteIcon from '@/../public/svg/delete.svg';
 import EditIcon from '@/../public/svg/edit.svg';
 import { DeleteSuccess, UnableDelete } from '@/constants/toast';
-import { useStore } from '@/store/useStore';
-import { useAuthStore } from '@/store/userAuthStore';
+import HeartLottie from '@/../public/lottie/heart.json';
 import CommonButton from '../common/CommonButton';
 import Loading from '../Loading';
 import ConfirmModal from '../common/ConfirmModal';
 
 interface ArticleCardProps {
   id: IdType;
+  userId: number | undefined;
+  isLogin: boolean | undefined;
 }
 
-const ArticleCard = ({ id }: ArticleCardProps) => {
+const EditorComponent = dynamic(
+  () => {
+    return import('react-quill');
+  },
+  {
+    loading: () => {
+      return <div>...loading</div>;
+    },
+    ssr: false,
+  },
+);
+
+const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -36,10 +50,6 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const router = useRouter();
-
-  const userId = useStore(useAuthStore, (state) => {
-    return state.user?.id;
-  });
 
   useEffect(() => {
     const fetchBoardDetailData = async () => {
@@ -59,6 +69,18 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
 
   const handleLike = async () => {
     try {
+      if (!isLogin) {
+        ToastSelect({
+          type: 'notification',
+          message: '로그인 후 이용해주세요.',
+          autoClose: 1000,
+          onClose: () => {
+            router.push('/login');
+          },
+        });
+        return;
+      }
+
       if (isLiked) {
         await deleteArticleLike(Number(id));
         setLikeCount(likeCount - 1);
@@ -117,10 +139,10 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
               </div>
               {userId === writerId && (
                 <div className="flex gap-3 lg:hidden">
-                  <motion.div className="hoverScale" onClick={handleEdit}>
+                  <motion.div className="hoverScale cursor-pointer" onClick={handleEdit}>
                     <EditIcon />
                   </motion.div>
-                  <motion.div className="hoverScale" onClick={handleDeleteModalOpen}>
+                  <motion.div className="hoverScale cursor-pointer" onClick={handleDeleteModalOpen}>
                     <DeleteIcon />
                   </motion.div>
                 </div>
@@ -149,30 +171,35 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
                 {articleData.writer.name}
                 <span className="ml-3">{dateToString(articleData.updatedAt)}</span>
               </div>
-              <div onClick={handleLike}>
-                <div className="flex items-center">
+              <div onClick={handleLike} className=" cursor-pointer">
+                <div className="relative flex items-center">
                   {isLiked ? (
-                    <motion.span
-                      className="mr-1.5 text-primary-green-200"
-                      animate={{ scale: [1, 1.5, 1] }}
-                      transition={{ duration: 0.3, ease: 'easeInOut', repeat: 0.15 }}
-                    >
-                      ❤︎
-                    </motion.span>
+                    <Lottie
+                      animationData={HeartLottie}
+                      style={{
+                        position: 'absolute',
+                        width: '40px',
+                        height: '40px',
+                        right: '4px',
+                        zIndex: '-99',
+                      }}
+                      autoplay={true}
+                      loop={false}
+                    />
                   ) : (
-                    <span className="mr-1.5 text-grayscale-400">❤︎</span>
+                    <span className="mr-3.5 text-grayscale-400">❤︎</span>
                   )}
                   <span>{likeCount}</span>
                 </div>
               </div>
             </div>
-            {articleData.image && (
-              <div className=" relative mt-3 lg:mb-5 lg:mt-8">
-                <Image src={articleData.image} alt="게시글 이미지" width={500} height={300} />
-              </div>
-            )}
             <div className="mt-3 text-md-regular text-grayscale-500 lg:text-lg-regular">
-              {articleData.content}
+              <EditorComponent
+                value={articleData.content}
+                theme="bubble"
+                readOnly={true}
+                modules={{ toolbar: null }}
+              />
             </div>
           </div>
         </>

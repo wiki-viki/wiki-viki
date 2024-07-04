@@ -83,10 +83,10 @@ const CommentCard = ({ id, comment, onDeleteComment, onCommentUpdated }: Comment
           <div className=" absolute right-5 top-4 flex justify-end gap-2">
             {id === comment.writer.id && (
               <>
-                <motion.div className="hoverScale" onClick={handleEditComment}>
+                <motion.div className="hoverScale cursor-pointer" onClick={handleEditComment}>
                   <EditIcon />
                 </motion.div>
-                <motion.div className="hoverScale" onClick={handleDeleteModalOpen}>
+                <motion.div className="hoverScale cursor-pointer" onClick={handleDeleteModalOpen}>
                   <DeleteIcon />
                 </motion.div>
               </>
