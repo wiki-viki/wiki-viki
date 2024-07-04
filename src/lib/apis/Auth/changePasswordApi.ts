@@ -1,8 +1,8 @@
 import useMutation from '@/hooks/useMutation';
 
-const getChangePasswordData = () => {
+const useChangePasswordData = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { isError, statusCode, axiosFetch } = useMutation({
+  const { isError, statusCode, mutation } = useMutation({
     options: {
       method: 'patch',
       url: 'users/me/password',
@@ -10,7 +10,7 @@ const getChangePasswordData = () => {
     includeAuth: true,
   });
 
-  return { isError, statusCode, axiosFetch };
+  return { isError, statusCode, mutation };
 };
 
-export default getChangePasswordData
+export default useChangePasswordData
