@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import router from 'next/router';
 import { CommentFormData } from '@/types/apiType';
-import { useAuthStore } from '@/store/userAuthStore';
-import { useStore } from '@/store/useStore';
 import CommonButton from '../common/CommonButton';
 import ToastSelect from '../common/ToastSelect';
 
