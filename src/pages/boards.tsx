@@ -1,6 +1,6 @@
-import React, { KeyboardEvent, useState, useEffect } from 'react';
+import React, { KeyboardEvent, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import {
   BoardList,
   MobileBoardList,
@@ -30,16 +30,12 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error(error);
     return {
-      props: { error },
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
     };
-    // return {
-    //   redirect: {
-    //     destination: '/500',
-    //     permanent: false,
-    //   },
-    // };
   }
 };
 
@@ -49,8 +45,8 @@ interface BoardsProps {
 }
 
 const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
-  // const router = useRouter();
-  // const isInitialRender = useRef(true);
+  const router = useRouter();
+  const isInitialRender = useRef(true);
   const [boardListData, setBoardListData] = useState<ArticleListResponse>(boardList);
   const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
@@ -77,17 +73,17 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
       const res = await getArticle({ pageSize: PAGE_SIZE, page, orderBy, keyword });
       setBoardListData(res);
     } catch (error) {
-      console.error(error);
-      // router.push('/500');
+      router.push('/500');
     }
   };
 
   useEffect(() => {
-    // if (isInitialRender.current) {
-    //   isInitialRender.current = false;
-    //   return;
-    // }
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     fetchArticleData(page, orderBy, keyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, orderBy, keyword]);
 
   return (
