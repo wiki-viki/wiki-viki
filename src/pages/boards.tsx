@@ -1,4 +1,5 @@
 import React, { KeyboardEvent, useState, useEffect, useRef } from 'react';
+import { Zoom } from 'react-toastify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -12,7 +13,11 @@ import Pagination from '@/components/common/Pagination';
 import { type OrderType } from '@/constants/orderOption';
 import { getArticle } from '@/lib/apis/article/articleApi.api';
 import { ArticleListResponse } from '@/types/apiType';
+import { StyledToastContainer } from '@/styles/ToastStyle';
+import ToastSelect from '@/components/common/ToastSelect';
 import { EmptySearch } from '@/components/WikiList';
+import { useAuthStore } from '@/store/userAuthStore';
+import { useStore } from '@/store/useStore';
 
 const PAGE_SIZE = 10;
 
@@ -52,6 +57,9 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   const [orderBy, setOrderBy] = useState<OrderType>('recent');
   const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -77,6 +85,17 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
     }
   };
 
+  const handleGuestRedirect = () => {
+    ToastSelect({
+      type: 'notification',
+      message: '로그인 후 이용해주세요.',
+      autoClose: 1000,
+      onClose: () => {
+        return router.push('/login');
+      },
+    });
+  };
+
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
@@ -88,11 +107,18 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
 
   return (
     <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
+      <StyledToastContainer transition={Zoom} />
       <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
         <h2 className="text-2xl-bold">베스트 게시글</h2>
-        <Link href="/addboard" rel="preload">
-          <CommonButton variant="primary">게시물 등록하기</CommonButton>
-        </Link>
+        {isLogin ? (
+          <Link href="/addboard" rel="preload">
+            <CommonButton variant="primary">게시물 등록하기</CommonButton>
+          </Link>
+        ) : (
+          <CommonButton onClick={handleGuestRedirect} variant="primary">
+            게시물 등록하기
+          </CommonButton>
+        )}
       </div>
       <BestBoardContainer boardList={bestBoardList} />
       <section>
