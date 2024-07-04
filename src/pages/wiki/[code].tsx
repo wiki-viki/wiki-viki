@@ -108,7 +108,14 @@ const UserWikiPage: React.FC = () => {
   }, []);
 
   const handleWikiButtonClick = () => {
-    handleOn();
+    if (!user) {
+      ToastSelect({ type: 'notification', message: '로그인 후 이용해주세요!' });
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } else {
+      handleOn();
+    }
   };
 
   const throttlePing = throttle(updateEditTime, 60000);
@@ -129,6 +136,17 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+  };
+
+  const handleStartWikiClick = () => {
+    if (!user) {
+      ToastSelect({ type: 'notification', message: '로그인 후 이용해주세요!' });
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } else {
+      handleOn();
+    }
   };
 
   const handleSaveClick = async () => {
@@ -243,7 +261,7 @@ const UserWikiPage: React.FC = () => {
         <BasicWikiSection
           name={userProfile.name}
           content={userProfile.content}
-          onClick={handleOn}
+          onClick={handleStartWikiClick}
           url={URL}
         />
       )}
