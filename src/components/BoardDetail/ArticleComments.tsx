@@ -80,7 +80,14 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
         });
         getCommentsCount();
       } else {
-        ToastSelect({ type: 'error', message: '로그인이 필요합니다.' });
+        ToastSelect({
+          type: 'notification',
+          message: '로그인 후 이용해주세요.',
+          autoClose: 1000,
+          onClose: () => {
+            return router.push('/login');
+          },
+        });
       }
     } catch (e) {
       ToastSelect({ type: 'error', message: '댓글을 작성해주세요.' });

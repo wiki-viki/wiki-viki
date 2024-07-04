@@ -41,6 +41,10 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
     return state.user?.id;
   });
 
+  const isLogin = useStore(useAuthStore, (state) => {
+    return state.isLogin;
+  });
+
   useEffect(() => {
     const fetchBoardDetailData = async () => {
       try {
@@ -59,6 +63,18 @@ const ArticleCard = ({ id }: ArticleCardProps) => {
 
   const handleLike = async () => {
     try {
+      if (!isLogin) {
+        ToastSelect({
+          type: 'notification',
+          message: '로그인 후 이용해주세요.',
+          autoClose: 1000,
+          onClose: () => {
+            router.push('/login');
+          },
+        });
+        return;
+      }
+
       if (isLiked) {
         await deleteArticleLike(Number(id));
         setLikeCount(likeCount - 1);
