@@ -11,7 +11,7 @@ export const middleware = (request: NextRequest) => {
     pathname !== '/signup' &&
     pathname !== '/boards' &&
     pathname !== '/wikilist' &&
-    // !pathname.startsWith('/wiki/') &&
+    !pathname.startsWith('/wiki/') &&
     !pathname.startsWith('/board/') &&
     !accessToken
   ) {
