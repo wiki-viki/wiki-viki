@@ -42,6 +42,7 @@ const EditorComponent = dynamic(
   },
 );
 
+
 const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
   const [likeCount, setLikeCount] = useState<number>(0);

@@ -117,13 +117,13 @@ const UserProfile: React.FC<UserProfileProps> = ({
               ></input>
             </>
           ) : (
-            <div className="relative mr-4 size-[71px] rounded-full border border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
+            <div className="relative mr-4 size-[71px] rounded-full  border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
                 src={image ? image : '/images/basic_profile.png'}
                 sizes="(max-width: 768px) 62px, (max-width: 1200px) 81px, 200px"
                 fill
                 priority
-                className="rounded-full object-cover"
+                className="ml-3 mt-1 rounded-full object-cover sm:ml-0 xl:ml-0 xl:mt-0"
                 alt="위키 페이지 개인 프로필 이미지"
               />
             </div>
