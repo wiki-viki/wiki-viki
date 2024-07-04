@@ -6,7 +6,7 @@ const Footer = () => {
       </span>
       <div className="mb-5 flex flex-col gap-1">
         <span className="text-[8px] font-normal leading-[9.55px] text-white md:text-[14px] md:leading-[16.71px]">
-          사업자등록번호 123-45-67890 | 통신판매신고 제2024-서울-12345호 | 대표 : 이지은 
+          사업자등록번호 123-45-67890 | 통신판매신고 제2024-서울-12345호 | 대표 : 최명진
         </span>
         <span className="text-[8px] font-normal leading-[9.55px] text-white md:text-[14px] md:leading-[16.71px]">
           서울특별시 중구 청계천로 123, 럭키비키빌딩
