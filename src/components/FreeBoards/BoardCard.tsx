@@ -11,6 +11,8 @@ interface BoardCardProps {
 }
 
 const BoardCard = ({ board }: BoardCardProps) => {
+  const dateString = dateToString(board.createdAt);
+
   return (
     <motion.article
       className="group relative h-[220px] w-full rounded-10 shadow-lg"
@@ -35,7 +37,7 @@ const BoardCard = ({ board }: BoardCardProps) => {
           <div className="flex flex-wrap justify-between text-xs-regular text-grayscale-400 md:text-sm-medium">
             <div className="flex gap-1">
               <span className="max-w-[70px] truncate md:max-w-[60px]">{board.writer.name}</span>
-              <span>{dateToString(board.createdAt).substring(2)}</span>
+              <span>{dateString.length > 6 ? dateString.substring(2) : dateString}</span>
             </div>
             <span>
               <span className="mr-[2px] text-primary-green-200">❤︎</span>
