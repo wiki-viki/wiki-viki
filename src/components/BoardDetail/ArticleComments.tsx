@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import Lottie from 'lottie-react';
 import router from 'next/router';
 import { CommentResponse, CommentFormData } from '@/types/apiType';
-import { getComment, postComment } from '@/lib/apis/comment/commentApi.api';
+import { getComment, createComment } from '@/lib/apis/comment/commentApi.api';
 import { IdType } from '@/types/boardDetail';
 import EmptyCommentLottie from '@/../public/lottie/emptycomment.json';
 import { useAuthStore } from '@/store/userAuthStore';
@@ -69,7 +69,7 @@ const ArticleComments = ({ id }: ArticleCommentsProps) => {
 
   const handleCommentSubmit = async (formData: CommentFormData) => {
     try {
-      const newComment = await postComment(Number(id), formData);
+      const newComment = await createComment(Number(id), formData);
       setCommentsData((prevData) => {
         return [newComment, ...prevData];
       });
