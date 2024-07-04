@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import dateToString from '@/utils/dateToString';
