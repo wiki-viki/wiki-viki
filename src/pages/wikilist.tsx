@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Zoom } from 'react-toastify';
+import router from 'next/router';
 import SearchBar from '@/components/common/SearchBar';
 import Pagination from '@/components/common/Pagination';
 import { EmptySearch, SearchLabel, UserCard } from '@/components/WikiList';
@@ -22,7 +23,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error('Error fetching profiles:', error);
+    router.push('/500');
     return {
       props: { error },
     };
@@ -38,18 +39,15 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   const [page, setPage] = useState(1);
   const [name, setName] = useState('');
   const [profileListData, setProfileListData] = useState<ProfileListResponse>(profileList);
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [showSearchLabel, setShowSearchLabel] = useState(false);
 
   const fetchProfilesData = async (page: number, name: string) => {
-    setIsLoading(true);
     try {
       const res = await getProfiles({ pageSize: PAGE_SIZE, page, name });
       setProfileListData(res);
+      setShowSearchLabel(res.totalCount > 0);
     } catch (error) {
-      console.error('error');
-    } finally {
-      setIsLoading(false);
+      router.push('/500');
     }
   };
 
@@ -77,6 +75,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
       return;
     }
     fetchProfilesData(page, name);
+    setShowSearchLabel(false);
   }, [page, name]);
 
   return (
@@ -86,10 +85,13 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
         <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
       </div>
       <section>
-        {profileListData.totalCount !== 0 ? (
+        {showSearchLabel ? (
+          <SearchLabel name={name} totalCount={profileListData.totalCount} />
+        ) : (
+          <div className="h-10"></div>
+        )}
+        {profileListData.totalCount > 0 ? (
           <>
-            {!isLoading && <SearchLabel name={name} totalCount={profileListData.totalCount} />}
-
             <UserCard cardList={profileListData.list} />
             <div className="center my-[60px]">
               <Pagination
@@ -98,7 +100,6 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
                 page={page}
                 handlePage={(value) => {
                   setPage(value);
-
                   fetchProfilesData(value, name);
                 }}
               />
