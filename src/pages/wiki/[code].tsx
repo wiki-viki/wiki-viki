@@ -26,6 +26,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import throttle from '@/utils/throttle';
+import MetaTag from '@/components/common/MetaTag';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -272,71 +273,75 @@ const UserWikiPage: React.FC = () => {
   }
 
   return (
-    <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
-      <StyledToastContainer limit={1} />
-      {isEditing || (
-        <BasicWikiSection
-          name={userProfile.name}
-          content={userProfile.content}
-          onClick={handleStartWikiClick}
-          url={url}
-        />
-      )}
-
-      <UserProfile
-        {...userProfile}
-        isEditing={isEditing}
-        isMyPage={isMyPage}
-        editMyPage={editMyPage}
-        onChange={handleChange}
-        value={formData.image}
+    <>
+      <MetaTag
+        title={`${userProfile.name} 위키`}
+        description={`${userProfile.name}님 위키 페이지`}
+        url={url}
+        {...(userProfile.image && { image: userProfile.image })}
       />
-
-      <div className={contentClassName}>
-        {!userProfile.content && !isEditing && (
-          <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px] ">
-            <p className={noContentClassName}>아직 작성된 내용이 없네요.</p>
-            <p className={noContentClassName}>위키에 참여해보세요!</p>
-            <CommonButton variant="primary" className="mt-4" onClick={handleWikiButtonClick}>
-              시작하기
+      <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
+        <StyledToastContainer limit={1} />
+        {isEditing || (
+          <BasicWikiSection
+            name={userProfile.name}
+            content={userProfile.content}
+            onClick={handleStartWikiClick}
+            url={url}
+          />
+        )}
+        <UserProfile
+          {...userProfile}
+          isEditing={isEditing}
+          isMyPage={isMyPage}
+          editMyPage={editMyPage}
+          onChange={handleChange}
+          value={formData.image}
+        />
+        <div className={contentClassName}>
+          {!userProfile.content && !isEditing && (
+            <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px] ">
+              <p className={noContentClassName}>아직 작성된 내용이 없네요.</p>
+              <p className={noContentClassName}>위키에 참여해보세요!</p>
+              <CommonButton variant="primary" className="mt-4" onClick={handleWikiButtonClick}>
+                시작하기
+              </CommonButton>
+            </div>
+          )}
+          {isEditing ? (
+            <Editor
+              preview="live"
+              value={md}
+              onChange={handleEditorChange}
+              height={740}
+              hideToolbar={isMobile}
+              autoFocus
+            />
+          ) : (
+            <EditorMarkdown source={userProfile.content} />
+          )}
+        </div>
+        {isEditing && (
+          <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
+            <CommonButton variant="secondary" onClick={handleCancelClick} className="bg-white">
+              취소
+            </CommonButton>
+            <CommonButton variant="primary" onClick={handleSaveClick}>
+              저장
             </CommonButton>
           </div>
         )}
-        {isEditing ? (
-          <Editor
-            preview="live"
-            value={md}
-            onChange={handleEditorChange}
-            height={740}
-            hideToolbar={isMobile && true}
-            autoFocus={true}
+        <Modal isOpen={value} onClose={handleOff}>
+          <QuizModalTemplete
+            question={userProfile.securityQuestion}
+            onClose={handleOff}
+            setEditingMode={setEditingMode}
+            code={userProfile.code}
+            setAnswer={setAnswerValue}
           />
-        ) : (
-          <EditorMarkdown source={userProfile.content} />
-        )}
+        </Modal>
       </div>
-
-      {isEditing && (
-        <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
-          <CommonButton variant="secondary" onClick={handleCancelClick} className="bg-white">
-            취소
-          </CommonButton>
-          <CommonButton variant="primary" onClick={handleSaveClick}>
-            저장
-          </CommonButton>
-        </div>
-      )}
-
-      <Modal isOpen={value} onClose={handleOff}>
-        <QuizModalTemplete
-          question={userProfile.securityQuestion}
-          onClose={handleOff}
-          setEditingMode={setEditingMode}
-          code={userProfile.code}
-          setAnswer={setAnswerValue}
-        />
-      </Modal>
-    </div>
+    </>
   );
 };
 
