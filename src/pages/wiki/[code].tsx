@@ -110,10 +110,13 @@ const UserWikiPage: React.FC = () => {
 
   const handleWikiButtonClick = () => {
     if (!user) {
-      ToastSelect({ type: 'notification', message: '로그인 후 이용해주세요!' });
-      setTimeout(() => {
-        router.push('/login');
-      }, 3000);
+      ToastSelect({
+        type: 'notification',
+        message: '로그인 후 이용해주세요!',
+        onClose: () => {
+          router.push('/login');
+        },
+      });
     } else {
       handleOn();
     }
@@ -142,10 +145,13 @@ const UserWikiPage: React.FC = () => {
 
   const handleStartWikiClick = () => {
     if (!user) {
-      ToastSelect({ type: 'notification', message: '로그인 후 이용해주세요!' });
-      setTimeout(() => {
-        router.push('/login');
-      }, 3000);
+      ToastSelect({
+        type: 'notification',
+        message: '로그인 후 이용해주세요!',
+        onClose: () => {
+          router.push('/login');
+        },
+      });
     } else {
       handleOn();
     }

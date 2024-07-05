@@ -33,10 +33,13 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
       setNoticeList(res.list);
       setNoticeTotalCount(res.totalCount);
     } catch (e) {
-      ToastSelect({ type: 'error', message: '에러가 발생하여 페이지를 새로고침합니다.' });
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
+      ToastSelect({
+        type: 'error',
+        message: '에러가 발생하여 페이지를 새로고침합니다.',
+        onClose: () => {
+          window.location.reload();
+        },
+      });
     }
   };
 
