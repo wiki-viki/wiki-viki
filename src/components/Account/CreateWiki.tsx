@@ -1,21 +1,25 @@
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Zoom } from 'react-toastify';
+import { useRouter } from 'next/router';
 import {
   REQUIRED_MESSAGE,
   WIKI_QUESTION_MIN_lENGTH_MESSAGE,
   WIKI_ANSWER_MIN_lENGTH_MESSAGE,
 } from '@/constants/messages';
+import { useAuthStore } from '@/store/userAuthStore';
 import { questions } from '@/constants/questions';
 import { Container, InputWithLabel } from '@/components/common/Form';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
-import getCreateWikiApi from '@/lib/apis/Auth/createWikiApi';
+import { useCreateWikiApi } from '@/lib/apis/Auth';
 import CommonButton from '../common/CommonButton';
 
 const CreateWiki = () => {
-  const { isError, statusCode, axiosFetch } = getCreateWikiApi();
+  const router = useRouter();
+  const { isError, statusCode, mutation: getCreateWikiApi } = useCreateWikiApi();
+  const { saveUserProfile } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -36,9 +40,11 @@ const CreateWiki = () => {
         securityAnswer: formData.securityAnswer,
       },
     };
-    const response = await axiosFetch(requestData);
-    if (response?.status === 200) {
+    const response = await getCreateWikiApi(requestData);
+    if (response?.status === 201) {
+      saveUserProfile(response?.data);
       ToastSelect({ type: 'check', message: '위키가 생성되었습니다' });
+      router.push(`/wiki/${response?.data?.code}`);
     }
   });
 
@@ -59,7 +65,13 @@ const CreateWiki = () => {
 
   return (
     <>
-      <Container title="위키 생성하기">
+      <div className="center">
+        <div className="center mt-[50px] w-[335px] flex-col rounded-lg border border-grayscale-100 bg-primary-green-100 p-4 text-lg-regular text-grayscale-500 md:mt-[100px] lg:w-[400px]">
+          <p>질문과 답을 입력하고 위키를 생성하세요</p>
+          <p>질문과 답은 한 번만 등록할 수 있습니다</p>
+        </div>
+      </div>
+      <Container title="위키 생성하기" className="mt-[30px] md:mt-[50px]">
         <form onSubmit={onSubmit}>
           <InputWithLabel
             id="securityQuestion"

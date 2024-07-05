@@ -25,6 +25,7 @@ const ViewSection = () => {
                 <Image
                   src={Content2}
                   alt="content"
+                  sizes="(min-width: 1280px) 924px, (min-width: 769px) 648px, (min-width: 480px) 335px, 335px"
                   className="h-[102px] w-[335px] md:h-[196px] md:w-[648px] lg:h-[280px] lg:w-[924px]"
                   placeholder="blur"
                 />
@@ -33,12 +34,14 @@ const ViewSection = () => {
                 <Image
                   src={BellImage}
                   alt="content"
+                  sizes="(min-width: 1280px) 280px, (min-width: 769px) 198px, (min-width: 480px) 102px, 102px"
                   className="size-[102px] md:size-[198px] lg:size-[280px]"
                   placeholder="blur"
                 />
                 <Image
                   src={Content3}
                   alt="content"
+                  sizes="(min-width: 1280px) 640px, (min-width: 769px) 428px, (min-width: 480px) 102px, 223px"
                   className="h-[102px] w-[223px] md:h-[198px] md:w-[428px] lg:h-[280px] lg:w-[640px]"
                   placeholder="blur"
                 />

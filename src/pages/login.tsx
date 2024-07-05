@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
-import { getLoginData } from '@/lib/apis/Auth';
+import { useLoginData } from '@/lib/apis/Auth';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -26,7 +26,7 @@ const emailPattern = {
 
 const LoginPage = () => {
   const router = useRouter();
-  const { isError, statusCode, axiosFetch } = getLoginData();
+  const { isError, statusCode, mutation: getLoginData } = useLoginData();
   const { saveUser } = useAuthStore();
   const {
     register,
@@ -38,10 +38,15 @@ const LoginPage = () => {
     const requestData = {
       data: formData,
     };
-    const response = await axiosFetch(requestData);
+    const response = await getLoginData(requestData);
+    const profile = response?.data?.user?.profile;
+    saveUser(response?.data?.user);
     if (response?.data?.accessToken) {
-      saveUser(response?.data?.user);
-      router.push('/');
+      if (profile === null) {
+        router.push('/mypage');
+      } else {
+        router.push(`/wiki/${profile?.code}`);
+      }
     }
   });
 
@@ -60,7 +65,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <Container className="sm:mt-[130px] md:mt-[150px]">
+      <Container className="mt-[80px] md:mt-[150px]">
         <div className="center mb-[40px] flex-col gap-4">
           <Link href="/" rel="preload">
             <Logo width={250} height={70} />

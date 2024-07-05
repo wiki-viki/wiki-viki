@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
-import { getSignUpData } from '@/lib/apis/Auth';
+import { useSignUpData } from '@/lib/apis/Auth';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -27,7 +27,7 @@ const emailPattern = {
 
 const SignUpPage = () => {
   const router = useRouter();
-  const { isError, statusCode, axiosFetch } = getSignUpData();
+  const { isError, statusCode, mutation: getSignupData } = useSignUpData();
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ const SignUpPage = () => {
     const requestData = {
       data: formData,
     };
-    const response = await axiosFetch(requestData);
+    const response = await getSignupData(requestData);
 
     if (response?.status === 201) {
       ToastSelect({ type: 'check', message: '가입이 완료되었습니다' });
@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
   return (
     <>
-      <Container className="mt-[100px]">
+      <Container className="mt-[50px]">
         <div className="center mb-[40px] flex-col gap-4">
           <Link href="/" rel="preload">
             <Logo width={250} height={70} />

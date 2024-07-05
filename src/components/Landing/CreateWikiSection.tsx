@@ -11,10 +11,15 @@ const CreateWikiSection = () => {
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
+  const userProfile = useStore(useAuthStore, (state) => {
+    return state.userProfile;
+  });
 
-  const handleButton = () => {
-    if (isLogin && user?.profile?.code) {
-      router.push(`/wiki/${user?.profile?.code}`);
+  const handleCreateWikiButton = () => {
+    if (userProfile?.code || user?.profile?.code) {
+      router.push(`/wiki/${userProfile?.code || user?.profile?.code}`);
+    } else if (!userProfile?.code && isLogin) {
+      router.push('/mypage');
     } else {
       router.push('/login');
     }
@@ -38,7 +43,7 @@ const CreateWikiSection = () => {
         </h1>
         <button
           type="button"
-          onClick={handleButton}
+          onClick={handleCreateWikiButton}
           className="center transition-300 h-[54px] w-[169px] rounded-2xl bg-white px-5 py-2.5 text-xl-semibold text-grayscale-500 hover:bg-primary-green-300"
         >
           지금 시작하기

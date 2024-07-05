@@ -100,6 +100,39 @@ body,
     @apply top-[35%] text-secondary-red-200;
   }
 
+  .label::before,
+  .label::after {
+    @apply content-[''] absolute left-0 w-full h-1/2 transition-300 -z-10;
+  }
+
+  .label::before {
+    @apply top-0;
+  }
+
+  .label::after {
+    @apply bottom-0;
+  }
+
+  .input:focus + .label::after,
+  .input:not(:placeholder-shown) + .label::after {
+    @apply bg-white;
+  }
+
+  .input:focus:hover + .label::after,
+  .input:not(:placeholder-shown):hover + .label::after {
+    @apply bg-primary-green-100;
+  }
+
+  .inputError:focus + .label::after,
+  .inputError:not(:placeholder-shown) + .label::after {
+    @apply bg-white;
+  }
+
+  .inputError:focus:hover + .label::after,
+  .inputError:not(:placeholder-shown):hover + .label::after {
+    @apply bg-[#ffe6e6];
+  }
+
   .input {
     @apply w-full h-[50px] rounded-xl ring-1 ring-gray-400 px-5 py-3.5 placeholder-transparent outline-none hover:bg-primary-green-100 transition-300;
   }
