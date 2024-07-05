@@ -1,12 +1,11 @@
-import React, { useState, useCallback, useEffect, ChangeEvent, memo } from 'react';
+import React, { useState, memo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { UserProfileProps } from '@/types/UserProfileProps';
 import useIsMobile from '@/hooks/useIsMobile';
 import ExpandIcon from '../../../public/svg/profile_expand_icon.svg';
-import CameraIcon from '../../../public/svg/camera_icon.svg';
 import ProfileInfos from './ProfileInfos';
+import EditProfile from './UserProfile/EditProfile';
 
 const UserProfile: React.FC<UserProfileProps> = ({
   image,
@@ -35,36 +34,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
     { label: '국적', value: nationality, id: 'nationality' },
   ];
   const [isExpanded, setIsExpanded] = useState(false);
-  const [preview, setPreview] = useState<string | StaticImport | null>(image);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextImg = e.target.files?.[0];
-    if (nextImg) {
-      onChange('image', nextImg);
-    }
-  };
-
-  const handleClearClick = useCallback(() => {
-    setPreview(null);
-    onChange('image', null);
-  }, [onChange]);
-
-  useEffect(() => {
-    if (!value && value?.includes('http')) {
-      return;
-    } else {
-      if (value) {
-        const blob = typeof value === 'string' ? new Blob([value], { type: 'text/plain' }) : value;
-
-        const nextPreview = URL.createObjectURL(blob);
-        setPreview(nextPreview);
-
-        return () => {
-          URL.revokeObjectURL(nextPreview);
-        };
-      }
-    }
-  }, [value]);
+  const sectionClassName = `profile-shadow ${editMyPage ? 'sm:mt-4 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? 'md:mt-[35px]' : 'bottom-[130px]'}`;
 
   const handleProfileExpand = () => {
     setIsExpanded((prev) => {
@@ -77,45 +48,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   return (
     <AnimatePresence>
-      <section
-        className={`profile-shadow ${editMyPage ? 'sm:mt-4 sm:h-[580px] md:h-[580px] lg:h-[354px] xl:flex-col xl:justify-between' : ''} w-full flex-col justify-start rounded-10 bg-white p-5 sm:mb-8 xl:relative xl:ml-auto xl:flex xl:h-[671px] xl:w-[320px] xl:p-10 ${isEditing ? 'md:mt-[35px]' : 'bottom-[130px]'}`}
-      >
+      <section className={sectionClassName}>
         <div className={`flex w-full ${editMyPage ? 'flex-col gap-5' : ''} relative xl:flex-col`}>
           {isEditing && isMyPage ? (
-            <>
-              <label
-                htmlFor="fileInput"
-                // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-                className="center group relative mx-auto size-[71px] cursor-pointer rounded-full border-2 border-grayscale-100 hover:bg-black hover:bg-opacity-20 xl:size-[200px]"
-              >
-                <CameraIcon className="z-10 text-white group-hover:brightness-50" />
-                {preview && (
-                  <Image
-                    className="rounded-full group-hover:brightness-50"
-                    alt="프로필 이미지 미리보기"
-                    src={image ? image : preview}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  ></Image>
-                )}
-              </label>
-
-              {preview && isMyPage && (
-                <button
-                  className="absolute text-white sm:right-0 md:right-0 xl:left-[245px] xl:top-[-25px]"
-                  onClick={handleClearClick}
-                >
-                  <span className="rounded-full bg-primary-green-200 px-[6px] py-[2px]">X</span>
-                </button>
-              )}
-
-              <input
-                type="file"
-                id="fileInput"
-                className="hidden"
-                onChange={handleFileChange}
-              ></input>
-            </>
+            // 위키 수정 컴포넌트
+            <EditProfile value={value} onChange={onChange} isMyPage={isMyPage} />
           ) : (
             <div className="relative mr-4 size-[71px] rounded-full  border-grayscale-200 md:mr-10 md:size-[81px] xl:mx-auto xl:mb-10 xl:size-[200px]">
               <Image
