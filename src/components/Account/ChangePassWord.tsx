@@ -10,11 +10,11 @@ import { Container, InputWithLabel } from '@/components/common/Form';
 import 'react-toastify/dist/ReactToastify.css';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
-import { getChangePasswordData } from '@/lib/apis/Auth';
+import { useChangePasswordData } from '@/lib/apis/Auth';
 import CommonButton from '../common/CommonButton';
 
 const ChangePassWord = () => {
-  const { isError, statusCode, axiosFetch } = getChangePasswordData();
+  const { isError, statusCode, mutation: getChangePasswordData } = useChangePasswordData();
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ const ChangePassWord = () => {
     const requestData = {
       data: formData,
     };
-    const response = await axiosFetch(requestData);
+    const response = await getChangePasswordData(requestData);
     if (response?.status === 200) {
       ToastSelect({ type: 'check', message: '비밀번호가 변경되었습니다' });
     } 
@@ -49,7 +49,7 @@ const ChangePassWord = () => {
 
   return (
     <>
-      <Container title="비밀번호 변경" className="mt-[30px]">
+      <Container title="비밀번호 변경" className="mt-[100px] md:mt-[150px]">
         <form onSubmit={onSubmit}>
           <div className="mb-4">
             <InputWithLabel
@@ -115,7 +115,6 @@ const ChangePassWord = () => {
             </CommonButton>
           </div>
         </form>
-        <div className="my-8 h-px w-full bg-grayscale-200"></div>
       </Container>
       <StyledToastContainer limit={1} transition={Zoom} />
     </>

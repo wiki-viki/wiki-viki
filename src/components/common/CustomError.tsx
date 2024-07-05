@@ -4,7 +4,8 @@ import router from 'next/router';
 import Image from 'next/image';
 import Lottie from 'lottie-react';
 import CommonButton from '@/components/common/CommonButton';
-import ErrorLottie from '@/../public/lottie/404.json';
+import Error404Lottie from '@/../public/lottie/404.json';
+import Error500Lottie from '@/../public/lottie/error.json';
 
 interface CustomErrorProps {
   type: '404' | '500';
@@ -33,9 +34,12 @@ const CustomError: React.FC<CustomErrorProps> = ({ type }) => {
           <Image src="/image/logo-background.png" alt="이미지" width={1920} height={1080} />
         </div>
         {type === '404' ? (
-          <Lottie animationData={ErrorLottie} style={{ width: '300px', height: '200px' }} />
+          <Lottie animationData={Error404Lottie} style={{ width: '300px', height: '200px' }} />
         ) : (
-          <></>
+          <Lottie
+            animationData={Error500Lottie}
+            style={{ width: '200px', height: '150px', marginBottom: '50px' }}
+          />
         )}
         <span className="z-50 text-2xl-bold text-grayscale-500">
           {type === '404' ? (
@@ -44,11 +48,15 @@ const CustomError: React.FC<CustomErrorProps> = ({ type }) => {
             </>
           ) : (
             <>
-              죄송합니다. <span className="text-primary-green-300">시스템 오류</span>입니다
+              죄송합니다. <span className="text-secondary-red-200">시스템 오류</span>입니다
             </>
           )}
         </span>
-        <div className="z-50 my-10 border-l-4 border-l-primary-green-300 pl-4 text-lg-medium text-grayscale-500">
+        <div
+          className={`z-50 my-10 border-l-4 pl-4 text-lg-medium text-grayscale-500 ${
+            type === '404' ? 'border-l-primary-green-300' : 'border-l-secondary-red-200'
+          }`}
+        >
           {type === '404' ? (
             <>
               <p>존재하지 않거나, 사용할 수 없는 페이지입니다.</p>
@@ -66,14 +74,14 @@ const CustomError: React.FC<CustomErrorProps> = ({ type }) => {
             onClick={() => {
               router.back();
             }}
-            className=" hover:bg-primary-green-200  hover:text-gray-50"
+            className={`hover:text-gray-50 ${type === '404' ? 'hover:bg-primary-green-200' : 'border-secondary-red-200 text-secondary-red-200 hover:bg-secondary-red-200'}`}
             variant="secondary"
           >
             이전 페이지로 이동
           </CommonButton>
           <Link href="/">
             <CommonButton
-              className=" hover:bg-primary-green-200 hover:text-gray-50"
+              className={`hover:text-gray-50 ${type === '404' ? 'hover:bg-primary-green-200' : 'border-secondary-red-200 text-secondary-red-200 hover:bg-secondary-red-200'}`}
               variant="secondary"
             >
               메인 페이지로 이동
