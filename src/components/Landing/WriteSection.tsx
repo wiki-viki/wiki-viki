@@ -22,6 +22,7 @@ const WriteSection = () => {
             <Image
               src={KeyboardImage}
               alt="keyboard image"
+              sizes="(min-width: 1280px) 364px, (min-width: 769px) 262px, (min-width: 480px) 133px, 133px"
               className="h-[162px] w-[133px] md:h-[322px] md:w-[262px] lg:h-[450px] lg:w-[364px]"
               placeholder="blur"
             />
@@ -29,6 +30,7 @@ const WriteSection = () => {
           <Image
             src={Content1}
             alt="content"
+            sizes="(min-width: 1280px) 520px, (min-width: 769px) 365px, (min-width: 480px) 192px, 192px"
             className="h-[250px] w-[192px] md:h-[479px] md:w-[365px] lg:h-[681px] lg:w-[520px]"
             placeholder="blur"
           />

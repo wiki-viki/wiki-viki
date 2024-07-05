@@ -4,6 +4,7 @@ import removeImports from 'next-remove-imports';
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    deviceSizes: [480, 769, 1280, 1920, 2048, 3840],
     domains: ['i.namu.wiki', 'sprint-fe-project.s3.ap-northeast-2.amazonaws.com'],
   },
   webpack: (config) => {

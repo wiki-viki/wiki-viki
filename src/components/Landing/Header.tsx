@@ -68,7 +68,14 @@ const Header = () => {
         <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 md:top-1/2 xl:relative xl:left-0 xl:top-0 xl:translate-x-0">
           <RisingMotion>
             <div className="relative h-[398px] w-[336px] md:h-[590px] md:w-[498px]">
-              <Image src={CursorImage} alt="content" fill sizes="auto" placeholder="blur" />
+              <Image
+                src={CursorImage}
+                alt="content"
+                fill
+                sizes="(min-width: 769px) 498px, (min-width: 480px) 336px, 336px"
+                placeholder="blur"
+                priority={true}
+              />
             </div>
           </RisingMotion>
         </div>
