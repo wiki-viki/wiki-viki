@@ -94,7 +94,7 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
                 <CloseIcon onClick={handleClose} className="ml-auto cursor-pointer" />
               </div>
               <section className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px] ">
-                <p className="rounded-md bg-white p-3 text-center sm:text-md-regular">
+                <p className="rounded-md bg-white p-3 py-10 text-center sm:text-md-regular">
                   알림을 받아보려면 위키를 생성하세요!
                 </p>
               </section>
@@ -105,19 +105,25 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
                 <h4 className=" text-2lg-bold md:text-xl-bold">알림 {noticeTotalCount}개</h4>
                 <CloseIcon onClick={handleClose} className="cursor-pointer" />
               </div>
-              <div className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px]">
-                {noticeList.map((item) => {
-                  return (
-                    <NoticeItem
-                      item={item}
-                      key={item.id}
-                      id={item.id}
-                      code={code}
-                      handleDelete={filteredNoticeListAndCount}
-                    />
-                  );
-                })}
-              </div>
+              {noticeList.length > 0 ? (
+                <div className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px]">
+                  {noticeList.map((item) => {
+                    return (
+                      <NoticeItem
+                        item={item}
+                        key={item.id}
+                        id={item.id}
+                        code={code}
+                        handleDelete={filteredNoticeListAndCount}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="rounded-md bg-white p-3 py-10 text-center sm:text-md-regular">
+                  <p>알림이 없습니다.</p>
+                </div>
+              )}
             </>
           )}
         </motion.div>

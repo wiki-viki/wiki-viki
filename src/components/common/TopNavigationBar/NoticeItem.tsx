@@ -28,8 +28,13 @@ const NoticeItem = ({ item, id, handleDelete, code }: NoticeItemProps) => {
     }
   };
 
-  const handleClickDelete = (event: MouseEvent) => {
+  const handleClickDeleteIcon = (event: MouseEvent) => {
     event.preventDefault();
+    event.stopPropagation();
+    deleteNotice(id);
+  };
+
+  const handleClickDelete = () => {
     deleteNotice(id);
   };
 
@@ -37,10 +42,11 @@ const NoticeItem = ({ item, id, handleDelete, code }: NoticeItemProps) => {
     <Link
       href={`/wiki/${code}`}
       className="flex cursor-pointer flex-col rounded-md border bg-white px-2 py-3 md:px-3 md:py-4"
+      onClick={handleClickDelete}
     >
       <div className="flex items-center justify-between">
         <div className="text-red-600">•</div>
-        <DeleteIcon onClick={handleClickDelete} className="cursor-pointer" />
+        <DeleteIcon onClick={handleClickDeleteIcon} className="cursor-pointer" />
       </div>
       <span className="text-sm-semibold md:text-md-semibold">{item.content}</span>
       <span className="text-xs-regular text-grayscale-300">{timeDiff(item.createdAt)}</span>
