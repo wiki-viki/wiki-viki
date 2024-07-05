@@ -6,7 +6,6 @@ import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
 import useBoolean from '@/hooks/useBoolean';
 import Modal from '@/components/common/Modal';
-import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { Editor, EditorMarkdown } from '@/components/Profiles/Editor';
@@ -33,7 +32,7 @@ const noContentClassName = `text-lg-regular text-grayscale-400`;
 const UserWikiPage: React.FC = () => {
   const router = useRouter();
   const { code } = router.query;
-  const URL = `${WIKI_BASE_URL}${code}`;
+
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
@@ -50,8 +49,10 @@ const UserWikiPage: React.FC = () => {
 
   const [md, setMD] = useState<string | undefined>(undefined);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [answer, setAnswer] = useState<string | null>(null);
   const [renewalTime, setRenewalTime] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>('');
 
   const contentClassName = `
   w-full xl:absolute
@@ -219,6 +220,12 @@ const UserWikiPage: React.FC = () => {
   }, [userProfile]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrl(window.location.href);
+    }
+  }, []);
+
+  useEffect(() => {
     updateFormData();
   }, [updateFormData]);
 
@@ -266,7 +273,7 @@ const UserWikiPage: React.FC = () => {
           name={userProfile.name}
           content={userProfile.content}
           onClick={handleStartWikiClick}
-          url={URL}
+          url={url}
         />
       )}
 
