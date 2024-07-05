@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Zoom } from 'react-toastify';
 import { createPortal } from 'react-dom';
-import dynamic from 'next/dynamic';
+import { Zoom } from 'react-toastify';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { AxiosError } from 'axios';
 import CommonButton from '@/components/common/CommonButton';
 import dateToString from '@/utils/dateToString';
+import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
 import { refineHTMLContent } from '@/utils/quillHtmlHandler';
-import { type ArticleFormData } from '@/types/apiType';
-import { postArticle } from '@/lib/apis/article/articleApi.api';
+import { type DateType, type ArticleFormData } from '@/types/apiType';
+import { changeDetailArticle, getDetailArticle } from '@/lib/apis/article/articleApi.api';
 import ToastSelect from '@/components/common/ToastSelect';
-import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
-import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
+import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
@@ -36,22 +36,24 @@ const StyledToastContainer = dynamic(
   },
 );
 
-const AddBoard = () => {
-  const user = useStore(useAuthStore, (state) => {
-    return state.user;
-  });
+const EditBoard = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [contentLength, setContentLength] = useState({ withSpaces: 0, withoutSpaces: 0 });
+  const [createAt, setCreateAt] = useState<DateType>(new Date());
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
 
   const router = useRouter();
+  const { boardId } = router.query;
 
   const isButtonActive = isValid && !isLoading;
   const isButtonDisabled = !isValid || isLoading;
 
-  // 게시물 작성하기
+  // 게시물 수정하기
   const handleSubmit = async () => {
     setIsLoading(true);
     const { firstImageSrc, newContent } = refineHTMLContent(content);
@@ -59,17 +61,16 @@ const AddBoard = () => {
     const boardData: ArticleFormData = {
       title,
       content: newContent,
+      image: firstImageSrc
+        ? firstImageSrc
+        : 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720006227876/empty-image.png',
     };
 
-    if (firstImageSrc) {
-      boardData.image = firstImageSrc;
-    }
-
     try {
-      const response = await postArticle(boardData);
+      const response = await changeDetailArticle(Number(boardId), boardData);
       ToastSelect({
         type: 'check',
-        message: '게시물이 작성되었습니다',
+        message: '게시물이 수정되었습니다',
         onClose: () => {
           router.push(`/board/${response.id}`);
         },
@@ -98,13 +99,47 @@ const AddBoard = () => {
     setIsValid(title.trim().length > 0 && content.trim().length > 0);
   }, [title, content]);
 
+  // 수정할 게시물 가져오기
+  useEffect(() => {
+    const fetchBoardData = async () => {
+      try {
+        const response = await getDetailArticle(Number(boardId));
+        setTitle(response.title);
+        setContent(response.content);
+        setCreateAt(response.createdAt);
+
+        if (user) {
+          if (Number(response.writer.id) !== Number(user.id)) {
+            router.push('/404');
+            return;
+          }
+        }
+        if (user === null) {
+          router.push('/404');
+          return;
+        }
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.status === 404) {
+            router.push('/404');
+          } else {
+            router.push('/500');
+          }
+        }
+      }
+    };
+    if (boardId) {
+      fetchBoardData();
+    }
+  }, [boardId, router, user]);
+
   return (
     <div className="center mt-4 flex-col">
       {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
       <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
         <div className="flex items-center justify-between">
           <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
-            게시물 등록하기
+            게시물 수정하기
           </h2>
           <CommonButton
             isActive={isButtonActive}
@@ -112,22 +147,22 @@ const AddBoard = () => {
             onClick={handleSubmit}
             variant="primary"
           >
-            {isLoading ? '등록 중...' : '등록하기'}
+            {isLoading ? '수정 중...' : '수정하기'}
           </CommonButton>
         </div>
         <span className="text-xs-regular text-gray-400 md:text-lg-regular">
-          {user?.name} {dateToString(new Date())}
+          {user?.name} {dateToString(createAt)}
         </span>
         <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
         <ReactQuillWrapper setContent={handleInputContent} content={content} />
       </main>
-      <Link href="/boards" rel="preload">
+      <Link href={`/board/${boardId}`} rel="preload">
         <CommonButton variant="secondary" className="my-8">
-          목록으로
+          원본으로
         </CommonButton>
       </Link>
     </div>
   );
 };
 
-export default AddBoard;
+export default EditBoard;

@@ -40,7 +40,6 @@ const ArticleComments = ({ id, userId, isLogin }: ArticleCommentsProps) => {
     try {
       const res = await getComment(Number(id), 9999);
       setCommentCount(res.list.length);
-      console.log(res.list.length);
     } catch (error) {
       router.push('/500');
     }

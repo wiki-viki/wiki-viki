@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Lottie from 'lottie-react';
+import Link from 'next/link';
 import dateToString from '@/utils/dateToString';
 import {
   deleteArticleLike,
@@ -42,7 +43,6 @@ const EditorComponent = dynamic(
   },
 );
 
-
 const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null);
   const [likeCount, setLikeCount] = useState<number>(0);
@@ -64,9 +64,10 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
         router.push('/500');
       }
     };
-
-    fetchBoardDetailData();
-  }, [id]);
+    if (id) {
+      fetchBoardDetailData();
+    }
+  }, [id, router]);
 
   const handleLike = async () => {
     try {
@@ -111,10 +112,6 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
     }
   };
 
-  const handleEdit = () => {
-    console.log('handleEdit');
-  };
-
   const handleDeleteModalOpen = () => {
     setIsDeleteModalOpen(true);
   };
@@ -140,9 +137,11 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
               </div>
               {userId === writerId && (
                 <div className="flex gap-3 lg:hidden">
-                  <motion.div className="hoverScale cursor-pointer" onClick={handleEdit}>
-                    <EditIcon />
-                  </motion.div>
+                  <Link href={`/board/${id}/edit`} rel="preload">
+                    <motion.div className="hoverScale cursor-pointer">
+                      <EditIcon />
+                    </motion.div>
+                  </Link>
                   <motion.div className="hoverScale cursor-pointer" onClick={handleDeleteModalOpen}>
                     <DeleteIcon />
                   </motion.div>
@@ -150,13 +149,11 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
               )}
               {userId === writerId && (
                 <div className="hidden gap-3 lg:flex">
-                  <CommonButton
-                    variant="primary"
-                    className="min-w-[120px] px-[32px]"
-                    onClick={handleEdit}
-                  >
-                    수정하기
-                  </CommonButton>
+                  <Link href={`/board/${id}/edit`} rel="preload">
+                    <CommonButton variant="primary" className="min-w-[120px] px-[32px]">
+                      수정하기
+                    </CommonButton>
+                  </Link>
                   <CommonButton
                     variant="primary"
                     className="min-w-[120px] px-[32px]"

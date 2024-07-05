@@ -16,13 +16,13 @@ const App = ({ Component, pageProps, router }: AppProps) => {
   const noNavBarPages = ['/404', '/500'];
   const isNoNavBarPage = noNavBarPages.includes(router.pathname);
   const isLandingPage = router.pathname === '/';
-  
+
   useEffect(() => {
     if (router.pathname !== '/') {
       setShowSplash(false);
     }
   }, [router.pathname]);
-  
+
   const handleSplashFinish = () => {
     setShowSplash(false);
   };
@@ -46,19 +46,19 @@ const App = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <>
+      <TopNavigationBar />
       <AnimatePresence mode="wait">
-        <TopNavigationBar />
-        <Wrapper>
-          <motion.div
-            key={router.asPath}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.5 }}
-          >
+        <motion.div
+          key={router.asPath}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Wrapper>
             <Component {...pageProps} />
-          </motion.div>
-        </Wrapper>
+          </Wrapper>
+        </motion.div>
       </AnimatePresence>
     </>
   );
