@@ -37,14 +37,15 @@ const ArticleComments = ({ id, userId, isLogin }: ArticleCommentsProps) => {
   };
 
   const getCommentsCount = async () => {
-    try {
-      const res = await getComment(Number(id), 9999);
-      setCommentCount(res.list.length);
-    } catch (error) {
-      router.push('/500');
+    if (id) {
+      try {
+        const res = await getComment(Number(id), 9999);
+        setCommentCount(res.list.length);
+      } catch (error) {
+        router.push('/500');
+      }
     }
   };
-
   const handleDeleteComment = (commentId: number) => {
     setCommentsData((prevData) => {
       return prevData.filter((comment) => {
