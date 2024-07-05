@@ -118,6 +118,7 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
                         id={item.id}
                         code={code}
                         handleDelete={filteredNoticeListAndCount}
+                        handleClose={handleClose}
                       />
                     );
                   })}

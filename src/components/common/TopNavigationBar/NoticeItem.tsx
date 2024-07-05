@@ -11,9 +11,10 @@ interface NoticeItemProps {
   id: number;
   handleDelete: (value: number) => void;
   code: string | undefined;
+  handleClose: () => void;
 }
 
-const NoticeItem = ({ item, id, handleDelete, code }: NoticeItemProps) => {
+const NoticeItem = ({ item, id, handleDelete, code, handleClose }: NoticeItemProps) => {
   const deleteNotice = async (id: number) => {
     try {
       const res = await deleteNotification(id);
@@ -37,15 +38,16 @@ const NoticeItem = ({ item, id, handleDelete, code }: NoticeItemProps) => {
     deleteNotice(id);
   };
 
-  const handleClickDelete = () => {
+  const handleClickNotice = () => {
     deleteNotice(id);
+    handleClose();
   };
 
   return (
     <Link
       href={`/wiki/${code}`}
       className="flex cursor-pointer flex-col rounded-md border bg-white px-2 py-3 md:px-3 md:py-4"
-      onClick={handleClickDelete}
+      onClick={handleClickNotice}
     >
       <div className="flex items-center justify-between">
         <div className="text-red-600">•</div>
