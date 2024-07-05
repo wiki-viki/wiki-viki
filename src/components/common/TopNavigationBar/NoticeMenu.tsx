@@ -24,8 +24,11 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
+  const userProfile = useStore(useAuthStore, (state) => {
+    return state.userProfile;
+  });
 
-  const hasProfile = user?.profile;
+  const hasProfile = user?.profile || userProfile?.code;
 
   const getNoticeList = async (page: number, pageSize: number) => {
     try {
