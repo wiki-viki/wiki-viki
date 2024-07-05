@@ -34,7 +34,7 @@ const Header = () => {
   return (
     <section className="relative bg-grayscale-100">
       <section className="flex flex-col xl:flex-row xl:items-center xl:justify-center xl:gap-[200px]">
-        <div className="flex h-[654px] flex-col items-center justify-center gap-10 xl:h-[1000px] xl:items-start xl:pt-0">
+        <div className="flex h-[654px] flex-col items-center justify-center gap-10 xl:h-lvh xl:items-start xl:pt-0">
           <h1 className="text-center text-[40px] font-light leading-[46px] text-grayscale-500 md:text-[60px] md:leading-[102px] xl:text-start">
             남들이 만드는
             <br />

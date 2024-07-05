@@ -6,7 +6,6 @@ import CommonButton from '@/components/common/CommonButton';
 import QuizModalTemplete from '@/components/Profiles/QuizModalTemplete';
 import useBoolean from '@/hooks/useBoolean';
 import Modal from '@/components/common/Modal';
-import { WIKI_BASE_URL } from '@/constants/url';
 import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { Editor, EditorMarkdown } from '@/components/Profiles/Editor';
@@ -35,7 +34,7 @@ const noContentClassName = `text-lg-regular text-grayscale-400`;
 const UserWikiPage: React.FC = () => {
   const router = useRouter();
   const { code } = router.query;
-  const URL = `${WIKI_BASE_URL}${code}`;
+
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
@@ -52,8 +51,10 @@ const UserWikiPage: React.FC = () => {
 
   const [md, setMD] = useState<string | undefined>(undefined);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [answer, setAnswer] = useState<string | null>(null);
   const [renewalTime, setRenewalTime] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>('');
 
   const contentClassName = `
   w-full xl:absolute
@@ -110,10 +111,20 @@ const UserWikiPage: React.FC = () => {
   }, []);
 
   const handleWikiButtonClick = () => {
-    handleOn();
+    if (!user) {
+      ToastSelect({
+        type: 'notification',
+        message: '로그인 후 이용해주세요!',
+        onClose: () => {
+          router.push('/login');
+        },
+      });
+    } else {
+      handleOn();
+    }
   };
 
-  const throttlePing = throttle(updateEditTime, 6 * 10000);
+  const throttlePing = throttle(updateEditTime, 60000);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setMD(value);
@@ -122,6 +133,7 @@ const UserWikiPage: React.FC = () => {
     if (!value) {
       handleChange('content', null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setEditingMode = () => {
@@ -130,6 +142,21 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    updateFormData();
+  };
+
+  const handleStartWikiClick = () => {
+    if (!user) {
+      ToastSelect({
+        type: 'notification',
+        message: '로그인 후 이용해주세요!',
+        onClose: () => {
+          router.push('/login');
+        },
+      });
+    } else {
+      handleOn();
+    }
   };
 
   const handleSaveClick = async () => {
@@ -166,7 +193,7 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
+  const updateFormData = useCallback(() => {
     if (userProfile) {
       const {
         nationality,
@@ -182,7 +209,6 @@ const UserWikiPage: React.FC = () => {
         content,
       } = userProfile;
 
-      // Create the new object with only the necessary keys
       const newFormData: ChangeProfilesFormData = {
         nationality,
         family,
@@ -200,6 +226,16 @@ const UserWikiPage: React.FC = () => {
       setFormData(newFormData);
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrl(window.location.href);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateFormData();
+  }, [updateFormData]);
 
   useEffect(() => {
     if (code) {
@@ -230,6 +266,7 @@ const UserWikiPage: React.FC = () => {
         }
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renewalTime]);
 
   if (!userProfile) {
@@ -249,11 +286,10 @@ const UserWikiPage: React.FC = () => {
           <BasicWikiSection
             name={userProfile.name}
             content={userProfile.content}
-            onClick={handleOn}
-            url={URL}
+            onClick={handleStartWikiClick}
+            url={url}
           />
         )}
-
         <UserProfile
           {...userProfile}
           isEditing={isEditing}
@@ -262,7 +298,6 @@ const UserWikiPage: React.FC = () => {
           onChange={handleChange}
           value={formData.image}
         />
-
         <div className={contentClassName}>
           {!userProfile.content && !isEditing && (
             <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px] ">
@@ -279,14 +314,13 @@ const UserWikiPage: React.FC = () => {
               value={md}
               onChange={handleEditorChange}
               height={740}
-              hideToolbar={isMobile && true}
-              autoFocus={true}
+              hideToolbar={isMobile}
+              autoFocus
             />
           ) : (
             <EditorMarkdown source={userProfile.content} />
           )}
         </div>
-
         {isEditing && (
           <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
             <CommonButton variant="secondary" onClick={handleCancelClick} className="bg-white">
@@ -297,7 +331,6 @@ const UserWikiPage: React.FC = () => {
             </CommonButton>
           </div>
         )}
-
         <Modal isOpen={value} onClose={handleOff}>
           <QuizModalTemplete
             question={userProfile.securityQuestion}

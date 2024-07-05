@@ -28,7 +28,8 @@ export const useAuthStore = create(
         },
         checkLogin: () => {
           const accessToken = getCookie('accessToken');
-          if (accessToken) {
+          const refreshToken = getCookie('refreshToken');
+          if (accessToken || refreshToken) {
             set({ isLogin: true });
           } else {
             set({ user: null, isLogin: false });
