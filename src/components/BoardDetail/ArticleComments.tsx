@@ -101,7 +101,7 @@ const ArticleComments = ({ id, userId, isLogin }: ArticleCommentsProps) => {
       <CommentCount count={commentCount} />
       <CommentForm isLogin={isLogin} onSubmit={handleCommentSubmit} />
       {commentCount === 0 ? (
-        <div className="centerOfScreen mt-20 min-w-[320px] flex-col text-grayscale-400">
+        <div className="centerOfScreen mb-20 mt-32 min-w-[320px] flex-col text-grayscale-400">
           <Lottie animationData={EmptyCommentLottie} style={{ width: '220px', height: '220px' }} />
           댓글이 없습니다.
         </div>
@@ -118,7 +118,7 @@ const ArticleComments = ({ id, userId, isLogin }: ArticleCommentsProps) => {
           );
         })
       )}
-      <div ref={ref} className="h-10" />
+      <div ref={ref} className=" h-28" />
     </>
   );
 };
