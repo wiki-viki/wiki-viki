@@ -63,7 +63,7 @@ const EditBoard = () => {
       content: newContent,
       image: firstImageSrc
         ? firstImageSrc
-        : 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720006227876/empty-image.png',
+        : 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720177203844/noimage.png',
     };
 
     try {
