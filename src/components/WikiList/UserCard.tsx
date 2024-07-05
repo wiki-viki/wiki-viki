@@ -18,15 +18,16 @@ const UserCard = ({ cardList }: CardListProps) => {
         return (
           <motion.div
             key={card.id}
-            className="wikilist-card"
+            className="wikilistCard"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15 }}
           >
             <Link href={`/wiki/${card.code}`} rel="preload">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className=" relative size-[85px] rounded-full ">
+                  <div className=" relative size-[85px] ">
                     <Image
+                      className=" rounded-full"
                       src={card.image || BasicProfileImage}
                       alt="프로필 이미지"
                       layout="fill"
