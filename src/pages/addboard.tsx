@@ -101,7 +101,7 @@ const AddBoard = () => {
 
   return (
     <>
-      <MetaTag title="게시물 등록" description="게시물 등록하기" url="addboard" />
+      <MetaTag title="게시물 등록" description="자유게시판 게시물 등록하기 페이지" url="addboard" />
       <div className="center mt-4 flex-col">
         {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
         <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">

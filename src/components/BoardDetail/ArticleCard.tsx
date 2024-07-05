@@ -133,7 +133,7 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
         <>
           <MetaTag
             title={articleData.title}
-            description={`자유게시판 ${articleData.writer.name}님 상세 게시물`}
+            description={`자유게시판 ${articleData.writer.name}님의 상세 게시물 페이지`}
             url={`board/${id}`}
             {...(articleData.image && { image: articleData.image })}
           />

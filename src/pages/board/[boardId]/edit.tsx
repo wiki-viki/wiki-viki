@@ -138,7 +138,7 @@ const EditBoard = () => {
     <>
       <MetaTag
         title="게시물 수정"
-        description="자유게시판 게시물 수정"
+        description="자유게시판 게시물 수정 페이지"
         url={`board/${boardId}/edit`}
       />
       <div className="center mt-4 flex-col">
