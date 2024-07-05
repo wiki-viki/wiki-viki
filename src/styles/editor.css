@@ -34,6 +34,16 @@
   display: none;
 }
 
+.w-md-editor-text-pre,
+.w-md-editor-text-input,
+.w-md-editor-text > .w-md-editor-text-pre {
+  font-family: inherit !important;
+}
+
+.w-md-editor-text-pre .code-line {
+  display: block;
+}
+
 @media screen and (max-width: 700px) {
   .w-md-editor .w-md-editor-toolbar {
     display: grid;
