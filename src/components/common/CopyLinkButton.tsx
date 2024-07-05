@@ -9,15 +9,21 @@ import ToastSelect from './ToastSelect';
 
 interface CopyLinkButtonProps {
   url: string;
+  code?: string;
 }
 
 const LinkContainer = 'inline-flex items-center gap-2 rounded-10 px-3 py-2 sm:h-6.5 cursor-pointer';
 const LinkText = 'text-md-regular sm:text-xs-regular text-primary-green-200';
 
-const CopyLinkButton = ({ url }: CopyLinkButtonProps) => {
+const CopyLinkButton = ({ url, code }: CopyLinkButtonProps) => {
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(url);
-    ToastSelect({ type: 'check', message: CopyLink });
+    if (code) {
+      navigator.clipboard.writeText(code);
+      ToastSelect({ type: 'check', message: CopyLink });
+    } else {
+      navigator.clipboard.writeText(url);
+      ToastSelect({ type: 'check', message: CopyLink });
+    }
   };
 
   if (!urlVaildation(url)) {
