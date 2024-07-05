@@ -19,6 +19,7 @@ import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
 import { useLoginData } from '@/lib/apis/Auth';
 import MetaTag from '@/components/common/MetaTag';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -66,7 +67,8 @@ const LoginPage = () => {
 
   return (
     <>
-      <MetaTag title="로그인" description="로그인 페이지" url="login" />
+      <MetaTag title="로그인" description="로그인 페이지" />
+      <OpenGraphTag title="로그인" description="로그인 페이지" />
       <Container className="sm:mt-[130px] md:mt-[150px]">
         <div className="center mb-[40px] flex-col gap-4">
           <Link href="/" rel="preload">

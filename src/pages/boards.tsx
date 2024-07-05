@@ -19,6 +19,7 @@ import { EmptySearch } from '@/components/WikiList';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import MetaTag from '@/components/common/MetaTag';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const PAGE_SIZE = 10;
 
@@ -108,7 +109,8 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
 
   return (
     <>
-      <MetaTag title="자유게시판" description="자유게시판 페이지" url="boards" />
+      <MetaTag title="자유게시판" description="자유게시판 페이지" />
+      <OpenGraphTag title="자유게시판" description="자유게시판 페이지" />
       <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
         <StyledToastContainer transition={Zoom} />
         <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
