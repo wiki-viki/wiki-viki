@@ -6,16 +6,6 @@ export const middleware = (request: NextRequest) => {
 
   if ((pathname === '/login' || pathname === '/signup') && accessToken) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
-  } else if (
-    pathname !== '/login' &&
-    pathname !== '/signup' &&
-    pathname !== '/boards' &&
-    pathname !== '/wikilist' &&
-    !pathname.startsWith('/wiki/') &&
-    !pathname.startsWith('/board/') &&
-    !accessToken
-  ) {
-    return NextResponse.redirect(new URL('/login', request.nextUrl));
   }
 };
 
