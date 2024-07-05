@@ -1,5 +1,4 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { Zoom } from 'react-toastify';
 import Image from 'next/image';
 import { AxiosError } from 'axios';
 import CameraIcon from '@/../public/svg/camera_icon.svg';
@@ -7,7 +6,6 @@ import getImageUrl from '@/lib/apis/image/imageApi.api';
 import { type ImageData } from '@/lib/apis/image/imageApi.api';
 import { IMAGE_ERROR_MESSAGE, IMAGE_VALIDATION } from '@/constants/imageUpload';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
-import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '../common/ToastSelect';
 import Modal from '../common/Modal';
 import CommonButton from '../common/CommonButton';
@@ -134,7 +132,6 @@ const ImageAddModal = ({ isOpen, onClose, handleImageUrl }: ImageAddModalProps) 
       >
         {isLoading ? '삽입 중...' : '삽입하기'}
       </CommonButton>
-      <StyledToastContainer transition={Zoom} />
     </Modal>
   );
 };

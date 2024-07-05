@@ -20,8 +20,6 @@ const Test2 = () => {
     setIsActived(!isActived);
   };
 
-  console.log(page);
-
   const handlePage = (value: number) => {
     setPage(value);
   };
