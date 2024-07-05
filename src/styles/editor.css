@@ -22,6 +22,10 @@
   color: #4cbfa4;
 }
 
+.w-md-editor .w-md-editor-toolbar ul li.active > button {
+  color: #4cbfa4;
+}
+
 .w-md-editor .w-md-editor-content {
   margin-top: 30px;
 }
