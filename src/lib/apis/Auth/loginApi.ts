@@ -1,8 +1,8 @@
 import useMutation from '@/hooks/useMutation';
 
-const getLoginData = () => {
+const useLoginData = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { isError, statusCode, axiosFetch } = useMutation({
+  const { isLoading, isError, statusCode, mutation } = useMutation({
     options: {
       method: 'post',
       url: 'auth/signin',
@@ -10,7 +10,7 @@ const getLoginData = () => {
     includeAuth: true,
   });
 
-  return { isError, statusCode, axiosFetch };
+  return { isLoading, isError, statusCode, mutation };
 };
 
-export default getLoginData
+export default useLoginData
