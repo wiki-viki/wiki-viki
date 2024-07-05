@@ -27,6 +27,7 @@ import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import throttle from '@/utils/throttle';
 import MetaTag from '@/components/common/MetaTag';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -278,6 +279,7 @@ const UserWikiPage: React.FC = () => {
         title={`${userProfile.name} 위키`}
         description={`${userProfile.name}님 위키 페이지`}
       />
+      <OpenGraphTag title="위키" description="위키 페이지" />
       <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
         <StyledToastContainer limit={1} />
         {isEditing || (
