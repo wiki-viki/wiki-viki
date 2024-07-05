@@ -24,7 +24,13 @@ const MetaTag = ({ title, description, url, image }: MetaTagProps) => {
         content={`남들이 만드는 나만의 위키, WiKi ViKi ${description && `- ${description}`}`}
       />
       <meta property="og:url" content={`https://wiki-viki.vercel.app/${url}`} />
-      <meta property="og:image" content={image || 'https://i.ibb.co/LSkZvSt/wiki-viki-2.png'} />
+      <meta
+        property="og:image"
+        content={
+          image ||
+          'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720181652433/wikivikiog.png'
+        }
+      />
       <meta property="og:site_name" content="WiKi ViKi" />
       <meta property="og:locale" content="ko_KR" />
       <meta property="og:image:width" content="1200" />
@@ -37,7 +43,13 @@ const MetaTag = ({ title, description, url, image }: MetaTagProps) => {
         name="twitter:description"
         content={`남들이 만드는 나만의 위키, WiKi ViKi ${description && `- ${description}`}`}
       />
-      <meta name="twitter:image" content={image || 'https://i.ibb.co/LSkZvSt/wiki-viki-2.png'} />
+      <meta
+        name="twitter:image"
+        content={
+          image ||
+          'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wikied/user/133/1720181652433/wikivikiog.png'
+        }
+      />
     </Head>
   );
 };
