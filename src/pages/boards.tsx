@@ -18,6 +18,7 @@ import ToastSelect from '@/components/common/ToastSelect';
 import { EmptySearch } from '@/components/WikiList';
 import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
+import MetaTag from '@/components/common/MetaTag';
 
 const PAGE_SIZE = 10;
 
@@ -106,52 +107,55 @@ const Boards = ({ bestBoardList, boardList }: BoardsProps) => {
   }, [page, orderBy, keyword]);
 
   return (
-    <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
-      <StyledToastContainer transition={Zoom} />
-      <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
-        <h2 className="text-2xl-bold">베스트 게시글</h2>
-        {isLogin ? (
-          <Link href="/addboard" rel="preload">
-            <CommonButton variant="primary">게시물 등록하기</CommonButton>
-          </Link>
-        ) : (
-          <CommonButton onClick={handleGuestRedirect} variant="primary">
-            게시물 등록하기
-          </CommonButton>
-        )}
-      </div>
-      <BestBoardContainer boardList={bestBoardList} />
-      <section>
-        <BoardFilterBar
-          setInputValue={setInputValue}
-          handleKeyDown={handleKeyDown}
-          handleSubmitKeyword={handleSubmitKeyword}
-          setOrderBy={setOrderBy}
-        />
-        <>
-          {boardListData.totalCount === 0 ? (
-            <div className="my-10">
-              <EmptySearch name={keyword} />
-            </div>
+    <>
+      <MetaTag title="자유게시판" description="메인 랜딩페이지" url="boards" />
+      <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
+        <StyledToastContainer transition={Zoom} />
+        <div className="mb-[43px] flex items-center justify-between md:mb-[63px]">
+          <h2 className="text-2xl-bold">베스트 게시글</h2>
+          {isLogin ? (
+            <Link href="/addboard" rel="preload">
+              <CommonButton variant="primary">게시물 등록하기</CommonButton>
+            </Link>
           ) : (
-            <>
-              <BoardList className="hidden md:table" boardList={boardListData.list} />
-              <MobileBoardList className="md:hidden" boardList={boardListData.list} />
-              <div className="center my-[60px]">
-                <Pagination
-                  totalCount={boardListData.totalCount}
-                  pageSize={PAGE_SIZE}
-                  page={page}
-                  handlePage={(value) => {
-                    setPage(value);
-                  }}
-                />
-              </div>
-            </>
+            <CommonButton onClick={handleGuestRedirect} variant="primary">
+              게시물 등록하기
+            </CommonButton>
           )}
-        </>
-      </section>
-    </main>
+        </div>
+        <BestBoardContainer boardList={bestBoardList} />
+        <section>
+          <BoardFilterBar
+            setInputValue={setInputValue}
+            handleKeyDown={handleKeyDown}
+            handleSubmitKeyword={handleSubmitKeyword}
+            setOrderBy={setOrderBy}
+          />
+          <>
+            {boardListData.totalCount === 0 ? (
+              <div className="my-10">
+                <EmptySearch name={keyword} />
+              </div>
+            ) : (
+              <>
+                <BoardList className="hidden md:table" boardList={boardListData.list} />
+                <MobileBoardList className="md:hidden" boardList={boardListData.list} />
+                <div className="center my-[60px]">
+                  <Pagination
+                    totalCount={boardListData.totalCount}
+                    pageSize={PAGE_SIZE}
+                    page={page}
+                    handlePage={(value) => {
+                      setPage(value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
+          </>
+        </section>
+      </main>
+    </>
   );
 };
 

@@ -18,6 +18,7 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import ToastSelect from '@/components/common/ToastSelect';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
 import { getLoginData } from '@/lib/apis/Auth';
+import MetaTag from '@/components/common/MetaTag';
 
 const emailPattern = {
   value: EMAIL_REGEX,
@@ -60,6 +61,7 @@ const LoginPage = () => {
 
   return (
     <>
+      <MetaTag title="로그인" description="로그인 페이지" url="login" />
       <Container className="sm:mt-[130px] md:mt-[150px]">
         <div className="center mb-[40px] flex-col gap-4">
           <Link href="/" rel="preload">
