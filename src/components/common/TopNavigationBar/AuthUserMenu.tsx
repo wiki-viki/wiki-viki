@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useStore } from 'zustand';
 import { useAuthStore } from '@/store/userAuthStore';
 import ToastSelect from '../ToastSelect';
 import MenuItem from './MenuItem';
@@ -12,16 +13,24 @@ interface UserMenuProps {
 }
 
 const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
-  const { user, logout } = useAuthStore();
   const router = useRouter();
-  const profile = user?.profile;
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
+  const userProfile = useStore(useAuthStore, (state) => {
+    return state.userProfile;
+  });
+  const profileCode = userProfile?.code || user?.profile?.code;
 
-  const handleCloseWithToast = () => {
-    if (!profile) {
+  const handleCreateWiki = () => {
+      handleClose();
+  };
+
+  const handleClickMyWiki = () => {
+    if (!profileCode) {
       setTimeout(() => {
         ToastSelect({ type: 'error', message: '내 위키를 먼저 생성해주세요!' });
       }, 50);
-
       handleClose();
     } else {
       handleClose();
@@ -29,7 +38,7 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
   };
 
   const handleClickLogout = () => {
-    logout();
+    useAuthStore.getState().logout();
     handleClose();
     router.push('/');
   };
@@ -54,16 +63,17 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
         </>
       )}
       <MenuItem
-        onClick={handleClose}
-        title="계정 설정"
+        onClick={handleCreateWiki}
+        title="위키 생성하기"
         href="/mypage"
         className="text-grayscale-600"
       />
       <MenuItem
-        onClick={handleCloseWithToast}
+        onClick={handleClickMyWiki}
         title="내 위키"
-        href={profile ? `/wiki/${profile?.code}` : `/mypage`}
+        href={profileCode ? `/wiki/${profileCode}` : '/mypage'}
         className="text-grayscale-600"
+        disableActive={!profileCode}
       />
       <MenuItem
         onClick={handleClose}
