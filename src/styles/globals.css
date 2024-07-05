@@ -69,8 +69,8 @@ body,
     @apply flex items-center justify-center mix-blend-darken;
   }
 
-  .wikilist-card {
-    @apply relative mt-6 h-[142px] min-w-[600px] rounded-10 p-6 px-9 shadow sm:h-[180px] sm:min-w-[400px];
+  .wikilistCard {
+    @apply relative mt-6 min-w-[440px] rounded-10 p-6 px-9 shadow  lg:h-[142px] md:h-[170px] sm:h-[180px] sm:min-w-[412px];
   }
 
   /* animation */
@@ -152,7 +152,6 @@ body,
   .checkPassword {
     @apply absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer;
   }
-
 
   .textareaNone {
     @apply border-none overflow-auto outline-none shadow-none resize-none;

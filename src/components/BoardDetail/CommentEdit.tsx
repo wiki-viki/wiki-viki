@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CommentResponse } from '@/types/apiType';
-import { changeComment } from '@/lib/apis/comment/commentApi.api';
+import { updateComment } from '@/lib/apis/comment/commentApi.api';
 import CommonButton from '../common/CommonButton';
 import ToastSelect from '../common/ToastSelect';
 
@@ -25,7 +25,7 @@ const CommentEdit = ({ comment, onCommentUpdated }: CommentEditProps) => {
 
   const handleSaveComment = async () => {
     try {
-      const updatedComment = await changeComment(comment.id, { content: editedContent });
+      const updatedComment = await updateComment(comment.id, { content: editedContent });
       onCommentUpdated(updatedComment);
     } catch (error) {
       ToastSelect({ type: 'error', message: '댓글을 작성해주세요.' });
