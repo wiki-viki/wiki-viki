@@ -136,6 +136,7 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    updateFormData();
   };
 
   const handleStartWikiClick = () => {
@@ -183,7 +184,7 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
+  const updateFormData = useCallback(() => {
     if (userProfile) {
       const {
         nationality,
@@ -199,7 +200,6 @@ const UserWikiPage: React.FC = () => {
         content,
       } = userProfile;
 
-      // Create the new object with only the necessary keys
       const newFormData: ChangeProfilesFormData = {
         nationality,
         family,
@@ -217,6 +217,10 @@ const UserWikiPage: React.FC = () => {
       setFormData(newFormData);
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    updateFormData();
+  }, [updateFormData]);
 
   useEffect(() => {
     if (code) {
