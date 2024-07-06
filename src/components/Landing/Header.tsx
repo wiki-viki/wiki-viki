@@ -39,7 +39,7 @@ const Header = () => {
             남들이 만드는
             <br />
             <strong className="text-[60px] font-bold leading-[69px] md:text-[90px]">
-              나만의 위키
+              나만의 <span className="text-primary-green-300">WIKI</span>
             </strong>
           </h1>
           <p className="hidden xl:block xl:text-start xl:text-[25px] xl:font-light xl:text-grayscale-300">
