@@ -140,7 +140,8 @@ const EditBoard = () => {
       <MetaTag title="게시물 수정" description="게시물 수정 페이지" />
       <OpenGraphTag title="게시물 수정" description="게시물 수정 페이지" />
       <div className="center mt-4 flex-col">
-        {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
+        {isValid &&
+          createPortal(<StyledToastContainer limit={1} transition={Zoom} />, document.body)}
         <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
           <div className="flex items-center justify-between">
             <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
