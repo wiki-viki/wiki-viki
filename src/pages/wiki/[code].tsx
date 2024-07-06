@@ -27,6 +27,7 @@ import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import throttle from '@/utils/throttle';
 import MetaTag from '@/components/common/MetaTag';
+import ConfirmModal from '@/components/common/ConfirmModal';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -42,11 +43,15 @@ const UserWikiPage: React.FC = () => {
     return state.userProfile;
   });
 
-  const { saveUserProfile } = useAuthStore();
-
   const [isEditing, setIsEditing] = useState(false);
 
   const { value, handleOff, handleOn } = useBoolean();
+  const {
+    value: confirmModal,
+    handleOff: confirmModalOff,
+    handleOn: confirmModalOn,
+  } = useBoolean();
+  const { value: cancelModal, handleOff: cancelModalOff, handleOn: cancelModalOn } = useBoolean();
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
 
   const isMyPage = code === user?.profile?.code || code === userProfileInfo?.code;
@@ -129,7 +134,7 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  const throttlePing = throttle(updateEditTime, 60000);
+  const throttlePing = throttle(updateEditTime, 3 * 6 * 10000);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setMD(value);
@@ -147,6 +152,8 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    setRenewalTime(!renewalTime);
+    cancelModalOff();
     updateFormData();
   };
 
@@ -165,6 +172,7 @@ const UserWikiPage: React.FC = () => {
   };
 
   const handleSaveClick = async () => {
+    confirmModalOff();
     try {
       let updatedFormData = { ...formData };
 
@@ -188,7 +196,6 @@ const UserWikiPage: React.FC = () => {
       );
 
       setUserProfile(profileUpdateResponse);
-      saveUserProfile(profileUpdateResponse);
       setIsEditing(false);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -196,6 +203,8 @@ const UserWikiPage: React.FC = () => {
       } else {
         ToastSelect({ type: 'error', message: '예상치 못한 에러가 발생했습니다.' });
       }
+    } finally {
+      setRenewalTime(!renewalTime);
     }
   };
 
@@ -251,7 +260,11 @@ const UserWikiPage: React.FC = () => {
   }, [code]);
 
   useEffect(() => {
-    if (isEditing || renewalTime) {
+    if (!isEditing) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    } else {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -261,7 +274,7 @@ const UserWikiPage: React.FC = () => {
           setIsEditing(false);
           ToastSelect({
             type: 'notification',
-            message: '수정 가능 시간 5분을 초과하였습니다.',
+            message: '5분 동안 작성하지 않아 에디터 모드를 벗어납니다.',
           });
         },
         5 * 6 * 10000,
@@ -285,6 +298,7 @@ const UserWikiPage: React.FC = () => {
         title={`${userProfile.name} 위키`}
         description={`${userProfile.name}님 위키 페이지`}
       />
+
       <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
         <StyledToastContainer limit={1} />
         {isEditing || (
@@ -295,6 +309,7 @@ const UserWikiPage: React.FC = () => {
             url={url}
           />
         )}
+
         <UserProfile
           {...userProfile}
           isEditing={isEditing}
@@ -303,6 +318,7 @@ const UserWikiPage: React.FC = () => {
           onChange={handleChange}
           value={formData.image}
         />
+
         <div className={contentClassName}>
           {!userProfile.content && !isEditing && (
             <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px] ">
@@ -326,16 +342,19 @@ const UserWikiPage: React.FC = () => {
             <EditorMarkdown source={userProfile.content} />
           )}
         </div>
+
         {isEditing && (
           <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
-            <CommonButton variant="secondary" onClick={handleCancelClick} className="bg-white">
+            <CommonButton variant="secondary" onClick={cancelModalOn} className="bg-white">
               취소
             </CommonButton>
-            <CommonButton variant="primary" onClick={handleSaveClick}>
+            <CommonButton variant="primary" onClick={confirmModalOn}>
               저장
             </CommonButton>
           </div>
         )}
+
+        {/* 모달창 */}
         <Modal isOpen={value} onClose={handleOff}>
           <QuizModalTemplete
             question={userProfile.securityQuestion}
@@ -343,8 +362,24 @@ const UserWikiPage: React.FC = () => {
             setEditingMode={setEditingMode}
             code={userProfile.code}
             setAnswer={setAnswerValue}
+            setRenewalTime={setRenewalTime}
+            renewalTime={renewalTime}
           />
         </Modal>
+        <ConfirmModal
+          title="저장"
+          message="정말 저장하시겠습니까?"
+          isOpen={confirmModal}
+          onCancel={confirmModalOff}
+          onConfirm={handleSaveClick}
+        />
+        <ConfirmModal
+          title="취소"
+          message="정말 취소하시겠습니까?"
+          isOpen={cancelModal}
+          onCancel={cancelModalOff}
+          onConfirm={handleCancelClick}
+        />
       </div>
     </>
   );
