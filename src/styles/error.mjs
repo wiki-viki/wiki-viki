@@ -22,6 +22,11 @@ export const createClover = () => {
 
 export const updateClovers = () => {
   const cloversContainer = document.getElementById('clovers-container');
+
+  if (!cloversContainer) {
+    return;
+  }
+
   cloversContainer.innerHTML = '';
 
   clovers.forEach((clover) => {
