@@ -11,21 +11,25 @@ interface PaginationProps {
 const PAGES_PER_GROUP = 5;
 
 const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps) => {
+  const [pageListBtnDisabled, setPageListBtnDisabled] = useState({
+    prevPageListBtn: true,
+    nextPageListBtn: false,
+  });
   const [pageBtnDisabled, setPageBtnDisabled] = useState({
-    prevPagesBtn: true,
-    nextPagesBtn: false,
+    prevPageBtn: true,
+    nextPageBtn: false,
   });
   const [pageGroup, setPageGroup] = useState(0);
 
   const totalPages = Math.ceil(totalCount / pageSize);
-  const pageArr = Array.from({ length: totalPages }, (_, i) => {
+  const pageButtonList = Array.from({ length: totalPages }, (_, i) => {
     return i + 1;
   });
 
-  const twoDimensionalPageArr = Array.from(
+  const pageButtonLists = Array.from(
     { length: Math.ceil(totalPages / PAGES_PER_GROUP) }, // 2차원 배열의 길이
     (_, i) => {
-      return pageArr.slice(i * PAGES_PER_GROUP, (i + 1) * PAGES_PER_GROUP);
+      return pageButtonList.slice(i * PAGES_PER_GROUP, (i + 1) * PAGES_PER_GROUP);
     },
   );
 
@@ -35,48 +39,88 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    setPageBtnDisabled((prevState) => {
+    setPageListBtnDisabled((prevState) => {
       return {
         ...prevState,
-        prevPagesBtn: page > twoDimensionalPageArr[0][4] ? false : true,
-        nextPagesBtn:
-          page < twoDimensionalPageArr[twoDimensionalPageArr.length - 1][0] ? false : true,
+        prevPageListBtn: page > pageButtonLists[0][4] ? false : true,
+        nextPageListBtn: page < pageButtonLists[pageButtonLists.length - 1][0] ? false : true,
       };
     });
-  }, [pageGroup, twoDimensionalPageArr.length]);
+  }, [pageGroup, pageButtonLists.length]);
+
+  useEffect(() => {
+    setPageBtnDisabled((prev) => {
+      return {
+        ...prev,
+        prevPageBtn: page > 1 ? false : true,
+        nextPageBtn: page === totalPages ? true : false,
+      };
+    });
+  }, [page]);
 
   const setPrevPageGroup = () => {
     setPageGroup((prevState) => {
       return prevState - 1;
     });
-    handlePage(twoDimensionalPageArr[pageGroup - 1][4]);
+    handlePage(pageButtonLists[pageGroup - 1][4]);
   };
 
   const setNextPageGroup = () => {
     setPageGroup((prevState) => {
       return prevState + 1;
     });
-    handlePage(twoDimensionalPageArr[pageGroup + 1][0]);
+    handlePage(pageButtonLists[pageGroup + 1][0]);
+  };
+
+  const setPrevPage = () => {
+    if (page > 1) {
+      handlePage(page - 1);
+    }
+    if (page > 1 && page % 5 === 1) {
+      setPageGroup((prevState) => {
+        return prevState - 1;
+      });
+      handlePage(page - 1);
+    }
+  };
+
+  const setNextPage = () => {
+    if (page < totalPages) {
+      handlePage(page + 1);
+    }
+    if (page > 1 && page % 5 === 0) {
+      setPageGroup((prevState) => {
+        return prevState + 1;
+      });
+      handlePage(page + 1);
+    }
   };
 
   return (
     <div className="mx-auto my-0 flex items-center gap-2.5">
       <button
-        className={`center size-11 rounded-10 bg-white  drop-shadow-md sm:size-10 ${pageBtnDisabled.prevPagesBtn ? ' text-gray-200 hover:drop-shadow-md' : `active:page-btn-active hover:drop-shadow-xl`}`}
-        disabled={pageBtnDisabled.prevPagesBtn}
+        className={`center size-11 rounded-10 bg-white  drop-shadow-md sm:size-9 ${pageListBtnDisabled.prevPageListBtn ? ' text-gray-200 hover:drop-shadow-md' : `active:page-btn-active hover:drop-shadow-xl`}`}
+        disabled={pageListBtnDisabled.prevPageListBtn}
         onClick={setPrevPageGroup}
+      >
+        &lt;&lt;
+      </button>
+      <button
+        className={`center size-11 rounded-10 bg-white  drop-shadow-md sm:size-9 ${pageBtnDisabled.prevPageBtn ? ' text-gray-200 hover:drop-shadow-md' : `active:page-btn-active hover:drop-shadow-xl`}`}
+        disabled={pageBtnDisabled.prevPageBtn}
+        onClick={setPrevPage}
       >
         &lt;
       </button>
-      {twoDimensionalPageArr[pageGroup].map((pageNum) => {
+      {pageButtonLists[pageGroup].map((pageNum) => {
         return (
           <motion.button
             initial={{ scale: 1 }}
             whileTap={{ scale: 0.8 }}
-            className={`center active:page-btn-active size-11 rounded-10 drop-shadow-md hover:drop-shadow-xl sm:size-10 ${page === pageNum ? `page-btn-active bg-primary-green-200 text-white` : `bg-white`}`}
+            className={`center active:page-btn-active size-11 rounded-10 drop-shadow-md hover:drop-shadow-xl sm:size-9 ${page === pageNum ? `page-btn-active bg-primary-green-200 text-white` : `bg-white`}`}
             key={pageNum}
             onClick={() => {
-              return handleClick(pageNum);
+              handleClick(pageNum);
             }}
           >
             {pageNum}
@@ -84,11 +128,18 @@ const Pagination = ({ totalCount, page, handlePage, pageSize }: PaginationProps)
         );
       })}
       <button
-        className={`center  size-11 rounded-10 bg-white drop-shadow-md  sm:size-10 ${pageBtnDisabled.nextPagesBtn ? 'text-gray-200 hover:drop-shadow-md' : 'active:page-btn-active hover:drop-shadow-xl'}`}
-        disabled={pageBtnDisabled.nextPagesBtn}
-        onClick={setNextPageGroup}
+        className={`center  size-11 rounded-10 bg-white drop-shadow-md  sm:size-9 ${pageBtnDisabled.nextPageBtn ? 'text-gray-200 hover:drop-shadow-md' : 'active:page-btn-active hover:drop-shadow-xl'}`}
+        disabled={pageBtnDisabled.nextPageBtn}
+        onClick={setNextPage}
       >
         &gt;
+      </button>
+      <button
+        className={`center  size-11 rounded-10 bg-white drop-shadow-md  sm:size-9 ${pageListBtnDisabled.nextPageListBtn ? 'text-gray-200 hover:drop-shadow-md' : 'active:page-btn-active hover:drop-shadow-xl'}`}
+        disabled={pageListBtnDisabled.nextPageListBtn}
+        onClick={setNextPageGroup}
+      >
+        &gt;&gt;
       </button>
     </div>
   );
