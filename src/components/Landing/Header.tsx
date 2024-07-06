@@ -51,14 +51,14 @@ const Header = () => {
             <button
               type="button"
               onClick={handleCreateWikiButton}
-              className="center transition-300 h-[54px] w-[140px] rounded-2xl bg-grayscale-500 px-5 py-2.5 text-xl-semibold text-white hover:bg-primary-green-300 md:h-[60px] md:w-[180px]"
+              className="center transition-300 h-[54px] w-[160px] rounded-2xl bg-grayscale-500 px-5 py-2.5 text-xl-semibold text-white hover:bg-primary-green-300 md:h-[60px] md:w-[180px]"
             >
-              위키 만들기
+              위키 참여하기
             </button>
             <button
               type="button"
               onClick={handleBrowsingButton}
-              className="center transition-300 h-[54px] w-[140px] rounded-2xl bg-grayscale-500 px-5 py-2.5 text-xl-semibold text-white hover:bg-primary-green-300 md:h-[60px] md:w-[180px]"
+              className="center transition-300 h-[54px] w-[160px] rounded-2xl bg-grayscale-500 px-5 py-2.5 text-xl-semibold text-white hover:bg-primary-green-300 md:h-[60px] md:w-[180px]"
             >
               둘러보기
             </button>
@@ -70,7 +70,7 @@ const Header = () => {
             <div className="relative h-[398px] w-[336px] md:h-[590px] md:w-[498px]">
               <Image
                 src={CursorImage}
-                alt="content"
+                alt="cursor image"
                 fill
                 sizes="(min-width: 769px) 498px, (min-width: 480px) 336px, 336px"
                 placeholder="blur"
