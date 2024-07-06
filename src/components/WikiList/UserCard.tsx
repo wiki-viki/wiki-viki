@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cardType } from '@/types/UserCardProps';
-import { WIKI_BASE_URL } from '@/constants/url';
 import BasicProfileImage from '@/../public/images/basic_profile.png';
 import CopyLinkButton from '../common/CopyLinkButton';
 
