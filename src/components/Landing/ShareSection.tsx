@@ -56,7 +56,7 @@ const ShareSection = () => {
               key={index}
               src={image.src}
               alt={image.alt}
-              // sizes="(min-width: 1280px) 360px, (min-width: 769px) 147px, (min-width: 480px) 76px, 76px"
+              sizes="(min-width: 1280px) 360px, (min-width: 769px) 147px, (min-width: 480px) 76px, 76px"
               className="size-[76px] md:size-[147px] lg:size-[360px]"
               placeholder="blur"
             />

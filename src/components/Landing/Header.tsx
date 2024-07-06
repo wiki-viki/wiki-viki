@@ -72,7 +72,7 @@ const Header = () => {
                 src={CursorImage}
                 alt="content"
                 fill
-                // sizes="(min-width: 769px) 498px, (min-width: 480px) 336px, 336px"
+                sizes="(min-width: 769px) 498px, (min-width: 480px) 336px, 336px"
                 placeholder="blur"
                 priority={true}
               />
