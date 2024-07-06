@@ -134,8 +134,6 @@ const ArticleCard = ({ id, userId, isLogin }: ArticleCardProps) => {
           <MetaTag
             title={articleData.title}
             description={`자유게시판 ${articleData.writer.name}님의 상세 게시물 페이지`}
-            url={`board/${id}`}
-            {...(articleData.image && { image: articleData.image })}
           />
           <div className="min-w-[320px] rounded-10 p-5 shadow-md lg:p-8">
             <div className="flex justify-between">
