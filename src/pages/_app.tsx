@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import { AnimatePresence, motion } from 'framer-motion'; // motion import 추가
+import { AnimatePresence, motion } from 'framer-motion';
 import Wrapper from '@/components/common/Container';
 import TopNavigationBar from '@/components/common/TopNavigationBar';
 import '@/lib/axiosInterceptor';
