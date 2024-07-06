@@ -29,17 +29,16 @@ export const useAuthStore = create(
         checkLogin: () => {
           const accessToken = getCookie('accessToken');
           const refreshToken = getCookie('refreshToken');
-          if (accessToken || refreshToken) {
+          if (accessToken && refreshToken) {
             set({ isLogin: true });
           } else {
-            set({ user: null, isLogin: false });
+            set({ user: null, userProfile: null, isLogin: false });
           }
         },
         logout: () => {
           deleteCookie('accessToken');
           deleteCookie('refreshToken');
-          set({ user: null, isLogin: false });
-          set({ userProfile: null, isLogin: false });
+          set({ user: null, userProfile: null, isLogin: false });
         },
       };
     },
