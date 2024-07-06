@@ -10,15 +10,5 @@ export const middleware = (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: [
-    '/login',
-    '/signup',
-    '/mypage',
-    '/reset-password',
-    '/wiki/:path*',
-    '/wikilist',
-    '/boards',
-    '/board/:path*',
-    '/addboards',
-  ],
+  matcher: ['/login', '/signup'],
 };
