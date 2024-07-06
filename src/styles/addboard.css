@@ -57,6 +57,12 @@
   font-style: normal;
 }
 
+.quill > .ql-container > .ql-editor a {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
 button:hover .ql-stroke,
 .ql-picker-label:hover .ql-stroke {
   fill: none;
