@@ -38,12 +38,16 @@ const UserWikiPage: React.FC = () => {
     return state.user;
   });
 
+  const userProfileInfo = useStore(useAuthStore, (state) => {
+    return state.userProfile;
+  });
+
   const [isEditing, setIsEditing] = useState(false);
 
   const { value, handleOff, handleOn } = useBoolean();
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
 
-  const isMyPage = code === user?.profile?.code;
+  const isMyPage = code === user?.profile?.code || code === userProfileInfo?.code;
   const editMyPage = isEditing && isMyPage;
 
   const [formData, setFormData] = useState<ChangeProfilesFormData>(FORM_DATA_INIT);
