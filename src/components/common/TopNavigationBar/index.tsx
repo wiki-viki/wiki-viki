@@ -55,8 +55,10 @@ const TopNavigationBar = () => {
   const getNoticeList = async (page: number, pageSize: number) => {
     try {
       const res = await getNotification({ page, pageSize });
-      setNoticeList(res.list);
-      setNoticeTotalCount(res.totalCount);
+      if (res.list !== noticeList && res.totalCount !== noticeTotalCount) {
+        setNoticeList(res.list);
+        setNoticeTotalCount(res.totalCount);
+      }
     } catch (e) {
       ToastSelect({
         type: 'error',
@@ -97,7 +99,7 @@ const TopNavigationBar = () => {
 
       const intervalId = setInterval(() => {
         getNoticeList(PAGE, PAGE_SIZE);
-      }, 30000);
+      }, 5000);
 
       return () => {
         return clearInterval(intervalId);
