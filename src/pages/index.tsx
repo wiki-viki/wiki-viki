@@ -7,11 +7,13 @@ import {
   Footer,
 } from '@/components/Landing';
 import MetaTag from '@/components/common/MetaTag';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const LandingPage = () => {
   return (
     <>
-      <MetaTag description="메인 랜딩페이지" />
+      <MetaTag title="" description="메인 페이지" />
+      <OpenGraphTag title="" description="메인 페이지" />
       <Header />
       <WriteSection />
       <ShareSection />

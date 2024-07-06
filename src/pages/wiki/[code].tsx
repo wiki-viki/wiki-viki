@@ -281,8 +281,6 @@ const UserWikiPage: React.FC = () => {
       <MetaTag
         title={`${userProfile.name} 위키`}
         description={`${userProfile.name}님 위키 페이지`}
-        url={url}
-        {...(userProfile.image && { image: userProfile.image })}
       />
       <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
         <StyledToastContainer limit={1} />

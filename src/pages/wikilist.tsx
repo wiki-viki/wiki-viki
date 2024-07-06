@@ -12,6 +12,7 @@ import MetaTag from '@/components/common/MetaTag';
 
 import ToastSelect from '@/components/common/ToastSelect';
 import { ToastProps } from '@/types/toast';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const PAGE_SIZE = 3;
 
@@ -81,7 +82,8 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
 
   return (
     <>
-      <MetaTag title="위키목록" description="유저들의 위키목록 페이지" url="wikilist" />
+      <MetaTag title="위키목록" description="유저들의 위키목록 페이지" />
+      <OpenGraphTag title="위키목록" description="위키목록 페이지" />
       <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
         <StyledToastContainer limit={1} transition={Zoom} />
         <div className="min-w-full">

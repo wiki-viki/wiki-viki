@@ -17,6 +17,7 @@ import { useStore } from '@/store/useStore';
 import { OTHER_TYPE_ERROR_TEXT } from '@/constants/otherTypeErrorText';
 import MetaTag from '@/components/common/MetaTag';
 import 'react-toastify/dist/ReactToastify.css';
+import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -136,11 +137,8 @@ const EditBoard = () => {
 
   return (
     <>
-      <MetaTag
-        title="게시물 수정"
-        description="자유게시판 게시물 수정 페이지"
-        url={`board/${boardId}/edit`}
-      />
+      <MetaTag title="게시물 수정" description="게시물 수정 페이지" />
+      <OpenGraphTag title="게시물 수정" description="게시물 수정 페이지" />
       <div className="center mt-4 flex-col">
         {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
         <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
