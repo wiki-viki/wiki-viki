@@ -1,8 +1,8 @@
 import useMutation from '@/hooks/useMutation';
 
-const getCreateWikiApi = () => {
+const useCreateWikiApi = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { isError, statusCode, axiosFetch } = useMutation({
+  const { isError, statusCode, mutation } = useMutation({
     options: {
       method: 'post',
       url: 'profiles',
@@ -10,7 +10,7 @@ const getCreateWikiApi = () => {
     includeAuth: true,
   });
 
-  return { isError, statusCode, axiosFetch };
+  return { isError, statusCode, mutation };
 };
 
-export default getCreateWikiApi
+export default useCreateWikiApi

@@ -13,7 +13,7 @@ const pathVariants = {
   hidden: { pathLength: 0, fill: 'rgba(0, 0, 0, 0)' },
   visible: {
     pathLength: 1,
-    fill: ['rgba(0, 0, 0, 0)', '#c6cada'],
+    fill: ['rgba(0, 0, 0, 0)', '#ABB0C6'],
     transition: {
       duration: 2,
       fill: { delay: 2, duration: 2 }
@@ -47,108 +47,108 @@ const AnimatedLogo = () => {
         initial="hidden"
         animate="visible"
       >
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(52.568739, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 14.171875 0 L 13.046875 -5.140625 L 11.515625 -11.625 L 11.4375 -11.625 L 8.75 0 L 4.4375 0 L 0.265625 -14.6875 L 4.25 -14.6875 L 5.953125 -8.1875 C 6.222656 -7.019531 6.5 -5.410156 6.78125 -3.359375 L 6.859375 -3.359375 C 6.890625 -4.023438 7.039062 -5.082031 7.3125 -6.53125 L 7.53125 -7.640625 L 9.34375 -14.6875 L 13.75 -14.6875 L 15.46875 -7.640625 C 15.507812 -7.453125 15.566406 -7.171875 15.640625 -6.796875 C 15.710938 -6.421875 15.785156 -6.019531 15.859375 -5.59375 C 15.929688 -5.164062 15.992188 -4.75 16.046875 -4.34375 C 16.109375 -3.9375 16.140625 -3.609375 16.140625 -3.359375 L 16.21875 -3.359375 C 16.300781 -3.992188 16.441406 -4.859375 16.640625 -5.953125 C 16.847656 -7.054688 16.992188 -7.800781 17.078125 -8.1875 L 18.84375 -14.6875 L 22.765625 -14.6875 L 18.53125 0 Z M 14.171875 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(73.444532, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 1.9375 -18.484375 C 1.9375 -19.785156 2.660156 -20.4375 4.109375 -20.4375 C 5.566406 -20.4375 6.296875 -19.785156 6.296875 -18.484375 C 6.296875 -17.859375 6.113281 -17.375 5.75 -17.03125 C 5.382812 -16.6875 4.835938 -16.515625 4.109375 -16.515625 C 2.660156 -16.515625 1.9375 -17.171875 1.9375 -18.484375 Z M 6.109375 0 L 2.109375 0 L 2.109375 -14.6875 L 6.109375 -14.6875 Z M 6.109375 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(79.501849, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 5.953125 -7.984375 L 7.703125 -10.21875 L 11.8125 -14.6875 L 16.328125 -14.6875 L 10.5 -8.3125 L 16.6875 0 L 12.0625 0 L 7.828125 -5.953125 L 6.109375 -4.578125 L 6.109375 0 L 2.109375 0 L 2.109375 -20.4375 L 6.109375 -20.4375 L 6.109375 -11.328125 L 5.90625 -7.984375 Z M 5.953125 -7.984375 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(94.03249, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 1.9375 -18.484375 C 1.9375 -19.785156 2.660156 -20.4375 4.109375 -20.4375 C 5.566406 -20.4375 6.296875 -19.785156 6.296875 -18.484375 C 6.296875 -17.859375 6.113281 -17.375 5.75 -17.03125 C 5.382812 -16.6875 4.835938 -16.515625 4.109375 -16.515625 C 2.660156 -16.515625 1.9375 -17.171875 1.9375 -18.484375 Z M 6.109375 0 L 2.109375 0 L 2.109375 -14.6875 L 6.109375 -14.6875 Z M 6.109375 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(100.089809, 31.472046)" variants={svgVariants} />
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(104.925386, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 5.59375 0 L 0 -14.6875 L 4.1875 -14.6875 L 7.03125 -6.3125 C 7.34375 -5.257812 7.539062 -4.257812 7.625 -3.3125 L 7.703125 -3.3125 C 7.742188 -4.15625 7.941406 -5.15625 8.296875 -6.3125 L 11.109375 -14.6875 L 15.3125 -14.6875 L 9.703125 0 Z M 5.59375 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(118.076655, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 1.9375 -18.484375 C 1.9375 -19.785156 2.660156 -20.4375 4.109375 -20.4375 C 5.566406 -20.4375 6.296875 -19.785156 6.296875 -18.484375 C 6.296875 -17.859375 6.113281 -17.375 5.75 -17.03125 C 5.382812 -16.6875 4.835938 -16.515625 4.109375 -16.515625 C 2.660156 -16.515625 1.9375 -17.171875 1.9375 -18.484375 Z M 6.109375 0 L 2.109375 0 L 2.109375 -14.6875 L 6.109375 -14.6875 Z M 6.109375 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(124.133974, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 5.953125 -7.984375 L 7.703125 -10.21875 L 11.8125 -14.6875 L 16.328125 -14.6875 L 10.5 -8.3125 L 16.6875 0 L 12.0625 0 L 7.828125 -5.953125 L 6.109375 -4.578125 L 6.109375 0 L 2.109375 0 L 2.109375 -20.4375 L 6.109375 -20.4375 L 6.109375 -11.328125 L 5.90625 -7.984375 Z M 5.953125 -7.984375 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />
           </motion.g>
         </g>
-        <g fill="#c6cada" fillOpacity="1">
+        <g fill="#ABB0C6" fillOpacity="1">
           <motion.g transform="translate(138.664617, 31.472046)" variants={svgVariants}>
             <motion.path
               d="M 1.9375 -18.484375 C 1.9375 -19.785156 2.660156 -20.4375 4.109375 -20.4375 C 5.566406 -20.4375 6.296875 -19.785156 6.296875 -18.484375 C 6.296875 -17.859375 6.113281 -17.375 5.75 -17.03125 C 5.382812 -16.6875 4.835938 -16.515625 4.109375 -16.515625 C 2.660156 -16.515625 1.9375 -17.171875 1.9375 -18.484375 Z M 6.109375 0 L 2.109375 0 L 2.109375 -14.6875 L 6.109375 -14.6875 Z M 6.109375 0 "
               variants={pathVariants}
               initial="hidden"
               animate="visible"
-              stroke="#c6cada"
+              stroke="#ABB0C6"
               fill="none"
               strokeWidth="1"
             />

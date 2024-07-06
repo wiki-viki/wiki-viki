@@ -1,9 +1,10 @@
-import { ChangePassWord, CreateWiki } from '@/components/Account';
+import { CreateWiki } from '@/components/Account';
+import MetaTag from '@/components/common/MetaTag';
 
 const MyPage = () => {
   return (
     <>
-      <ChangePassWord />
+      <MetaTag title="마이페이지" description="마이페이지" url="mypage" />
       <CreateWiki />
     </>
   );

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import { axiosRequester } from '@/lib/axios';
 
 interface RequestConfig {
@@ -8,15 +8,14 @@ interface RequestConfig {
   includeAuth?: boolean;
 }
 
-type AxiosFetch = <T>(options?: AxiosRequestConfig<T>) => Promise<T | any>;
+type Mutation = <T>(options?: AxiosRequestConfig<T>) => Promise<T | any>;
 
-const useMutation = <T>({ options, includeAuth = false }: RequestConfig) => {
-  const [data, setData] = useState<AxiosResponse<T> | null>(null);
+const useMutation = ({ options, includeAuth = false }: RequestConfig) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<string | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
 
-  const axiosFetch: AxiosFetch = async (args) => {
+  const mutation: Mutation = async (args) => {
     setIsLoading(true);
     setIsError(null);
     setStatusCode(null);
@@ -34,7 +33,6 @@ const useMutation = <T>({ options, includeAuth = false }: RequestConfig) => {
         }
       }
 
-      setData(response);
       return response;
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -47,7 +45,7 @@ const useMutation = <T>({ options, includeAuth = false }: RequestConfig) => {
     }
   };
 
-  return { data, isLoading, isError, statusCode, axiosFetch };
+  return { isLoading, isError, statusCode, mutation };
 };
 
 export default useMutation;

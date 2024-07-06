@@ -33,7 +33,7 @@ export const getNotification = async ({
 // 알림 DELETE 요청
 export const deleteNotification = async (id: number) => {
   try {
-    const res: AxiosResponse<NotificationResponse> = await axiosWithIntercepter.get(
+    const res: AxiosResponse<NotificationResponse> = await axiosWithIntercepter.delete(
       `notifications/${id}`,
     );
     return res.data;

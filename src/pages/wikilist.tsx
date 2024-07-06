@@ -8,6 +8,7 @@ import { StyledToastContainer } from '@/styles/ToastStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import { getProfiles } from '@/lib/apis/profile/profileApi.api';
 import { ProfileListResponse } from '@/types/apiType';
+import MetaTag from '@/components/common/MetaTag';
 
 import ToastSelect from '@/components/common/ToastSelect';
 import { ToastProps } from '@/types/toast';
@@ -79,39 +80,42 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   }, [page, name]);
 
   return (
-    <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
-      <StyledToastContainer limit={1} transition={Zoom} />
-      <div className="min-w-full">
-        <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
-      </div>
-      <section>
-        {showSearchLabel ? (
-          <SearchLabel name={name} totalCount={profileListData.totalCount} />
-        ) : (
-          <div className="h-10"></div>
-        )}
-        {profileListData.totalCount > 0 ? (
-          <>
-            <UserCard cardList={profileListData.list} />
-            <div className="center my-[60px]">
-              <Pagination
-                totalCount={profileListData.totalCount}
-                pageSize={PAGE_SIZE}
-                page={page}
-                handlePage={(value) => {
-                  setPage(value);
-                  fetchProfilesData(value, name);
-                }}
-              />
+    <>
+      <MetaTag title="위키목록" description="유저들의 위키목록 페이지" url="wikilist" />
+      <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
+        <StyledToastContainer limit={1} transition={Zoom} />
+        <div className="min-w-full">
+          <SearchBar placeholder="검색어 입력하세요" onSearchItem={handleSearchItem} />
+        </div>
+        <section>
+          {showSearchLabel ? (
+            <SearchLabel name={name} totalCount={profileListData.totalCount} />
+          ) : (
+            <div className="h-10"></div>
+          )}
+          {profileListData.totalCount > 0 ? (
+            <>
+              <UserCard cardList={profileListData.list} />
+              <div className="center my-[60px]">
+                <Pagination
+                  totalCount={profileListData.totalCount}
+                  pageSize={PAGE_SIZE}
+                  page={page}
+                  handlePage={(value) => {
+                    setPage(value);
+                    fetchProfilesData(value, name);
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="mt-60 sm:mt-40">
+              <EmptySearch name={name} />
             </div>
-          </>
-        ) : (
-          <div className="mt-60 sm:mt-40">
-            <EmptySearch name={name} />
-          </div>
-        )}
-      </section>
-    </main>
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 

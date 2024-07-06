@@ -16,6 +16,7 @@ import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import BoardInfoForm from '@/components/AddBoard/BoardInfoForm';
 import 'react-toastify/dist/ReactToastify.css';
+import MetaTag from '@/components/common/MetaTag';
 
 const ReactQuillWrapper = dynamic(import('@/components/AddBoard/QuillEditor'), {
   ssr: false,
@@ -99,34 +100,37 @@ const AddBoard = () => {
   }, [title, content]);
 
   return (
-    <div className="center mt-4 flex-col">
-      {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
-      <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
-            게시물 등록하기
-          </h2>
-          <CommonButton
-            isActive={isButtonActive}
-            disabled={isButtonDisabled}
-            onClick={handleSubmit}
-            variant="primary"
-          >
-            {isLoading ? '등록 중...' : '등록하기'}
+    <>
+      <MetaTag title="게시물 등록" description="자유게시판 게시물 등록하기 페이지" url="addboard" />
+      <div className="center mt-4 flex-col">
+        {isValid && createPortal(<StyledToastContainer transition={Zoom} />, document.body)}
+        <main className="md:profile-shadow flex w-full max-w-[1060px] flex-col gap-3 rounded-10 md:gap-5 md:px-[30px] md:py-[40px]">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg-semibold md:text-xl-semibold lg:text-2xl-semibold">
+              게시물 등록하기
+            </h2>
+            <CommonButton
+              isActive={isButtonActive}
+              disabled={isButtonDisabled}
+              onClick={handleSubmit}
+              variant="primary"
+            >
+              {isLoading ? '등록 중...' : '등록하기'}
+            </CommonButton>
+          </div>
+          <span className="text-xs-regular text-gray-400 md:text-lg-regular">
+            {user?.name} {dateToString(new Date())}
+          </span>
+          <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
+          <ReactQuillWrapper setContent={handleInputContent} content={content} />
+        </main>
+        <Link href="/boards" rel="preload">
+          <CommonButton variant="secondary" className="my-8">
+            목록으로
           </CommonButton>
-        </div>
-        <span className="text-xs-regular text-gray-400 md:text-lg-regular">
-          {user?.name} {dateToString(new Date())}
-        </span>
-        <BoardInfoForm title={title} setTitle={setTitle} contentLength={contentLength} />
-        <ReactQuillWrapper setContent={handleInputContent} content={content} />
-      </main>
-      <Link href="/boards" rel="preload">
-        <CommonButton variant="secondary" className="my-8">
-          목록으로
-        </CommonButton>
-      </Link>
-    </div>
+        </Link>
+      </div>
+    </>
   );
 };
 
