@@ -74,7 +74,13 @@ const EditProfile = ({ onChange, value, isMyPage }: EditProfileProps) => {
         </button>
       )}
 
-      <input type="file" id="fileInput" className="hidden" onChange={handleFileChange}></input>
+      <input
+        type="file"
+        id="fileInput"
+        className="hidden"
+        onChange={handleFileChange}
+        accept=".png, .jpg, .jpeg"
+      ></input>
     </>
   );
 };
