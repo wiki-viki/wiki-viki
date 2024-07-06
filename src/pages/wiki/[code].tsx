@@ -134,7 +134,7 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  const throttlePing = throttle(updateEditTime, 60000);
+  const throttlePing = throttle(updateEditTime, 3000);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setMD(value);
@@ -152,6 +152,7 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    setRenewalTime(!renewalTime);
     cancelModalOff();
     updateFormData();
   };
@@ -202,6 +203,8 @@ const UserWikiPage: React.FC = () => {
       } else {
         ToastSelect({ type: 'error', message: '예상치 못한 에러가 발생했습니다.' });
       }
+    } finally {
+      setRenewalTime(!renewalTime);
     }
   };
 
@@ -257,21 +260,22 @@ const UserWikiPage: React.FC = () => {
   }, [code]);
 
   useEffect(() => {
-    if (isEditing || renewalTime) {
+    if (!isEditing) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    } else {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      timeoutRef.current = setTimeout(
-        () => {
-          setIsEditing(false);
-          ToastSelect({
-            type: 'notification',
-            message: '수정 가능 시간 5분을 초과하였습니다.',
-          });
-        },
-        5 * 6 * 10000,
-      );
+      timeoutRef.current = setTimeout(() => {
+        setIsEditing(false);
+        ToastSelect({
+          type: 'notification',
+          message: '5분 동안 작성하지 않아 에디터 모드를 벗어납니다.',
+        });
+      }, 5000);
       return () => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
@@ -357,6 +361,8 @@ const UserWikiPage: React.FC = () => {
             setEditingMode={setEditingMode}
             code={userProfile.code}
             setAnswer={setAnswerValue}
+            setRenewalTime={setRenewalTime}
+            renewalTime={renewalTime}
           />
         </Modal>
         <ConfirmModal

@@ -17,6 +17,8 @@ type QuizModalProps = {
   setEditingMode: (value: void) => void;
   code: CodeType;
   setAnswer: (value: string) => void;
+  setRenewalTime: (value: boolean) => void;
+  renewalTime: boolean;
 };
 
 type IForm = {
@@ -29,6 +31,8 @@ const QuizModalTemplete = ({
   setEditingMode,
   code,
   setAnswer,
+  setRenewalTime,
+  renewalTime,
 }: QuizModalProps) => {
   const {
     register,
@@ -40,11 +44,16 @@ const QuizModalTemplete = ({
     mode: 'onSubmit',
   });
 
+  const handleRenewalTime = () => {
+    setRenewalTime(!renewalTime);
+  };
+
   const handleSubmitData: SubmitHandler<IForm> = async (data) => {
     try {
       await createPing(code, data);
       setEditingMode();
       setAnswer(data.securityAnswer);
+      handleRenewalTime();
       onClose();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
