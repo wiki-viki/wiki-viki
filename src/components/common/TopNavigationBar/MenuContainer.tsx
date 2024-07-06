@@ -12,7 +12,7 @@ const MenuContainer = ({ children, isOpen, className = '' }: MenuContainerProps)
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={`${className} fixed right-3 top-12 z-10 w-[130px] flex-col rounded-10 border border-grayscale-200 bg-white shadow-md lg:right-7 lg:top-[58px]`}
+          className={`${className} fixed right-6 top-12 z-10 w-[130px] flex-col rounded-10 border border-grayscale-200 bg-white shadow-md lg:right-7 lg:top-[58px]`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

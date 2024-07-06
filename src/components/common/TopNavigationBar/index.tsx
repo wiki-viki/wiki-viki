@@ -160,12 +160,7 @@ const TopNavigationBar = () => {
               />
             </div>
             <div ref={menuRef}>
-              <ProfileIcon
-                onClick={menuToggle}
-                width={24}
-                height={24}
-                className="cursor-pointer"
-              ></ProfileIcon>
+              <ProfileIcon onClick={menuToggle} width={24} height={24} className="cursor-pointer" />
               <AuthUserMenu isMobile={isMobile} isOpen={isMenuOpen} handleClose={menuClose} />
             </div>
           </div>

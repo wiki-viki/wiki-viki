@@ -42,7 +42,7 @@ const NoticeMenu = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={`fixed right-4 top-12 z-10 w-[260px] flex-col rounded-10 border border-grayscale-200 bg-[#CED8D5] px-4 py-5 shadow-md md:w-[320px] md:px-5 md:py-6 lg:right-[75px] lg:top-[58px] lg:w-[360px]`}
+          className={`fixed right-6 top-12 z-10 w-[260px] flex-col rounded-10 border border-grayscale-200 bg-[#CED8D5] px-4 py-5 shadow-md md:w-[320px] md:px-5 md:py-6 lg:right-[75px] lg:top-[58px] lg:w-[360px]`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
