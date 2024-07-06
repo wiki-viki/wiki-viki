@@ -136,7 +136,7 @@ const UserWikiPage: React.FC = () => {
     }
   };
 
-  const throttlePing = throttle(updateEditTime, 3000);
+  const throttlePing = throttle(updateEditTime, 3 * 6 * 10000);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setMD(value);
@@ -272,13 +272,16 @@ const UserWikiPage: React.FC = () => {
         clearTimeout(timeoutRef.current);
       }
 
-      timeoutRef.current = setTimeout(() => {
-        setIsEditing(false);
-        ToastSelect({
-          type: 'notification',
-          message: '5분 동안 작성하지 않아 에디터 모드를 벗어납니다.',
-        });
-      }, 5000);
+      timeoutRef.current = setTimeout(
+        () => {
+          setIsEditing(false);
+          ToastSelect({
+            type: 'notification',
+            message: '5분 동안 작성하지 않아 에디터 모드를 벗어납니다.',
+          });
+        },
+        5 * 6 * 10000,
+      );
       return () => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
