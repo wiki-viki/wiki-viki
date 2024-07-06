@@ -42,6 +42,8 @@ const UserWikiPage: React.FC = () => {
     return state.userProfile;
   });
 
+  const { saveUserProfile } = useAuthStore();
+
   const [isEditing, setIsEditing] = useState(false);
 
   const { value, handleOff, handleOn } = useBoolean();
@@ -186,6 +188,7 @@ const UserWikiPage: React.FC = () => {
       );
 
       setUserProfile(profileUpdateResponse);
+      saveUserProfile(profileUpdateResponse);
       setIsEditing(false);
     } catch (error: unknown) {
       if (isAxiosError(error)) {

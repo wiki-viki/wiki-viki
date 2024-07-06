@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import useBoolean from '@/hooks/useBoolean';
 import { useAuthStore } from '@/store/userAuthStore';
 import Logo from '@/../public/svg/wiki-viki-logo.svg';
@@ -159,13 +160,20 @@ const TopNavigationBar = () => {
                 setupdateData={setUpdatedDataToNoticeList}
               />
             </div>
-            <div ref={menuRef}>
-              <ProfileIcon
-                onClick={menuToggle}
-                width={24}
-                height={24}
-                className="cursor-pointer"
-              ></ProfileIcon>
+            <div ref={menuRef} className="relative size-[24px]">
+              {userProfile?.image ? (
+                <Image
+                  src={userProfile?.image}
+                  onClick={menuToggle}
+                  fill
+                  priority
+                  objectFit="cover"
+                  className="cursor-pointer rounded-full border-primary-green-200"
+                  alt="개인 프로필 이미지"
+                />
+              ) : (
+                <ProfileIcon onClick={menuToggle} className="cursor-pointer" />
+              )}
               <AuthUserMenu isMobile={isMobile} isOpen={isMenuOpen} handleClose={menuClose} />
             </div>
           </div>
