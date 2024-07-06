@@ -11,13 +11,13 @@ const OpenGraphTag = ({ title, description }: OpenGraphProps) => {
       <meta property="og:title" content={`WiKi ViKi ${title && `| ${title}`}`} />
       <meta
         property="og:description"
-        content={`남들이 만드는 나만의 위키, WiKi ViKi ${description && `- ${description}`}`}
+        content={`함께 작성하는 우리의 위키, wiki viki ${description && `- ${description}`}`}
       />
 
       <meta name="twitter:title" content={`WiKi ViKi ${title && `| ${title}`}`} />
       <meta
         name="twitter:description"
-        content={`남들이 만드는 나만의 위키, WiKi ViKi ${description && `- ${description}`}`}
+        content={`함께 작성하는 우리의 위키, wiki viki ${description && `- ${description}`}`}
       />
     </Head>
   );
