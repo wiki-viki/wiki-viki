@@ -1,88 +1,42 @@
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useStore } from 'zustand';
 import CloseIcon from '@/../public/svg/close.svg';
-import { useAuthStore } from '@/store/userAuthStore';
-import { getNotification } from '@/lib/apis/notification/notificationApi.api';
 import { NotificationResponse } from '@/types/apiType';
-import ToastSelect from '../ToastSelect';
 import NoticeItem from './NoticeItem';
 
 interface NoticeMenuProps {
   isOpen: boolean;
   handleClose: () => void;
-  code: string | undefined;
   handleCount: (value: number) => void;
+  totalCount: number;
+  list: NotificationResponse[];
+  code?: string;
+  hasProfile: boolean;
+  setupdateData: (value: NotificationResponse[]) => void;
 }
 
-const PAGE = 1;
-const PAGE_SIZE = 20;
-
-const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps) => {
-  const [noticeList, setNoticeList] = useState<NotificationResponse[]>([]);
-  const [noticeTotalCount, setNoticeTotalCount] = useState<number>(0);
-  const user = useStore(useAuthStore, (state) => {
-    return state.user;
-  });
-  const userProfile = useStore(useAuthStore, (state) => {
-    return state.userProfile;
-  });
-
-  const hasProfile = user?.profile || userProfile?.code;
-
-  const getNoticeList = async (page: number, pageSize: number) => {
-    try {
-      const res = await getNotification({ page, pageSize });
-      setNoticeList(res.list);
-      setNoticeTotalCount(res.totalCount);
-    } catch (e) {
-      ToastSelect({
-        type: 'error',
-        message: '에러가 발생하여 페이지를 새로고침합니다.',
-        onClose: () => {
-          window.location.reload();
-        },
-      });
-    }
-  };
-
+const NoticeMenu = ({
+  isOpen,
+  handleClose,
+  handleCount,
+  totalCount,
+  list,
+  code,
+  hasProfile,
+  setupdateData,
+}: NoticeMenuProps) => {
   const filteredNoticeListAndCount = (id: number) => {
-    const filteredList = noticeList.filter((notice) => {
+    const filteredList = list.filter((notice) => {
       return id !== notice.id;
     });
     setUpdatedDataToNoticeList(filteredList);
-    if (noticeTotalCount) {
-      setNoticeTotalCount((prev) => {
-        if (prev === 1) {
-          return 0;
-        } else {
-          return prev - 1;
-        }
-      });
+    if (totalCount) {
+      handleCount(-1);
     }
   };
-
-  useEffect(() => {
-    handleCount(noticeTotalCount);
-  }, [handleCount, noticeTotalCount]);
 
   const setUpdatedDataToNoticeList = (value: NotificationResponse[]) => {
-    setNoticeList(value);
+    setupdateData(value);
   };
-
-  useEffect(() => {
-    if (code) {
-      getNoticeList(PAGE, PAGE_SIZE);
-
-      const intervalId = setInterval(() => {
-        getNoticeList(PAGE, PAGE_SIZE);
-      }, 60000);
-
-      return () => {
-        return clearInterval(intervalId);
-      };
-    }
-  }, []);
 
   return (
     <AnimatePresence>
@@ -108,12 +62,12 @@ const NoticeMenu = ({ isOpen, handleClose, code, handleCount }: NoticeMenuProps)
           ) : (
             <>
               <div className="mb-3 flex items-center justify-between md:mb-4">
-                <h4 className=" text-2lg-bold md:text-xl-bold">알림 {noticeTotalCount}개</h4>
+                <h4 className=" text-2lg-bold md:text-xl-bold">알림 {totalCount}개</h4>
                 <CloseIcon onClick={handleClose} className="cursor-pointer" />
               </div>
-              {noticeList.length > 0 ? (
+              {list.length > 0 ? (
                 <div className="flex max-h-[210px] flex-col gap-2 overflow-y-auto md:max-h-[230px]">
-                  {noticeList.map((item) => {
+                  {list.map((item) => {
                     return (
                       <NoticeItem
                         item={item}

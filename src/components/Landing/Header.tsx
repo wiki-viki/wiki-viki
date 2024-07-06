@@ -43,7 +43,7 @@ const Header = () => {
             </strong>
           </h1>
           <p className="hidden xl:block xl:text-start xl:text-[25px] xl:font-light xl:text-grayscale-300">
-            함께 작성하는 우리의 지식 저장소
+            함께 작성하는 우리의 위키
             <br />
             누구나 쉽게 접근하고 공유할 수 있는 플랫폼
           </p>

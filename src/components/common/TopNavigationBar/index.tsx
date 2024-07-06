@@ -9,19 +9,35 @@ import ProfileIcon from '@/../public/svg/profile.svg';
 import HamburgerIcon from '@/../public/svg/hamburger.svg';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useStore } from '@/store/useStore';
+import { NotificationResponse } from '@/types/apiType';
+import { getNotification } from '@/lib/apis/notification/notificationApi.api';
+import ToastSelect from '../ToastSelect';
 import UserMenu from './UserMenu';
 import AuthUserMenu from './AuthUserMenu';
 import NoticeMenu from './NoticeMenu';
 
 const linkClassNames = 'px-2 hover:rounded-md hover:bg-grayscale-100';
 const activeLinkClassNames = 'font-bold text-primary-green-300';
+const PAGE = 1;
+const PAGE_SIZE = 20;
 
 const TopNavigationBar = () => {
   const { pathname } = useRouter();
-  const { user, checkLogin } = useAuthStore();
+  const { checkLogin } = useAuthStore();
+  const [noticeList, setNoticeList] = useState<NotificationResponse[]>([]);
+  const [noticeTotalCount, setNoticeTotalCount] = useState<number>(0);
+
   const isLogin = useStore(useAuthStore, (state) => {
     return state.isLogin;
   });
+  const user = useStore(useAuthStore, (state) => {
+    return state.user;
+  });
+  const userProfile = useStore(useAuthStore, (state) => {
+    return state.userProfile;
+  });
+
+  const hasProfile = !!(user?.profile?.code || userProfile?.code);
   const isMobile = useIsMobile();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -30,10 +46,32 @@ const TopNavigationBar = () => {
   const noticeRef = useRef<HTMLDivElement | null>(null);
   const { value: isNoticeOpen, handleOff: noticeClose, handleToggle: noticeToggle } = useBoolean();
 
-  const [noticeCount, setNoticeCount] = useState<number>(0);
-
   const handleCount = (value: number) => {
-    setNoticeCount(value);
+    setNoticeTotalCount((prev) => {
+      return prev + value;
+    });
+  };
+
+  const getNoticeList = async (page: number, pageSize: number) => {
+    try {
+      const res = await getNotification({ page, pageSize });
+      if (res.list !== noticeList && res.totalCount !== noticeTotalCount) {
+        setNoticeList(res.list);
+        setNoticeTotalCount(res.totalCount);
+      }
+    } catch (e) {
+      ToastSelect({
+        type: 'error',
+        message: '에러가 발생하여 페이지를 새로고침합니다.',
+        onClose: () => {
+          window.location.reload();
+        },
+      });
+    }
+  };
+
+  const setUpdatedDataToNoticeList = (value: NotificationResponse[]) => {
+    setNoticeList(value);
   };
 
   useEffect(() => {
@@ -54,6 +92,20 @@ const TopNavigationBar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [menuClose, noticeClose]);
+
+  useEffect(() => {
+    if (userProfile?.code || user?.profile.code) {
+      getNoticeList(PAGE, PAGE_SIZE);
+
+      const intervalId = setInterval(() => {
+        getNoticeList(PAGE, PAGE_SIZE);
+      }, 5000);
+
+      return () => {
+        return clearInterval(intervalId);
+      };
+    }
+  }, [user?.profile?.code, userProfile?.code]);
 
   return (
     <header className="sticky top-0 z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
@@ -82,12 +134,12 @@ const TopNavigationBar = () => {
         {isLogin ? (
           <div className="flex gap-6">
             <div ref={noticeRef}>
-              {noticeCount > 0 && (
+              {noticeTotalCount > 0 && (
                 <span
                   className="center absolute size-4 cursor-pointer rounded-full bg-red-500 text-[9px] text-white md:right-[78px] lg:right-[138px]"
                   onClick={noticeToggle}
                 >
-                  {noticeCount}
+                  {noticeTotalCount}
                 </span>
               )}
               <NotifyIcon
@@ -99,8 +151,12 @@ const TopNavigationBar = () => {
               <NoticeMenu
                 handleClose={noticeClose}
                 isOpen={isNoticeOpen}
-                code={user?.profile?.code}
                 handleCount={handleCount}
+                totalCount={noticeTotalCount}
+                list={noticeList}
+                hasProfile={hasProfile}
+                code={user?.profile?.code}
+                setupdateData={setUpdatedDataToNoticeList}
               />
             </div>
             <div ref={menuRef}>
