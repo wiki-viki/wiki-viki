@@ -50,7 +50,6 @@ const AuthUserMenu = ({ isOpen, handleClose, isMobile }: UserMenuProps) => {
 
   return (
     <>
-      {' '}
       <MenuContainer isOpen={isOpen}>
         {isMobile && (
           <>
