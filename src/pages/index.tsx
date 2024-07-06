@@ -12,8 +12,8 @@ import OpenGraphTag from '@/components/common/MetaTag/OpenGraphTag';
 const LandingPage = () => {
   return (
     <>
-      <MetaTag title="" description="메인 랜딩페이지" />
-      <OpenGraphTag title="" description="메인 랜딩페이지" />
+      <MetaTag title="" description="메인 페이지" />
+      <OpenGraphTag title="" description="메인 페이지" />
       <Header />
       <WriteSection />
       <ShareSection />

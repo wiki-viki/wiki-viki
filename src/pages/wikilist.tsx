@@ -83,7 +83,7 @@ const WikiListPage = ({ profileList }: WikiListProps) => {
   return (
     <>
       <MetaTag title="위키목록" description="유저들의 위키목록 페이지" />
-      <OpenGraphTag title="위키목록" description="유저들의 위키목록 페이지" />
+      <OpenGraphTag title="위키목록" description="위키목록 페이지" />
       <main className="mx-auto mt-[30px] max-w-[1060px] flex-col">
         <StyledToastContainer limit={1} transition={Zoom} />
         <div className="min-w-full">
