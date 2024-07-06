@@ -1,9 +1,6 @@
 import React from 'react';
-import Lottie from 'lottie-react';
 import { motion } from 'framer-motion';
 import LinkIcon from '@/../public/svg/link.svg';
-import { urlVaildation } from '@/utils/urlVaildation';
-import ErrorLottie from '@/../public/lottie/error.json';
 import { CopyLink } from '@/constants/toast';
 import ToastSelect from './ToastSelect';
 
@@ -25,18 +22,6 @@ const CopyLinkButton = ({ url, code }: CopyLinkButtonProps) => {
       ToastSelect({ type: 'check', message: CopyLink });
     }
   };
-
-  if (!urlVaildation(url)) {
-    return (
-      <button
-        className={`${LinkContainer} cursor-not-allowed bg-secondary-red-100`}
-        disabled={true}
-      >
-        <Lottie animationData={ErrorLottie} style={{ width: '12px', height: '12px' }} />
-        <span className={`${LinkText} truncate text-secondary-red-200`}>경로를 확인해주세요.</span>
-      </button>
-    );
-  }
 
   return (
     <motion.button
