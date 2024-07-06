@@ -27,6 +27,7 @@ import { useAuthStore } from '@/store/userAuthStore';
 import { useStore } from '@/store/useStore';
 import throttle from '@/utils/throttle';
 import MetaTag from '@/components/common/MetaTag';
+import ConfirmModal from '@/components/common/ConfirmModal';
 
 const noContentClassName = `text-lg-regular text-grayscale-400`;
 
@@ -45,6 +46,12 @@ const UserWikiPage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { value, handleOff, handleOn } = useBoolean();
+  const {
+    value: confirmModal,
+    handleOff: confirmModalOff,
+    handleOn: confirmModalOn,
+  } = useBoolean();
+  const { value: cancelModal, handleOff: cancelModalOff, handleOn: cancelModalOn } = useBoolean();
   const [userProfile, setUserProfile] = useState<DetailProfileResponse | undefined>(undefined);
 
   const isMyPage = code === user?.profile?.code || code === userProfileInfo?.code;
@@ -145,6 +152,7 @@ const UserWikiPage: React.FC = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    cancelModalOff();
     updateFormData();
   };
 
@@ -163,6 +171,7 @@ const UserWikiPage: React.FC = () => {
   };
 
   const handleSaveClick = async () => {
+    confirmModalOff();
     try {
       let updatedFormData = { ...formData };
 
@@ -284,6 +293,7 @@ const UserWikiPage: React.FC = () => {
         url={url}
         {...(userProfile.image && { image: userProfile.image })}
       />
+
       <div className="center m-auto max-w-[1350px] flex-col px-6 py-5 sm:flex-col sm:pt-10 md:px-14 xl:relative xl:py-5">
         <StyledToastContainer limit={1} />
         {isEditing || (
@@ -294,6 +304,7 @@ const UserWikiPage: React.FC = () => {
             url={url}
           />
         )}
+
         <UserProfile
           {...userProfile}
           isEditing={isEditing}
@@ -302,6 +313,7 @@ const UserWikiPage: React.FC = () => {
           onChange={handleChange}
           value={formData.image}
         />
+
         <div className={contentClassName}>
           {!userProfile.content && !isEditing && (
             <div className="flex h-[184px] w-full flex-col items-center justify-center rounded-10 bg-grayscale-100 md:mt-5 md:h-[192px] ">
@@ -325,16 +337,19 @@ const UserWikiPage: React.FC = () => {
             <EditorMarkdown source={userProfile.content} />
           )}
         </div>
+
         {isEditing && (
           <div className="ml-auto flex gap-3 sm:absolute sm:right-[60px] sm:top-[75px] md:absolute md:right-[90px] md:top-[75px] lg:top-[95px] xl:static xl:mt-[30px]">
-            <CommonButton variant="secondary" onClick={handleCancelClick} className="bg-white">
+            <CommonButton variant="secondary" onClick={cancelModalOn} className="bg-white">
               취소
             </CommonButton>
-            <CommonButton variant="primary" onClick={handleSaveClick}>
+            <CommonButton variant="primary" onClick={confirmModalOn}>
               저장
             </CommonButton>
           </div>
         )}
+
+        {/* 모달창 */}
         <Modal isOpen={value} onClose={handleOff}>
           <QuizModalTemplete
             question={userProfile.securityQuestion}
@@ -344,6 +359,20 @@ const UserWikiPage: React.FC = () => {
             setAnswer={setAnswerValue}
           />
         </Modal>
+        <ConfirmModal
+          title="저장"
+          message="정말 저장 하시겠습니까?"
+          isOpen={confirmModal}
+          onCancel={confirmModalOff}
+          onConfirm={handleSaveClick}
+        />
+        <ConfirmModal
+          title="취소"
+          message="정말 취소 하시겠습니까?"
+          isOpen={cancelModal}
+          onCancel={cancelModalOff}
+          onConfirm={handleCancelClick}
+        />
       </div>
     </>
   );
