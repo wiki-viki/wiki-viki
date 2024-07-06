@@ -69,9 +69,26 @@ button:hover .ql-stroke,
   stroke: #8f95b2 !important;
 }
 
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+  fill: none;
+  stroke: #8f95b2 !important;
+}
+
 .ql-active .ql-stroke {
   fill: none;
   stroke: #4cbfa4 !important;
+}
+
+button:hover .ql-fill,
+.ql-picker-label:hover .ql-fill {
+  fill: #8f95b2 !important;
+  stroke: none;
+}
+
+.ql-active .ql-fill {
+  fill: #4cbfa4 !important;
+  stroke: none;
 }
 
 @media screen and (min-width: 481px) {
