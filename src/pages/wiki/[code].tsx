@@ -361,14 +361,14 @@ const UserWikiPage: React.FC = () => {
         </Modal>
         <ConfirmModal
           title="저장"
-          message="정말 저장 하시겠습니까?"
+          message="정말 저장하시겠습니까?"
           isOpen={confirmModal}
           onCancel={confirmModalOff}
           onConfirm={handleSaveClick}
         />
         <ConfirmModal
           title="취소"
-          message="정말 취소 하시겠습니까?"
+          message="정말 취소하시겠습니까?"
           isOpen={cancelModal}
           onCancel={cancelModalOff}
           onConfirm={handleCancelClick}
