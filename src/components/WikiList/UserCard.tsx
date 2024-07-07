@@ -15,6 +15,8 @@ const UserCard = ({ cardList }: CardListProps) => {
   return (
     <div className="relative mt-14 h-3/5 w-full">
       {cardList.map((card) => {
+        const displayName = card.name === '신승화전용노예1호' ? '해피캣' : card.name;
+        const displayJob = card.name === '신승화전용노예1호' ? '해피캣' : card.name;
         return (
           <motion.div
             key={card.id}
@@ -35,11 +37,11 @@ const UserCard = ({ cardList }: CardListProps) => {
                   </div>
                   <div className="ml-8 text-grayscale-400 ">
                     <h3 className="truncate text-2xl-semibold text-grayscale-500 sm:text-xl-semibold">
-                      {card.name}
+                      {displayName}
                     </h3>
                     <div className="mt-4 text-md-regular sm:mt-[10px] sm:text-xs-regular">
                       {card.city}, {card.nationality}
-                      <div>{card.job}</div>
+                      <div>{displayJob}</div>
                     </div>
                   </div>
                 </div>
@@ -47,7 +49,7 @@ const UserCard = ({ cardList }: CardListProps) => {
             </Link>
             <div className="absolute bottom-0 right-0 mb-6 mr-9 ">
               <CopyLinkButton
-                url={`${WIKI_BASE_URL}${card.name}`}
+                url={`${WIKI_BASE_URL}${displayName}`}
                 code={`${WIKI_BASE_URL}${card.code}`}
               />
             </div>

@@ -40,7 +40,9 @@ const BoardList = ({ boardList, className }: BoardListProps) => {
                 </Link>
               </td>
               <td className="w-1/6 max-w-[50px] px-1">
-                <span className="block truncate">{board.writer.name}</span>
+                <span className="block truncate">
+                  {board.writer.name === '신승화전용노예1호' ? '해피캣' : board.writer.name}
+                </span>
               </td>
               <td className="w-1/12">{board.likeCount}</td>
               <td className="w-1/6 min-w-[100px]">{dateToString(board.createdAt)}</td>
