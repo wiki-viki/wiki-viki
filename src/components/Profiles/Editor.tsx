@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { MDEditorProps } from '@uiw/react-md-editor';
 import dynamic from 'next/dynamic';
+import Loading from '../Loading';
 
 const MDEditor = dynamic<MDEditorProps>(
   () => {
@@ -8,6 +9,9 @@ const MDEditor = dynamic<MDEditorProps>(
   },
   {
     ssr: false,
+    loading: () => {
+      return <Loading />;
+    },
   },
 );
 
@@ -18,6 +22,9 @@ const Markdown = dynamic(
   },
   {
     ssr: false,
+    loading: () => {
+      return <Loading />;
+    },
   },
 );
 
