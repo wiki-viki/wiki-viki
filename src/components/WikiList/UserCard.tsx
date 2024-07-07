@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cardType } from '@/types/UserCardProps';
 import BasicProfileImage from '@/../public/images/basic_profile.png';
+import { WIKI_BASE_URL } from '@/constants/url';
 import CopyLinkButton from '../common/CopyLinkButton';
 
 interface CardListProps {
@@ -45,7 +46,10 @@ const UserCard = ({ cardList }: CardListProps) => {
               </div>
             </Link>
             <div className="absolute bottom-0 right-0 mb-6 mr-9 ">
-              <CopyLinkButton url={`${card.name}`} code={`${card.code}`} />
+              <CopyLinkButton
+                url={`${WIKI_BASE_URL}${card.name}`}
+                code={`${WIKI_BASE_URL}${card.code}`}
+              />
             </div>
           </motion.div>
         );

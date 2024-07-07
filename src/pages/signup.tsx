@@ -47,8 +47,13 @@ const SignUpPage = () => {
     const response = await getSignupData(requestData);
 
     if (response?.status === 201) {
-      ToastSelect({ type: 'check', message: '가입이 완료되었습니다' });
-      router.push('/login');
+      ToastSelect({
+        type: 'check',
+        message: '가입이 완료되었습니다',
+        onClose: () => {
+          router.push('/login');
+        },
+      });
     }
   });
 
