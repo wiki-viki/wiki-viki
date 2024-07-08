@@ -42,7 +42,6 @@ export const getDetailArticle = async (articleId: number) => {
     const res: AxiosResponse<ArticleResponse> = await axiosWithIntercepter.get(
       `articles/${articleId}`,
     );
-    console.log(res.data);
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
