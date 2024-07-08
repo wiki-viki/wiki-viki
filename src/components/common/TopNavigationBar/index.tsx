@@ -116,17 +116,25 @@ const TopNavigationBar = () => {
         </Link>
         {isMobile || (
           <nav>
-            <ul className="flex gap-5 text-md-regular text-grayscale-500 ">
-              <Link href="/wikilist" className={linkClassNames} rel="preload">
-                <li className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}>
+            <ul className="flex gap-5 text-md-regular text-grayscale-500">
+              <li className={linkClassNames}>
+                <Link
+                  href="/wikilist"
+                  className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}
+                  rel="preload"
+                >
                   위키목록
-                </li>
-              </Link>
-              <Link href="/boards" className={linkClassNames} rel="preload">
-                <li className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}>
+                </Link>
+              </li>
+              <li className={linkClassNames}>
+                <Link
+                  href="/boards"
+                  className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}
+                  rel="preload"
+                >
                   자유게시판
-                </li>
-              </Link>
+                </Link>
+              </li>
             </ul>
           </nav>
         )}
