@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import router from 'next/router';
 import { type boardType } from '@/types/board';
 import dateToString from '@/utils/dateToString';
+import { getDetailArticle } from '@/lib/apis/article/articleApi.api';
 import EmptyImage from '../../../public/image/empty-image.png';
 
 interface BoardCardProps {
@@ -11,7 +13,23 @@ interface BoardCardProps {
 }
 
 const BoardCard = ({ board }: BoardCardProps) => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
   const dateString = dateToString(board.createdAt);
+
+  useEffect(() => {
+    const fetchBoardDetailData = async () => {
+      try {
+        const res = await getDetailArticle(board.id);
+        setIsLiked(res.isLiked);
+      } catch (error) {
+        router.push('/500');
+      }
+    };
+    if (board.id) {
+      fetchBoardDetailData();
+    }
+  }, []);
 
   return (
     <motion.article
@@ -39,8 +57,13 @@ const BoardCard = ({ board }: BoardCardProps) => {
               <span className="max-w-[70px] truncate md:max-w-[60px]">{board.writer.name}</span>
               <span>{dateString.length > 6 ? dateString.substring(2) : dateString}</span>
             </div>
+
             <span>
-              <span className="mr-[2px] text-primary-green-200">❤︎</span>
+              {isLiked ? (
+                <span className="mr-3.5 text-primary-green-200">❤︎</span>
+              ) : (
+                <span className="mr-3.5 text-grayscale-400">❤︎</span>
+              )}
               {board.likeCount}
             </span>
           </div>

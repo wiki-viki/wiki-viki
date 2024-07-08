@@ -39,7 +39,9 @@ export const getArticle = async ({
 // 게시글 상세 페이지 GET 요청
 export const getDetailArticle = async (articleId: number) => {
   try {
-    const res: AxiosResponse<ArticleResponse> = await axiosDefault.get(`articles/${articleId}`);
+    const res: AxiosResponse<ArticleResponse> = await axiosWithIntercepter.get(
+      `articles/${articleId}`,
+    );
     return res.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
