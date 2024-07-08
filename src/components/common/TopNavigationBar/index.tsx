@@ -111,22 +111,30 @@ const TopNavigationBar = () => {
   return (
     <header className="sticky top-0 z-20 flex h-[60px] w-full items-center justify-between border-b-grayscale-300 bg-white px-5 shadow-md lg:h-[80px] lg:px-[80px]">
       <div className="flex items-center gap-5">
-        <Link href="/" rel="preload">
+        <Link href="/" rel="preload" aria-label="Link to Landing Page">
           <Logo width={107} height={30} />
         </Link>
         {isMobile || (
           <nav>
-            <ul className="flex gap-5 text-md-regular text-grayscale-500 ">
-              <Link href="/wikilist" className={linkClassNames} rel="preload">
-                <li className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}>
+            <ul className="flex gap-5 text-md-regular text-grayscale-500">
+              <li className={linkClassNames}>
+                <Link
+                  href="/wikilist"
+                  className={`${pathname === '/wikilist' ? activeLinkClassNames : ''}`}
+                  rel="preload"
+                >
                   위키목록
-                </li>
-              </Link>
-              <Link href="/boards" className={linkClassNames} rel="preload">
-                <li className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}>
+                </Link>
+              </li>
+              <li className={linkClassNames}>
+                <Link
+                  href="/boards"
+                  className={`${pathname === '/boards' ? activeLinkClassNames : ''}`}
+                  rel="preload"
+                >
                   자유게시판
-                </li>
-              </Link>
+                </Link>
+              </li>
             </ul>
           </nav>
         )}
