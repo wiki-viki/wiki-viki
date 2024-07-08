@@ -71,7 +71,7 @@ const LoginPage = () => {
       <OpenGraphTag title="로그인" description="로그인 페이지" />
       <Container className="sm:mt-[130px] md:mt-[150px]">
         <div className="center mb-[40px] flex-col gap-4">
-          <Link href="/" rel="preload">
+          <Link href="/" rel="preload" aria-label="Link to Landing Page">
             <Logo width={250} height={70} />
           </Link>
           <SwitchPrompt href="/signup" auth="회원가입" />
