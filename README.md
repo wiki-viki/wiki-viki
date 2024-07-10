@@ -1,10 +1,10 @@
-# Wiki-Viki 🍀
+# Wiki-Viki🍀
 
 ## 📄 프로젝트 소개
 
 ![위키비키 메인로고](public/images/wiki-viki-main-logo.png)
 
-### < WikiViki는 여러 사람과 각자의 이야기를 함께 만들어가는 커뮤니케이션 플랫폼입니다. >
+### 🍀WikiViki는 여러 사람과 각자의 이야기를 함께 만들어가는 커뮤니케이션 플랫폼입니다.🍀
 
 ## 🖥️ 위키비키 둘러보기
 
