@@ -29,7 +29,7 @@ const ChangePassWord = () => {
     const response = await getChangePasswordData(requestData);
     if (response?.status === 200) {
       ToastSelect({ type: 'check', message: '비밀번호가 변경되었습니다' });
-    } 
+    }
   });
 
   const buttonDisabled = !isValid;

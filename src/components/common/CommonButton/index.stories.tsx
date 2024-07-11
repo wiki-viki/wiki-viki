@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import CommonButton from './CommonButton';
+import CommonButton from '.';
 
 const meta = {
   title: 'Components/CommonButton',
