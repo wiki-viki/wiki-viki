@@ -2,9 +2,13 @@ import React, { ComponentProps } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 
 interface CommonButtonProps extends ComponentProps<'button'> {
+  /** 버튼의 배경 색상과 폰트 색상을 지정합니다. */
   variant: 'primary' | 'secondary';
+  /** 버튼의 활성화 여부를 지정합니다. */
   isActive?: boolean;
+  /** 버튼의 추가적인 스타일을 지정합니다. */
   className?: string;
+  /** 버튼의 내용을 지정합니다. */
   children: React.ReactNode;
 }
 
