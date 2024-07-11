@@ -77,7 +77,10 @@ jobs:
       - name: Preview Storybook URL
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: '🎨 Storybook: ${{ needs.storybook-preview.outputs.storybook_url }}'
+          comment_tag: ${{github.event.number}}-storybook
+          message: |
+            🎨 Storybook: ${{ needs.storybook-preview.outputs.storybook_url }}
+            🕖 Update: ${{ github.event.pull_request.updated_at }}
 
   github-bot-vercel:
     runs-on: ubuntu-latest
@@ -86,4 +89,7 @@ jobs:
       - name: Preview Vercel URL
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: '🎉 Preview: ${{ needs.vercel-preview.outputs.vercel_url }}'
+          comment_tag: ${{github.event.number}}-vercel
+          message: |
+            🎉 Preview: ${{ needs.vercel-preview.outputs.vercel_url }}
+            🕖 Update: ${{ github.event.pull_request.updated_at }}
