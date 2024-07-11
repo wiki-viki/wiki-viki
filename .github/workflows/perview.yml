@@ -20,23 +20,23 @@ jobs:
   storybook-preview:
     runs-on: ubuntu-20.04
     steps:
-      - name: checkout repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: cache dependencies
+      - name: 캐시 종속성
         id: cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-storybook
 
-      - name: depedency install
+      - name: 종속성 설치
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: publish to chromatic
+      - name: Chromatic에 게시
         id: chromatic
         uses: chromaui/action@v1
         with:
@@ -74,9 +74,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [storybook-preview, vercel-preview]
     steps:
-      - name: PR 코멘트로 Preview URL 남기기
+      - name: Preview URL
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            🚀 Storybook Preview 보러가기: ${{ needs.storybook-preview.outputs.storybook_url }}
-            🚀 React Preview 보러가기: ${{ needs.vercel-preview.outputs.vercel_url }}
+            🎨 Storybook: ${{ needs.storybook-preview.outputs.storybook_url }}
+            🎉 Preview : ${{ needs.vercel-preview.outputs.vercel_url }}
