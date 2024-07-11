@@ -22,7 +22,7 @@ export const Primary: Story = {
   },
 };
 
-export const Second: Story = {
+export const Red_Button: Story = {
   args: {
     variant: 'secondary',
     children: '버튼',
