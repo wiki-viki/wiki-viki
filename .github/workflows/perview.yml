@@ -74,6 +74,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [storybook-preview]
     steps:
+      - name: Format PR Update Time
+        id: format_time_vercel
+        run: |
+          updated_at="${{ github.event.pull_request.updated_at }}"
+          formatted_time=$(LC_TIME=ko_KR.UTF-8 date -d "$updated_at" '+%Y-%m-%d %H:%M:%S')
+          echo "formatted_time=${formatted_time}" >> $GITHUB_ENV
       - name: Preview Storybook URL
         uses: thollander/actions-comment-pull-request@v2
         with:
@@ -86,6 +92,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [vercel-preview]
     steps:
+      - name: Format PR Update Time
+        id: format_time_vercel
+        run: |
+          updated_at="${{ github.event.pull_request.updated_at }}"
+          formatted_time=$(LC_TIME=ko_KR.UTF-8 date -d "$updated_at" '+%Y-%m-%d %H:%M:%S')
+          echo "formatted_time=${formatted_time}" >> $GITHUB_ENV
       - name: Preview Vercel URL
         uses: thollander/actions-comment-pull-request@v2
         with:
