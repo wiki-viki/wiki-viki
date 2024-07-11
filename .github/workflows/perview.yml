@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       pages: write
       deployments: write
       id-token: write
@@ -18,44 +18,33 @@ jobs:
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Vercel CLI
-
         run: npm install --global vercel@latest
 
       - name: Get Vercel Environment Variables
-
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-
         id: deploy
-
         run: |
-
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > vercel-output.txt
-
           echo "preview_url=$(cat vercel-output.txt)" >> $GITHUB_OUTPUT
 
       - name: Comment PR with Preview URL
-
         uses: thollander/actions-comment-pull-request@v2
-
         with:
           message: |
-
             🎉 Preview: ${{ steps.deploy.outputs.preview_url }}
 
-  storybook-preview:
+  storybook:
     runs-on: ubuntu-20.04
     outputs:
       status: ${{ job.status }}
