@@ -70,13 +70,20 @@ jobs:
     outputs:
       vercel_url: ${{ steps.deploy.outputs.preview_url }}
 
-  github-bot:
+  github-bot-storybook:
     runs-on: ubuntu-latest
-    needs: [storybook-preview, vercel-preview]
+    needs: [storybook-preview]
     steps:
-      - name: Preview URL
+      - name: Preview Storybook URL
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: |
-            🎨 Storybook: ${{ needs.storybook-preview.outputs.storybook_url }}
-            🎉 Preview : ${{ needs.vercel-preview.outputs.vercel_url }}
+          message: '🎨 Storybook: ${{ needs.storybook-preview.outputs.storybook_url }}'
+
+  github-bot-vercel:
+    runs-on: ubuntu-latest
+    needs: [vercel-preview]
+    steps:
+      - name: Preview Vercel URL
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: '🎉 Preview: ${{ needs.vercel-preview.outputs.vercel_url }}'
