@@ -27,8 +27,6 @@
 ![Next JS](https://img.shields.io/badge/Next.JS-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![EsLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=ESLint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=Prettier&logoColor=white)
 
 ## 📚 라이브러리
 
@@ -38,6 +36,8 @@
 ![React-Quill](https://img.shields.io/badge/React Quill-%232C3454.svg?style=for-the-badge)
 ![Zustand](https://img.shields.io/badge/Zustand-%2339477F.svg?style=for-the-badge)
 ![lottie](https://img.shields.io/badge/lottie-%2368BC71.svg?style=for-the-badge)
+![EsLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=ESLint&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=Prettier&logoColor=white)
 
 ## 📂 폴더 및 파일 구조
 
