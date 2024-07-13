@@ -39,6 +39,10 @@
 ![EsLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=ESLint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=Prettier&logoColor=white)
 
+## 🗒️ 플로우 차트
+
+![flow-chart](public/images/flow-chart.png)
+
 ## 📂 폴더 및 파일 구조
 
 ```
